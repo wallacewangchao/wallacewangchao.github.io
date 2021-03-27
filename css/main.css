@@ -7,14 +7,51 @@ main{
   display: grid;
   grid-template-columns: repeat(16, 1fr);
   grid-template-rows: 100vh;
-  margin: 0;
 }
 
-.self_intro{
+/*=====================================================================*/
+/* containers */
+.selfintro_container{
   grid-column: 2/7;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
 }
 
-.animation{
+.animation_container{
   grid-column: 7/16;
+  /* background-color:cornflowerblue; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*=====================================================================*/
+/* content of self introduction container */
+.greeting_div{
+  display: flex;
+}
+
+.logo_large{
+  width: 30%;
+  /* background-color:bisque; */
 
 }
+
+.greeting_text{
+  width: 70%;
+  /* background-color:aquamarine; */
+
+}
+
+.intro_text{
+  /* background-color: antiquewhite; */
+}
+
+/*=====================================================================*/
+/* content of animation container */
+.animation_frames{
+  max-width: 100%;
+  max-height: 100%;
+}
+
