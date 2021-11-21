@@ -21,7 +21,6 @@ main{
 
 #threejs-container{
   grid-column: 7/16;
-  /* background-color:cornflowerblue; */
   display: flex;
   justify-content: center;
   align-items: center;
