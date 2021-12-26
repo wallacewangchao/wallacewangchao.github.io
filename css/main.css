@@ -14,13 +14,17 @@ main{
 /* containers */
 .selfintro-container{
   grid-column: 2/7;
+  grid-row: 1/2;
+  z-index: 10;
   display: flex;
   flex-flow: column;
   justify-content: center;
 }
 
 #threejs-container{
-  grid-column: 7/16;
+  grid-column: 1/17;
+  grid-row: 1/2;
+
   display: flex;
   justify-content: center;
   align-items: center;

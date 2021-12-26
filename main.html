@@ -12,17 +12,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
 
-    <script src="https://threejs.org/build/three.js"></script>
-    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
-    <!-- <script src="https://threejs.org/examples/js/loaders/FBXLoader.js"></script> -->
+    <script src="/js/threeJs-r134/build/three.js"></script>
+    <script src="/js/threeJs-r134/js/controls/OrbitControls.js"></script>
+    <script src="/js/threeJs-r134/js/loaders/GLTFLoader.js"></script>
+    <script src="/js/threeJs-r134/js/loaders/OBJLoader.js"></script>
+    <script src="/js/threeJs-r134/js/libs/dat.gui.min.js"></script>
+    <script src="/js/threeJs-r134/js/shaders/HorizontalBlurShader.js"></script>
+    <script src="/js/threeJs-r134/js/shaders/VerticalBlurShader.js"></script>
 
   </head>
 
   <body>
     <main>
 
+
+      <div id="threejs-container"></div>
       <div class="selfintro-container">
         <div class="greeting_div">
           <img class="logo_large" src="./img/chao_logo.PNG">
@@ -34,28 +38,27 @@
           My name is Chao Wang, an eXplainable AI Researcher and a UX Engineer at Honda Research Institute. I work on autonomous driving vehicle, robotics and eXplainable AI. 
         </div>
       </div>
-      <div id="threejs-container"></div>
-
+      <div id="my_sidebar" class="sidebar">
+        <div id="hamburger_btn">
+          <div id="top"></div>
+          <div id="middle"></div>
+          <div id="bottom"></div>
+        </div>
+        <div class="sidebar_text">
+          <h1>About Me</h1>
+          I got my master degree of Industrial Design/Interaction Design in Zhejiang University, China. And in 2017, I got my PhD degree of human-machine interaction in Eindhoven University of Technology, the Netherlands. 
+          In my leisure, I often take photos/videos, cycling, travelling and play video games. Please check my photo gallery!
+        </div>
+        <div class="sidebar_text">
+          <h1>Publications</h1>
+          Interested in my publications?
+          You can also see my publication on google scholar and Research Gate.
+        </div>
+      </div>
+      <div id="my_overlay" class="overlay"></div>
+  
     </main>
 
-    <div id="my_sidebar" class="sidebar">
-      <div id="hamburger_btn">
-        <div id="top"></div>
-        <div id="middle"></div>
-        <div id="bottom"></div>
-      </div>
-      <div class="sidebar_text">
-        <h1>About Me</h1>
-        I got my master degree of Industrial Design/Interaction Design in Zhejiang University, China. And in 2017, I got my PhD degree of human-machine interaction in Eindhoven University of Technology, the Netherlands. 
-        In my leisure, I often take photos/videos, cycling, travelling and play video games. Please check my photo gallery!
-      </div>
-      <div class="sidebar_text">
-        <h1>Publications</h1>
-        Interested in my publications?
-        You can also see my publication on google scholar and Research Gate.
-      </div>
-    </div>
-    <div id="my_overlay" class="overlay"></div>
 
     <script src="./js/main.js" async defer></script>
   </body>
