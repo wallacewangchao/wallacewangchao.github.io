@@ -15,6 +15,10 @@ let robotPageObjs = [];
 let aboutMePageObjs = [];
 let pageObjectData = {};
 
+let homePageMarkers = [];
+let autoPageMarkers = [];
+let robotPageMarkers = [];
+
 const HOME_CAMERA_POS = {
   position: {
     x: -7,
@@ -41,6 +45,19 @@ const AUTO_CAMERA_POS = {
   }
 }
 
+const ROBOT_CAMERA_POS = {
+  position: {
+    x: -0.31,
+    y: 3.89,
+    z: 4.80
+  },
+  lookAt: {
+    x: -2.19,
+    y: 0.39,
+    z: 0.039
+  }
+}
+
 const ME_CAMERA_POS = {
   position: {
     x: -2.6,
@@ -53,9 +70,6 @@ const ME_CAMERA_POS = {
     z: 1.8 
   }
 }
-
-// camera position Vector3 {x: -2.646861358342913, y: 1.5818314860274567, z: -0.9506688338377036}
-// camera target Vector3 {x: -2.329490302758693, y: 1.4836889218219247, z: 1.7609637161319145}
 
 const THREEJS_CONTAINER = document.getElementById('threejs-container');
 const OVERLAY_CONTAINER = document.getElementById('highlight-overlay');
@@ -98,14 +112,15 @@ const promiseMachine = createMachine(
         }
       },
       robotPage: {
-        
+        entry: [ 'transCamRobot' ],
+
         on: {
           TO_HOME_PAGE: { target: 'homePage' }
         }
       },
       aboutMePage: {
-        entry: [ 'transCamAuto', 'showAutoGrid' ],
-        exit: [ 'hideAutoGrid' ],
+        entry: [ 'transCamMe' ],
+        // exit: [ ' ' ],
         on: {
           TO_HOME_PAGE: { target: 'homePage' }
         }
@@ -149,9 +164,14 @@ const promiseMachine = createMachine(
         AUTOMOTIVE_GRID.style.opacity = 1;
       },
 
+      transCamRobot: () => {
+        moveCamera( ROBOT_CAMERA_POS.position, ROBOT_CAMERA_POS.lookAt );
+      },
+
       transCamMe: () => {
         moveCamera( ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt );
       }
+
 
     }
   }
@@ -244,33 +264,35 @@ function initScene(){
     gltf.scene.receiveShadow = true;
 
     root.traverse( function( node ) {
+
       if ( node.name === "me_meta" ){
-        meObj = node;
-        let pos = toScreenPosition(meObj, camera);
-        highlightMe = document.createElement('div');
-        highlightMe.classList.add('highlight-rect');
-        setDivPosition(highlightMe, pos);
-        OVERLAY_CONTAINER.appendChild(highlightMe);
-        highlightMe.addEventListener( 'click', onHightClicked );
+        let marker = makeMarker(node);
+        homePageMarkers.push(marker);
       } else if ( node.name === "honda_e" ){
-        carObj = node;
-        let pos = toScreenPosition(carObj, camera);
-        highLightCar = document.createElement('div');
-        highLightCar.classList.add('highlight-rect');
-        setDivPosition(highLightCar, pos);
-        OVERLAY_CONTAINER.appendChild(highLightCar);
-        highLightCar.addEventListener( 'click', onHightClicked );
+        let marker = makeMarker(node);
+        homePageMarkers.push(marker);
+      } else if ( node.name === "robot" ){
+        let marker = makeMarker(node);
+        homePageMarkers.push(marker);
       }
       
       if ( node.isMesh ) {
-          if ( node.type === "SkinnedMesh" ) {
-            node.frustumCulled = false;
-          }
-          node.receiveShadow = true;
-          node.castShadow = true;
+        if ( node.type === "SkinnedMesh" ) {
+          node.frustumCulled = false;
         }
+        node.receiveShadow = true;
+        node.castShadow = true;
+      }
+
     });
     scene.add( root );
+
+    homePageMarkers.forEach( marker => {
+      OVERLAY_CONTAINER.appendChild(marker);
+    });
+    
+    setMarkersPositions(homePageMarkers);
+
     console.log(gltf);
 
   }, function(xhr){
@@ -304,15 +326,17 @@ function initScene(){
 
 function render() {
   renderer.render( scene, camera );
+  setMarkersPositions(homePageMarkers);
+
   console.log("camera position", camera.position);
   console.log("camera target", controls.target);
 }
 
 function animate() {
-
   requestAnimationFrame( animate );
   controls.update(); // required if damping enabled
   renderer.render( scene, camera );
+
   TWEEN.update();
 
 }
@@ -331,8 +355,8 @@ function toScreenPosition(obj, camera)
 {
     var vector = new THREE.Vector3();
 
-    var widthHalf = 0.5*renderer.context.canvas.width;
-    var heightHalf = 0.5*renderer.context.canvas.height;
+    var widthHalf = 0.5*renderer.getContext().canvas.width;
+    var heightHalf = 0.5*renderer.getContext().canvas.height;
 
     obj.updateMatrixWorld();
     vector.setFromMatrixPosition(obj.matrixWorld);
@@ -371,28 +395,35 @@ function onHightClicked(){
   promiseService.send({type: "TO_AUTO_PAGE"});
 }
 
-function setObject( node, page, cameraTransform ){
+function makeMarker( node ) {
   let markerDiv = document.createElement('div');
   markerDiv.classList.add('highlight-rect');
-  markerDiv.addEventListener( 'click', onMarkerClicked(node.name) );
+  markerDiv.id = node.name;
+  markerDiv.addEventListener( 'click', onMarkerClicked );
 
-  pageObjectData[node.name] = 
-  {
-    "object": node,
-    "marker": markerDiv,
-    "page": page,
-    "cameraTransform": cameraTransform
+  return markerDiv;
+}
+
+function setMarkersPositions( markers ) {
+  markers.forEach( marker => {
+    let object = scene.getObjectByName( marker.id );
+    let position = toScreenPosition( object, camera );
+    marker.style.left = position.x + 'px';
+    marker.style.top = position.y + 'px';
+  });
+}
+
+function onMarkerClicked(){
+  console.log("marker id: ", this.id);
+  if (this.id === "honda_e") {
+    promiseService.send({type: "TO_AUTO_PAGE"});
   }
 
-}
+  if (this.id === "me_meta") {
+    promiseService.send({type: "TO_ABOUT_ME_PAGE"});
+  }
 
-function goToPage () {
- goToPage 
-}
-
-function onMarkerClicked( objectName ){
-  let object = pageObjectData[objectName];
-  if ( object.page === "homePage" ){
-    goToPage ("")
+  if (this.id === "robot") {
+    promiseService.send({type: "TO_ROBOT_PAGE"});
   }
 }

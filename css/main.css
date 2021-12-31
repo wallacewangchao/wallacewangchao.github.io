@@ -33,7 +33,7 @@ main{
 #highlight-overlay{
   grid-column: 8/17;
   grid-row: 1/2;
-
+  overflow: hidden;
 }
 
 .nav-bar{
@@ -55,6 +55,11 @@ main{
 .nav-bar img{
   height: 6rem;
   width: 6rem;
+  cursor: pointer;
+}
+
+.nav-bar img:hover{
+  transform: scale(1.12);
 }
 
 .nav-bar > ul{
@@ -65,6 +70,10 @@ main{
   font-size: medium;
   font-weight:300;
   cursor: pointer;
+}
+
+.nav-bar >ul >li:hover {
+  color: rgb(255, 71, 71);
 }
 
 .link-div{
@@ -90,14 +99,25 @@ main{
 
 .highlight-rect{
   position: relative;
-  background-color: rgb(255, 101, 101);
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 0;
-  transform: translate(-0.35rem, -0.35rem);
+  background-color: rgb(255, 77, 77);
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: translate(0, 0);
   cursor: pointer;
 
 }
+
+.highlight-rect:hover {
+  background-color: rgba(255, 77, 77, 0.596);
+  transform: scale(2.5);
+  transition: transform 0.25s ease-in-out;
+}
+
+.highlight-rect::hover::before {
+  opacity: 0;
+}
+
+/* .highlight-rect:not(:hover)::before */
 
 
 .highlight-rect::before {
