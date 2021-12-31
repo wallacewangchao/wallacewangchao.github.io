@@ -1,65 +1,178 @@
-//set up three js
+const { createMachine, actions, interpret } = XState; // global variable: window.XState
+
 let camera, scene, renderer, controls;
 let dirLight, spotLight;
 let shadowGroup, renderTarget, renderTargetBlur, shadowCamera, cameraHelper, depthMaterial, horizontalBlurMaterial, verticalBlurMaterial;
-const PLANE_WIDTH = 2.5;
-const PLANE_HEIGHT = 2.5;
-const CAMERA_HEIGHT = 0.3;
-const state = {
-  shadow: {
-    blur: 3.5,
-    darkness: 1,
-    opacity: 1,
+
+let highlightDivs = [];
+let highlightObjs = [];
+let meObj, carObj, robotObj;
+let highlightMe, highLightCar, hightLightRobot;
+
+let homePageObjs = {};
+let autoPageObjs = [];
+let robotPageObjs = [];
+let aboutMePageObjs = [];
+let pageObjectData = {};
+
+const HOME_CAMERA_POS = {
+  position: {
+    x: -7,
+    y: 8,
+    z: 7
   },
-  plane: {
-    color: '#ffffff',
-    opacity: 1,
-  },
-  showWireframe: false,
-};
-
-
-const THREEJS_CONTAINER = document.getElementById('threejs-container');
-
-init();
-animate();
-
-function init() {
-
-  initScene();
-
-  // Init gui
-  // const gui = new dat.GUI();
-
-  // const config = {
-  //   spotlightRadius: 4,
-  //   spotlightSamples: 8,
-  //   dirlightRadius: 4,
-  //   dirlightSamples: 8
-  // };
-
-  // const dirlightFolder = gui.addFolder( 'Directional Light' );
-  // dirlightFolder.add( config, 'dirlightRadius' ).name( 'radius' ).min( 0 ).max( 800 ).onChange( function ( value ) {
-
-  //   dirLight.shadow.radius = value;
-  //   console.log(value);
-  // } );
-
-  // dirlightFolder.add( config, 'dirlightSamples', 1, 4000, 1 ).name( 'samples' ).onChange( function ( value ) {
-
-  //   dirLight.shadow.blurSamples = value;
-
-  // } );
-  // dirlightFolder.open();
-
-  window.addEventListener( 'resize', onWindowResize );
-
+  lookAt: {
+    x: 0,
+    y: 0,
+    z: 0 
+  }
 }
 
+const AUTO_CAMERA_POS = {
+  position: {
+    x: 15,
+    y: 7,
+    z: 0
+  },
+  lookAt: {
+    x: 0,
+    y: 2,
+    z: 0 
+  }
+}
 
+const ME_CAMERA_POS = {
+  position: {
+    x: -2.6,
+    y: 1.5,
+    z: -0.9
+  },
+  lookAt: {
+    x: -2.3,
+    y: 1.5,
+    z: 1.8 
+  }
+}
+
+// camera position Vector3 {x: -2.646861358342913, y: 1.5818314860274567, z: -0.9506688338377036}
+// camera target Vector3 {x: -2.329490302758693, y: 1.4836889218219247, z: 1.7609637161319145}
+
+const THREEJS_CONTAINER = document.getElementById('threejs-container');
+const OVERLAY_CONTAINER = document.getElementById('highlight-overlay');
+const LOGO = document.getElementById('logo');
+const AUTOMOTIVE_GRID = document.getElementById('automotive-grid');
+const SELF_INTRODUCTION_CONTAINER = document.getElementById('selfintro-container');
+
+/*************** set state machine *****************/
+const promiseMachine = createMachine(
+  {
+    id: 'myWeb',
+    initial: 'loading',
+    context: 
+    { 
+      HOME_CAM_TRANSFORM: { position: HOME_CAMERA_POS.position, lookAt: HOME_CAMERA_POS.lookAt },
+      AUTO_CAM_TRANSFORM: undefined, 
+      AUTO_CAM_TRANSFORM: undefined 
+    },
+    states: {
+      loading: {
+        entry: [ 'initialize' ],
+        on: {
+          TO_HOME_PAGE: { target: 'homePage' }
+        }
+      },
+      homePage: {
+        entry: [ 'transCamHome', 'showGreeting' ],
+        exit: [ 'hideGreeting' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' },
+          TO_ROBOT_PAGE: { target: 'robotPage' },
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+        }
+      },
+      autoPage: {
+        entry: [ 'transCamAuto', 'showAutoGrid' ],
+        exit: [ 'hideAutoGrid' ],
+        on: {
+          TO_HOME_PAGE: { target: 'homePage' }
+        }
+      },
+      robotPage: {
+        
+        on: {
+          TO_HOME_PAGE: { target: 'homePage' }
+        }
+      },
+      aboutMePage: {
+        entry: [ 'transCamAuto', 'showAutoGrid' ],
+        exit: [ 'hideAutoGrid' ],
+        on: {
+          TO_HOME_PAGE: { target: 'homePage' }
+        }
+      }
+    }
+  },
+  {
+    actions:{
+      initialize: () => {
+        init();
+        animate();
+      },
+
+      transCamHome: () => {
+        // console.log('transCamHome');
+        moveCamera( HOME_CAMERA_POS.position, HOME_CAMERA_POS.lookAt );
+      },
+      hideGreeting: () => {
+        // console.log('hideGreeting');
+        SELF_INTRODUCTION_CONTAINER.style.visibility = 'hidden';
+        SELF_INTRODUCTION_CONTAINER.style.opacity = 0;
+      },
+      showGreeting: () => {
+        // console.log('showGreeting');
+        SELF_INTRODUCTION_CONTAINER.style.visibility = 'visible';
+        SELF_INTRODUCTION_CONTAINER.style.opacity = 1;
+      },
+
+      transCamAuto: () => {
+        // console.log('transCamAuto');
+        moveCamera( AUTO_CAMERA_POS.position, AUTO_CAMERA_POS.lookAt );
+      },
+      hideAutoGrid: () => {
+        // console.log('hideAutoGrid');
+        AUTOMOTIVE_GRID.style.visibility = 'hidden';
+        AUTOMOTIVE_GRID.style.opacity = 0;
+      },
+      showAutoGrid: () => {
+        // console.log('showAutoGrid');
+        AUTOMOTIVE_GRID.style.visibility = 'visible';
+        AUTOMOTIVE_GRID.style.opacity = 1;
+      },
+
+      transCamMe: () => {
+        moveCamera( ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt );
+      }
+
+    }
+  }
+);
+
+const promiseService = interpret(promiseMachine).onTransition((state) =>
+  console.log(state.value)
+);
+promiseService.start();
+
+function init() {
+  initScene();
+  window.addEventListener( 'resize', onWindowResize );
+  LOGO.addEventListener( 'click', () => {
+    promiseService.send({type: "TO_HOME_PAGE"});
+  } );
+  
+  promiseService.send({type: "TO_HOME_PAGE"});
+}
 
 function initScene(){
-
   scene = new THREE.Scene();
   scene.background = new THREE.Color( "rgb(255, 255, 255)" );
   // scene.fog = new THREE.Fog( "rgb(255, 255, 255)", 10, 50 );
@@ -131,9 +244,26 @@ function initScene(){
     gltf.scene.receiveShadow = true;
 
     root.traverse( function( node ) {
+      if ( node.name === "me_meta" ){
+        meObj = node;
+        let pos = toScreenPosition(meObj, camera);
+        highlightMe = document.createElement('div');
+        highlightMe.classList.add('highlight-rect');
+        setDivPosition(highlightMe, pos);
+        OVERLAY_CONTAINER.appendChild(highlightMe);
+        highlightMe.addEventListener( 'click', onHightClicked );
+      } else if ( node.name === "honda_e" ){
+        carObj = node;
+        let pos = toScreenPosition(carObj, camera);
+        highLightCar = document.createElement('div');
+        highLightCar.classList.add('highlight-rect');
+        setDivPosition(highLightCar, pos);
+        OVERLAY_CONTAINER.appendChild(highLightCar);
+        highLightCar.addEventListener( 'click', onHightClicked );
+      }
+      
       if ( node.isMesh ) {
           if ( node.type === "SkinnedMesh" ) {
-            console.log("set cube");   
             node.frustumCulled = false;
           }
           node.receiveShadow = true;
@@ -154,66 +284,115 @@ function initScene(){
   mesh.rotation.x = - Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add( mesh );
-  console.log( mesh );
 
   // Axes Helper
   // const axesHelper = new THREE.AxesHelper( 5 );
   // scene.add( axesHelper );
   
   // set camera positions
-  camera.position.set( 10, 10, 10 ); // Set position like this
-  // camera.lookAt(new THREE.Vector3(0,0,0)); // Set look at coordinate like this
+  camera.position.set( HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z ); // Set position like this
 
   // orbit control
   controls = new THREE.OrbitControls( camera, renderer.domElement );
-  controls.update();
   controls.addEventListener( 'change', render );
-  controls.minPolarAngle = Math.PI * 0.25;
+  // controls.minPolarAngle = Math.PI * 0.25;
   // controls.maxPolarAngle = Math.PI * 0.25;
-  controls.target.set( 0, 0.5, 0 );
+  controls.target.set( HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z );
   controls.enableDamping = true;
 
-  window.addEventListener( 'resize', onWindowResize );
-
 }
-
 
 function render() {
   renderer.render( scene, camera );
-}
-
-function onWindowResize() {
-  camera.aspect = THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientWidth;
-  camera.updateProjectionMatrix();
-  renderer.setSize( THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientWidth );
+  console.log("camera position", camera.position);
+  console.log("camera target", controls.target);
 }
 
 function animate() {
 
   requestAnimationFrame( animate );
   controls.update(); // required if damping enabled
-  render();
+  renderer.render( scene, camera );
+  TWEEN.update();
 
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
+
+  let pos = toScreenPosition(meObj, camera);
+  setDivPosition(highlightMe, pos);
+
 }
 
-/**
- * Set up hamburger overlay
- */
-// document.querySelector('#hamburger_btn').addEventListener('click', function(event) {
-//   if (this.classList.contains('active')) {
-//       this.classList.remove('active');
-//       document.getElementById("my_overlay").style.opacity = "0";
-//       document.getElementById("my_sidebar").style.width = "0";
+function toScreenPosition(obj, camera)
+{
+    var vector = new THREE.Vector3();
 
-//   } else {
-//       this.classList.add('active');
-//       document.getElementById("my_overlay").style.opacity = "1";
-//       document.getElementById("my_sidebar").style.width = "40vw";
-//   }
-// });
+    var widthHalf = 0.5*renderer.context.canvas.width;
+    var heightHalf = 0.5*renderer.context.canvas.height;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(camera);
+
+    vector.x = ( vector.x * widthHalf ) + widthHalf;
+    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+    return { 
+        x: vector.x,
+        y: vector.y
+    };
+};
+
+function setDivPosition(div, pos){
+  div.style.left = pos.x + 'px';
+  div.style.top = pos.y + 'px';
+}
+
+function moveCamera(cameraTargetPosition, cameraTargetLookAt){
+
+  TWEEN.removeAll();
+  new TWEEN.Tween( camera.position )
+						.to( cameraTargetPosition, 1000 )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+  new TWEEN.Tween( controls.target )
+						.to( cameraTargetLookAt, 1000 )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+}
+
+function onHightClicked(){
+  promiseService.send({type: "TO_AUTO_PAGE"});
+}
+
+function setObject( node, page, cameraTransform ){
+  let markerDiv = document.createElement('div');
+  markerDiv.classList.add('highlight-rect');
+  markerDiv.addEventListener( 'click', onMarkerClicked(node.name) );
+
+  pageObjectData[node.name] = 
+  {
+    "object": node,
+    "marker": markerDiv,
+    "page": page,
+    "cameraTransform": cameraTransform
+  }
+
+}
+
+function goToPage () {
+ goToPage 
+}
+
+function onMarkerClicked( objectName ){
+  let object = pageObjectData[objectName];
+  if ( object.page === "homePage" ){
+    goToPage ("")
+  }
+}

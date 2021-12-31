@@ -12,10 +12,12 @@ main{
 }
 
 /*=====================================================================*/
-/* containers */
-.selfintro-container{
-  grid-column: 2/7;
+/* containers layout */
+#selfintro-container{
+  grid-column: 3/8;
   grid-row: 1/2;
+  transition: opacity 0.25s ease-in-out;
+
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -24,11 +26,14 @@ main{
 }
 
 #threejs-container{
-  grid-column: 1/17;
+  grid-column: 8/17;
   grid-row: 1/2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+#highlight-overlay{
+  grid-column: 8/17;
+  grid-row: 1/2;
+
 }
 
 .nav-bar{
@@ -43,6 +48,7 @@ main{
   padding-left: 2rem;
 }
 
+
 /*=====================================================================*/
 /* nav-bar contents */
 
@@ -56,8 +62,9 @@ main{
   flex-flow: column;
   gap: 1rem;
   list-style: none;
-  font-size: large;
+  font-size: medium;
   font-weight:300;
+  cursor: pointer;
 }
 
 .link-div{
@@ -71,6 +78,49 @@ main{
   width: 1.25rem;
 }
 
+/*=====================================================================*/
+/* highlight overlay */
+
+.highlight-div{
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+
+}
+
+.highlight-rect{
+  position: relative;
+  background-color: rgb(255, 101, 101);
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 0;
+  transform: translate(-0.35rem, -0.35rem);
+  cursor: pointer;
+
+}
+
+
+.highlight-rect::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  border-radius: 0;
+  z-index: -1;
+  animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(6);
+  }
+}
 
 /*=====================================================================*/
 /* grid of the projects in different categories */
@@ -78,11 +128,13 @@ main{
   grid-column: 3/8;
   grid-row: 1/2;
   align-self: center;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 15vh;
-  gap: 1rem;
+  grid-auto-rows: 16vh;
+  gap: 0.6rem;
 
   z-index: 20;
 }
@@ -102,17 +154,70 @@ main{
   grid-row-start: span 2;  
 }
 
+
+/* project card */
 .sub-project-grid img{
   width: 100%;
   height: 100%;
-  border-radius: 15px;
   object-fit: cover;
 }
+
+.project-card{
+  background-size: cover;
+  transition: transform 0.25s ease;
+
+}
+
+.project-card:hover{
+  transform: scale(1.03);
+}
+
+.project-card:hover .card-content{
+  opacity: 1;
+}
+
+.card-content{
+  background: rgba(255, 0, 0, 0.219);
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+  display: flex;
+  align-items: flex-start;  
+  flex-flow: column;
+  gap: 1rem;
+  justify-content: center;
+  color: aliceblue;
+  transition: opacity 0.25s ease-in-out;
+  cursor: pointer;
+
+}
+
+.card-content div:first-child{
+  font-size: medium;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+.card-content div:last-child{
+  font-size: small;
+  display: inline-block;
+  align-self: center;
+
+  border: 1px aliceblue;
+  border-style: solid;
+  border-radius: 1rem;
+  padding: 0.1rem 0.5rem ;
+}
+
+
 
 /*=====================================================================*/
 /* content of self introduction container */
 .greeting_div{
   display: flex;
+  padding: 1rem 0;
 }
 
 .logo_large{

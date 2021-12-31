@@ -19,14 +19,18 @@
     <script src="/js/threeJs-r134/js/libs/dat.gui.min.js"></script>
     <script src="/js/threeJs-r134/js/shaders/HorizontalBlurShader.js"></script>
     <script src="/js/threeJs-r134/js/shaders/VerticalBlurShader.js"></script>
+    <script src="/js/tween.umd.js"></script>
+
+    <script src="/js/xstate.js"></script>
 
   </head>
 
   <body>
     <main>
+      <div id="highlight-overlay"></div>
       <div id="threejs-container"></div>
       <div class="nav-bar"> 
-        <img src="./img/logo.png">
+        <img id="logo" src="./img/logo.png">
         <ul>
           <li>Automotive</li>
           <li>Robotics&AI</li>
@@ -45,30 +49,36 @@
           </a>
         </div>
       </div>
-      <div class="sub-project-grid">
-        <div class="grid-span-4">
-          <img src="./img/project_thumbnail/frame-15.png">
+      <div id="automotive-grid" class="sub-project-grid">
+        <div id="cooperative-driving" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/frame-15.png')">
+          <div class="card-content">
+            <div>Human-vehicle Cooperation in Prediction Level</div>
+            <div>Learn More</div>
+          </div>
         </div>
-        <div class="grid-span-2">
-          <img src="./img/project_thumbnail/homepage-hero1-eve-3840x2160_0.jpg">
+        <div id="pedestrian-communication" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/homepage-hero1-eve-3840x2160_0.jpg')">
+          <div class="card-content">
+            <div>Communication between Autonous vehicle and pedestrian</div>
+            <div>Learn More</div>
+          </div>
         </div>
-        <div class="grid-span-2">
+        <div id="a-team" class="grid-span-2">
           <img src="./img/project_thumbnail/img_8355.jpg">
         </div>
-        <div class="grid-span-1">
+        <div id="like-dislike" class="grid-span-1">
           <img src="./img/project_thumbnail/img_7883.jpg">
         </div>
-        <div class="grid-span-1">
+        <div id="social-car" class="grid-span-1">
           <img src="./img/project_thumbnail/img_9920221.jpg">
         </div>
-        <div class="grid-span-1">
+        <div id="hud-ar" class="grid-span-2">
           <img src="./img/project_thumbnail/snip20160414_2.jpg">
         </div>
-        <div class="grid-span-1">
+        <div id="dash-light" class="grid-span-2">
           <img src="./img/project_thumbnail/thumb_img_6494_1024.jpg">
         </div>
       </div>
-      <!-- <div class="selfintro-container">
+      <div id="selfintro-container">
         <div class="greeting_div">
           <img class="logo_large" src="./img/logo.png">
           <div class="greeting_text">
@@ -76,9 +86,11 @@
           </div>
         </div>
         <div class="intro_text">
-          My name is Chao Wang, an eXplainable AI Researcher and a UX Engineer at Honda Research Institute. I work on autonomous driving vehicle, robotics and eXplainable AI. 
+          My name is Chao Wang, an eXplainable AI Researcher and a UX Engineer at Honda Research Institute. I work on autonomous driving vehicle, robotics and eXplainable AI. <br><br>
+          Insistence on HCI of automotive domain for 9 years gives me profound insight into the trends of intelligent system. As a designer at heart, I believe AI would be a new engine for the next-generation human-machine interface.
         </div>
-      </div> -->
+      </div>
+
       <!-- <div id="my_sidebar" class="sidebar">
         <div id="hamburger_btn">
           <div id="top"></div>
