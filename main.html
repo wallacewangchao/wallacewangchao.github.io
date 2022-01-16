@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>chao's world</title>
+    <title>Chao's world</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -17,6 +17,9 @@
     <script src="/js/threeJs-r134/js/loaders/GLTFLoader.js"></script>
     <script src="/js/threeJs-r134/js/loaders/OBJLoader.js"></script>
     <script src="/js/threeJs-r134/js/libs/dat.gui.min.js"></script>
+    <script src="/js/threeJs-r134/js/effects/OutlineEffect.js"></script>
+
+
     <script src="/js/threeJs-r134/js/shaders/HorizontalBlurShader.js"></script>
     <script src="/js/threeJs-r134/js/shaders/VerticalBlurShader.js"></script>
     <script src="/js/tween.umd.js"></script>
@@ -29,14 +32,28 @@
     <main>
       <div id="highlight-overlay"></div>
       <div id="threejs-container"></div>
+    
       <div class="nav-bar"> 
         <img id="logo" src="./img/logo.png">
-        <ul>
-          <li>Automotive</li>
-          <li>Robotics&AI</li>
-          <li>Publications</li>
-          <li>About Me</li>
-        </ul>
+        <form>
+          <label>
+            <input type="radio" name="nav-radio-btns" id="radio-btn-Automotive"/>
+            <span>Automotive</span>
+          </label>
+          <label>
+            <input type="radio" name="nav-radio-btns" id="radio-btn-Robotics&AI"/>
+            <span>Robotics&AI</span>
+          </label>
+          <label>
+            <input type="radio" name="nav-radio-btns" id="radio-btn-Publications"/>
+            <span>Publications</span>
+          </label>
+          <label>
+            <input type="radio" name="nav-radio-btns" id="radio-btn-AboutMe"/>
+            <span>About Me</span>
+          </label>
+        </form>
+        
         <div class="link-div">
           <a href="https://github.com/wallacewangchao"  target="_blank">
             <img src="https://cdn.jsdelivr.net/npm/simple-icons@v4/icons/github.svg">
@@ -49,40 +66,57 @@
           </a>
         </div>
       </div>
+
       <div id="automotive-grid" class="sub-project-grid">
-        <div id="cooperative-driving" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/frame-15.png')">
+        <div id="cooperative-driving" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/automotive/frame-15.png')">
           <div class="card-content">
             <div>Human-vehicle Cooperation in Prediction Level</div>
             <div>Learn More</div>
           </div>
         </div>
-        <div id="pedestrian-communication" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/homepage-hero1-eve-3840x2160_0.jpg')">
+        <div id="pedestrian-communication" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/automotive/homepage-hero1-eve-3840x2160_0.jpg')">
           <div class="card-content">
             <div>Communication between Autonous vehicle and pedestrian</div>
             <div>Learn More</div>
           </div>
         </div>
         <div id="a-team" class="grid-span-2">
-          <img src="./img/project_thumbnail/img_8355.jpg">
+          <img src="./img/project_thumbnail/automotive/img_8355.jpg">
         </div>
         <div id="like-dislike" class="grid-span-1">
-          <img src="./img/project_thumbnail/img_7883.jpg">
+          <img src="./img/project_thumbnail/automotive/img_7883.jpg">
         </div>
         <div id="social-car" class="grid-span-1">
-          <img src="./img/project_thumbnail/img_9920221.jpg">
+          <img src="./img/project_thumbnail/automotive/img_9920221.jpg">
         </div>
         <div id="hud-ar" class="grid-span-2">
-          <img src="./img/project_thumbnail/snip20160414_2.jpg">
+          <img src="./img/project_thumbnail/automotive/snip20160414_2.jpg">
         </div>
         <div id="dash-light" class="grid-span-2">
-          <img src="./img/project_thumbnail/thumb_img_6494_1024.jpg">
+          <img src="./img/project_thumbnail/automotive/thumb_img_6494_1024.jpg">
         </div>
       </div>
+
+      <div id="robot-grid" class="sub-project-grid">
+        <div id="mobileCAM" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/cam.jpg')">
+          <div class="card-content">
+            <div>eXplainable AI</div>
+            <div>Learn More</div>
+          </div>
+        </div>
+        <div id="ICPs" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/robotics/icps.jpg')">
+          <div class="card-content">
+            <div>ICPS</div>
+            <div>Learn More</div>
+          </div>
+        </div>
+      </div>
+
       <div id="selfintro-container">
         <div class="greeting_div">
           <img class="logo_large" src="./img/logo.png">
           <div class="greeting_text">
-            Ciao, I am Chao
+            Ciao, I am Chao.
           </div>
         </div>
         <div class="intro_text">
@@ -90,28 +124,7 @@
           Insistence on HCI of automotive domain for 9 years gives me profound insight into the trends of intelligent system. As a designer at heart, I believe AI would be a new engine for the next-generation human-machine interface.
         </div>
       </div>
-
-      <!-- <div id="my_sidebar" class="sidebar">
-        <div id="hamburger_btn">
-          <div id="top"></div>
-          <div id="middle"></div>
-          <div id="bottom"></div>
-        </div>
-        <div class="sidebar_text">
-          <h1>About Me</h1>
-          I got my master degree of Industrial Design/Interaction Design in Zhejiang University, China. And in 2017, I got my PhD degree of human-machine interaction in Eindhoven University of Technology, the Netherlands. 
-          In my leisure, I often take photos/videos, cycling, travelling and play video games. Please check my photo gallery!
-        </div>
-        <div class="sidebar_text">
-          <h1>Publications</h1>
-          Interested in my publications?
-          You can also see my publication on google scholar and Research Gate.
-        </div>
-      </div>
-      <div id="my_overlay" class="overlay"></div> -->
-  
     </main>
-
 
     <script src="./js/main.js" async defer></script>
   </body>

@@ -1,23 +1,17 @@
 const { createMachine, actions, interpret } = XState; // global variable: window.XState
 
-let camera, scene, renderer, controls;
+let camera, scene, renderer, controls, effect;
 let dirLight, spotLight;
 let shadowGroup, renderTarget, renderTargetBlur, shadowCamera, cameraHelper, depthMaterial, horizontalBlurMaterial, verticalBlurMaterial;
 
-let highlightDivs = [];
-let highlightObjs = [];
 let meObj, carObj, robotObj;
 let highlightMe, highLightCar, hightLightRobot;
-
-let homePageObjs = {};
-let autoPageObjs = [];
-let robotPageObjs = [];
-let aboutMePageObjs = [];
-let pageObjectData = {};
 
 let homePageMarkers = [];
 let autoPageMarkers = [];
 let robotPageMarkers = [];
+
+let projectIframe;
 
 const HOME_CAMERA_POS = {
   position: {
@@ -75,7 +69,11 @@ const THREEJS_CONTAINER = document.getElementById('threejs-container');
 const OVERLAY_CONTAINER = document.getElementById('highlight-overlay');
 const LOGO = document.getElementById('logo');
 const AUTOMOTIVE_GRID = document.getElementById('automotive-grid');
+const ROBOT_GRID = document.getElementById('robot-grid');
 const SELF_INTRODUCTION_CONTAINER = document.getElementById('selfintro-container');
+const RADIO_BTNS_CONTAINER = document.querySelector('.nav-bar form');
+const IFRAME_CONTAINER = document.getElementById('iframe-container');
+const NAV_BAR = document.querySelector('.nav-bar');
 
 /*************** set state machine *****************/
 const promiseMachine = createMachine(
@@ -96,7 +94,7 @@ const promiseMachine = createMachine(
         }
       },
       homePage: {
-        entry: [ 'transCamHome', 'showGreeting' ],
+        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid' ],
         exit: [ 'hideGreeting' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -108,21 +106,41 @@ const promiseMachine = createMachine(
         entry: [ 'transCamAuto', 'showAutoGrid' ],
         exit: [ 'hideAutoGrid' ],
         on: {
-          TO_HOME_PAGE: { target: 'homePage' }
+          TO_HOME_PAGE: { target: 'homePage' },
+          TO_AUTO_PAGE: { target: 'autoPage' },
+          TO_ROBOT_PAGE: { target: 'robotPage' },
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+
+          TO_PROJECT_PREAD: { target: 'projectPreAD' }
         }
       },
       robotPage: {
-        entry: [ 'transCamRobot' ],
-
+        entry: [ 'transCamRobot', 'showRobotGrid' ],
+        exit: [ 'hideRobotGrid' ],
         on: {
-          TO_HOME_PAGE: { target: 'homePage' }
+          TO_HOME_PAGE: { target: 'homePage' },
+          TO_AUTO_PAGE: { target: 'autoPage' },
+          TO_ROBOT_PAGE: { target: 'robotPage' },
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+
         }
       },
       aboutMePage: {
         entry: [ 'transCamMe' ],
         // exit: [ ' ' ],
         on: {
-          TO_HOME_PAGE: { target: 'homePage' }
+          TO_HOME_PAGE: { target: 'homePage' },
+          TO_AUTO_PAGE: { target: 'autoPage' },
+          TO_ROBOT_PAGE: { target: 'robotPage' },
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+        }
+      },
+
+      projectPreAD: {
+        entry: [ 'showProjectPreAD', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
         }
       }
     }
@@ -139,39 +157,64 @@ const promiseMachine = createMachine(
         moveCamera( HOME_CAMERA_POS.position, HOME_CAMERA_POS.lookAt );
       },
       hideGreeting: () => {
-        // console.log('hideGreeting');
-        SELF_INTRODUCTION_CONTAINER.style.visibility = 'hidden';
-        SELF_INTRODUCTION_CONTAINER.style.opacity = 0;
+        hideContainer( SELF_INTRODUCTION_CONTAINER );
       },
       showGreeting: () => {
-        // console.log('showGreeting');
-        SELF_INTRODUCTION_CONTAINER.style.visibility = 'visible';
-        SELF_INTRODUCTION_CONTAINER.style.opacity = 1;
+        showContainer( SELF_INTRODUCTION_CONTAINER );
       },
 
       transCamAuto: () => {
-        // console.log('transCamAuto');
         moveCamera( AUTO_CAMERA_POS.position, AUTO_CAMERA_POS.lookAt );
       },
       hideAutoGrid: () => {
-        // console.log('hideAutoGrid');
-        AUTOMOTIVE_GRID.style.visibility = 'hidden';
-        AUTOMOTIVE_GRID.style.opacity = 0;
+        hideContainer( AUTOMOTIVE_GRID );     
       },
       showAutoGrid: () => {
-        // console.log('showAutoGrid');
-        AUTOMOTIVE_GRID.style.visibility = 'visible';
-        AUTOMOTIVE_GRID.style.opacity = 1;
+        showContainer( AUTOMOTIVE_GRID );
       },
 
       transCamRobot: () => {
         moveCamera( ROBOT_CAMERA_POS.position, ROBOT_CAMERA_POS.lookAt );
       },
+      hideRobotGrid: () => {
+        hideContainer( ROBOT_GRID );     
+      },
+      showRobotGrid: () => {
+        showContainer( ROBOT_GRID );
+      },
 
       transCamMe: () => {
         moveCamera( ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt );
-      }
+      },
 
+      clearRadioBtnRed: () => {
+        let checked = RADIO_BTNS_CONTAINER.querySelector('input:checked');
+        if (checked !== null) {
+          checked.checked = false;
+        }
+      },
+
+      showProjectPreAD: () => {
+        createProjectPage( './subpages/project-preAD.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
+
+      hide3DContainer: () => {
+        hide3DContainer();
+      },
+
+      closeProjectPage: () => {
+        destroyProjectPage();
+      },
+
+      hideNavBar: () => {
+        NAV_BAR.style.visibility = "hidden";
+      },
+      showNavBar: () => {
+        NAV_BAR.style.visibility = "visible";
+      }
 
     }
   }
@@ -185,10 +228,26 @@ promiseService.start();
 function init() {
   initScene();
   window.addEventListener( 'resize', onWindowResize );
+
   LOGO.addEventListener( 'click', () => {
     promiseService.send({type: "TO_HOME_PAGE"});
   } );
-  
+
+  RADIO_BTNS_CONTAINER.addEventListener( 'change', () => {
+    let id = RADIO_BTNS_CONTAINER.querySelector('input:checked').id;
+    if ( id === "radio-btn-Automotive" ) {
+      promiseService.send({type: "TO_AUTO_PAGE"});
+    } else if ( id === "radio-btn-Robotics&AI" ) {
+      promiseService.send({type: "TO_ROBOT_PAGE"});
+    } else if ( id === "radio-btn-AboutMe" ){
+      promiseService.send({type: "TO_ABOUT_ME_PAGE"});
+    }
+  });
+
+  document.getElementById( 'cooperative-driving' ).addEventListener( 'click', () => {
+    promiseService.send({type: "TO_PROJECT_PREAD"});
+  });
+
   promiseService.send({type: "TO_HOME_PAGE"});
 }
 
@@ -311,8 +370,10 @@ function initScene(){
   // const axesHelper = new THREE.AxesHelper( 5 );
   // scene.add( axesHelper );
   
-  // set camera positions
+  // set initial camera positions
   camera.position.set( HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z ); // Set position like this
+
+  effect = new THREE.OutlineEffect( renderer );
 
   // orbit control
   controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -325,11 +386,11 @@ function initScene(){
 }
 
 function render() {
-  renderer.render( scene, camera );
+  effect.render( scene, camera );
   setMarkersPositions(homePageMarkers);
 
-  console.log("camera position", camera.position);
-  console.log("camera target", controls.target);
+  // console.log("camera position", camera.position);
+  // console.log("camera target", controls.target);
 }
 
 function animate() {
@@ -426,4 +487,43 @@ function onMarkerClicked(){
   if (this.id === "robot") {
     promiseService.send({type: "TO_ROBOT_PAGE"});
   }
+}
+
+function hideContainer(div){
+  div.style.visibility = 'hidden';
+  div.style.opacity = 0;
+}
+
+function showContainer(div){
+  div.style.visibility = 'visible';
+  div.style.opacity = 1;
+}
+
+function createProjectPage( projectURL ) {
+  projectIframe = document.createElement('iframe');
+  projectIframe.src = projectURL;
+  projectIframe.classList.add('project-iframe-container');
+
+  let closeBtn = document.createElement('div');
+  closeBtn.classList.add('close');
+
+  document.querySelector('main').appendChild(projectIframe);
+  document.querySelector('main').appendChild(closeBtn);
+
+}
+
+function destroyProjectPage(){
+  projectIframe.remove();
+  document.querySelector('.close').remove();
+}
+
+
+function hide3DContainer(){
+  renderer.setAnimationLoop(null);
+  THREEJS_CONTAINER.style.visibility = 'hidden';
+  OVERLAY_CONTAINER.style.visibility = 'hidden';
+}
+
+function hideNavBar() {
+
 }

@@ -33,7 +33,13 @@ main{
 #highlight-overlay{
   grid-column: 8/17;
   grid-row: 1/2;
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.project-iframe-container{
+  grid-column: 1/8;
+  grid-row: 1/2;
+  overflow-y: hidden;
 }
 
 .nav-bar{
@@ -47,6 +53,7 @@ main{
   justify-content: center;
   padding-left: 2rem;
 }
+
 
 
 /*=====================================================================*/
@@ -73,6 +80,37 @@ main{
 }
 
 .nav-bar >ul >li:hover {
+  color: rgb(255, 71, 71);
+}
+
+/* radio buttons */
+.nav-bar >form {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  list-style: none;
+  font-size: medium;
+  font-weight:300;
+}
+
+.nav-bar label{
+  cursor: pointer;
+
+}
+
+.nav-bar label:hover{
+  color: rgb(255, 71, 71);
+}
+
+.nav-bar input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.nav-bar input:checked + span{
   color: rgb(255, 71, 71);
 }
 
@@ -112,13 +150,6 @@ main{
   transform: scale(2.5);
   transition: transform 0.25s ease-in-out;
 }
-
-.highlight-rect::hover::before {
-  opacity: 0;
-}
-
-/* .highlight-rect:not(:hover)::before */
-
 
 .highlight-rect::before {
   content: "";
@@ -174,6 +205,10 @@ main{
   grid-row-start: span 2;  
 }
 
+.hide-grid{
+  visibility: hidden;
+  opacity: 0;
+}
 
 /* project card */
 .sub-project-grid img{
@@ -216,14 +251,17 @@ main{
 .card-content div:first-child{
   font-size: medium;
   font-weight: bold;
-  text-align: center;
 
+  display: inline-block;
+  align-self: center;
+  text-align: center;
 }
 
 .card-content div:last-child{
   font-size: small;
   display: inline-block;
   align-self: center;
+  text-align: center;
 
   border: 1px aliceblue;
   border-style: solid;
@@ -264,111 +302,38 @@ main{
 }
 
 /*=====================================================================*/
-/* content of animation container */
-.animation_frames{
-  max-width: 100%;
-  max-height: 100%;
+/* sub project iframe */
+iframe {
+  border: none;
+  width: 100%;
+  height: 100%;
 }
 
 /*=====================================================================*/
-/* sidebar */
-
-/* hamburger button */
-#hamburger_btn {
-  position: fixed;
-  z-index: 5;
-  top: 20px;
-  right: 30px;
+/* sub project iframe */
+.close {  
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
   cursor: pointer;
-  -webkit-transition: right 500ms cubic-bezier(0.6, 0.05, 0.28, 0.91);
-  transition: right 500ms cubic-bezier(0.6, 0.05, 0.28, 0.91);
 }
-
-#hamburger_btn div {
-  width: 35px;
-  height: 2px;
-  margin-bottom: 8px;
-  background-color: #343838;
-  -webkit-transition: -webkit-transform 500ms cubic-bezier(0.6, 0.05, 0.28, 0.91), opacity 500ms, box-shadow 250ms, background-color 500ms;
-  transition: transform 500ms cubic-bezier(0.6, 0.05, 0.28, 0.91), opacity 500ms, box-shadow 250ms, background-color 500ms;
+.close:hover {
+  opacity: 1;
 }
-
-#hamburger_btn:hover > div { box-shadow: 0 0 1px #343838; }
-
-/* #hamburger_btn.active { right: 230px; } */
-
-#hamburger_btn.active div { background-color: #343838; }
-
-#hamburger_btn.active:hover > div { box-shadow: 0 0 1px #343838; }
-
-#hamburger_btn.active #top {
-  -webkit-transform: translateY(10px) rotate(-135deg);
-  -ms-transform: translateY(10px) rotate(-135deg);
-  transform: translateY(10px) rotate(-135deg);
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
 }
-
-#hamburger_btn.active #middle {
-  -webkit-transform: scale(0);
-  -ms-transform: scale(0);
-  transform: scale(0);
+.close:before {
+  transform: rotate(45deg);
 }
-
-#hamburger_btn.active #bottom {
-  -webkit-transform: translateY(-10px) rotate(-45deg);
-  -ms-transform: translateY(-10px) rotate(-45deg);
-  transform: translateY(-10px) rotate(-45deg);
+.close:after {
+  transform: rotate(-45deg);
 }
-
-
-/* sidebar content */
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  background-color:white;
-  overflow-x: hidden;
-  transition: 0.5s;
-
-  display: flex;
-  flex-flow: column;
-  padding-top: 60px;
-
-}
-
-.sidebar_text{
-  align-self: center;
-  width: 34vw;
-  margin-bottom: 40px;
-
-  line-height: 1.5;
-  font-weight:300;
-  text-align: justify;
-
-}
-
-.sidebar_text h1{
-  font-size: 2rem;
-  font-weight:500;
-  margin-bottom: 10px;
-}
-
-/* overlay */
-.overlay{
-  height: 100%;
-  width: 100%;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  position: fixed;
-  z-index: 1;
-  background-color:rgba(0, 0, 0, 0.5);
-  transition: 0.5s;
-  pointer-events: none;
-  opacity:0;
-}
-
-/*  */
