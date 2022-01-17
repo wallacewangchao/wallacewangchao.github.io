@@ -17,14 +17,19 @@ main{
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgb(188, 255, 255);
+  background-color: rgb(255, 255, 255);
 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 200;
+  font-weight:400;
 }
 
+.page-loader img{
+  width: 8rem;
+  height: 8rem;
+}
 
 /*=====================================================================*/
 /* containers layout */
