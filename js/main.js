@@ -353,9 +353,10 @@ function initScene(){
     setMarkersPositions(homePageMarkers);
 
     console.log(gltf);
-
+    document.querySelector('.page-loader').style.visibility = "hidden";
   }, function(xhr){
-    // console.log(xhr.loaded/xhr.total * 100) + "% loaded";
+    document.querySelector('.page-loader').innerHTML = ( xhr.loaded / xhr.total * 100 ) + "% loaded";
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
   }, function ( error ) {
     console.error( error );
   } );
