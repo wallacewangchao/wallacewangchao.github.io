@@ -5,7 +5,9 @@ let dirLight, spotLight;
 let shadowGroup, renderTarget, renderTargetBlur, shadowCamera, cameraHelper, depthMaterial, horizontalBlurMaterial, verticalBlurMaterial;
 
 let meObj, carObj, robotObj;
-let highlightMe, highLightCar, hightLightRobot;
+let egoTrajectory, otherTrajectory, pedestrian;
+
+
 
 let homePageMarkers = [];
 let autoPageMarkers = [];
@@ -29,7 +31,7 @@ const HOME_CAMERA_POS = {
 const AUTO_CAMERA_POS = {
   position: {
     x: 15,
-    y: 7,
+    y: 6,
     z: 0
   },
   lookAt: {
@@ -94,7 +96,7 @@ const promiseMachine = createMachine(
         }
       },
       homePage: {
-        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid' ],
+        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid', 'showHomePageObjects' ],
         exit: [ 'hideGreeting' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -103,7 +105,7 @@ const promiseMachine = createMachine(
         }
       },
       autoPage: {
-        entry: [ 'transCamAuto', 'showAutoGrid' ],
+        entry: [ 'transCamAuto', 'showAutoGrid', 'showAutoPageObjects' ],
         exit: [ 'hideAutoGrid' ],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
@@ -214,6 +216,18 @@ const promiseMachine = createMachine(
       },
       showNavBar: () => {
         NAV_BAR.style.visibility = "visible";
+      },
+
+      showHomePageObjects: () => {
+        // meObj.visible = true;
+        if (meObj !== undefined) meObj.visible = true;
+        if (robotObj !== undefined) robotObj.visible = true;
+        if (carObj !== undefined) carObj.visible = true;
+
+      },
+      showAutoPageObjects: () =>{
+        robotObj.visible = false;
+        meObj.visible = false;
       }
 
     }
@@ -288,7 +302,7 @@ function initScene(){
   dirLight.position.set( - 1, 1.75, 1 );
   dirLight.position.multiplyScalar( 10 );
 
-  const d = 8;
+  const d = 30;
 
   dirLight.shadow.camera.left = - d;
   dirLight.shadow.camera.right = d;
@@ -317,7 +331,7 @@ function initScene(){
 
   // model loader 
   const loader = new THREE.GLTFLoader();
-  loader.load( './models/robot_car_me/robot_car_me.gltf', function ( gltf ) {
+  loader.load( './models/robot_car_me_2/robot_car_me_2.gltf', function ( gltf ) {
     const root = gltf.scene;
     root.castShadow = true;
     gltf.scene.receiveShadow = true;
@@ -327,12 +341,19 @@ function initScene(){
       if ( node.name === "me_meta" ){
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
+        meObj = node;
       } else if ( node.name === "honda_e" ){
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
+        carObj = node;
       } else if ( node.name === "robot" ){
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
+        robotObj = node;
+      } else if ( node.name === "ego_trajectory" ){
+        egoTrajectory = node;
+      } else if ( node.name === "pedestrian" ){
+        pedestrian = node;
       }
       
       if ( node.isMesh ) {
@@ -353,7 +374,58 @@ function initScene(){
     setMarkersPositions(homePageMarkers);
 
     console.log(gltf);
-    document.querySelector('.page-loader').style.visibility = "hidden";
+
+    const whiteMaterial = new THREE.MeshStandardMaterial({color: "rgb(240, 240, 245)"});
+    const warningBoxMaterial = new THREE.MeshBasicMaterial( {color: "rgb(254, 47, 47)"});
+
+    // set preAD markers
+    let trajectoryMaterial = new THREE.MeshStandardMaterial({color: "rgb(102, 255, 255)"});
+    egoTrajectory.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.castShadow = true;
+        o.material = trajectoryMaterial;
+      }
+    });
+    const carWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 4.2, 1.6, 2 ), warningBoxMaterial );
+    carWarningBox.position.set( -10.6, 0.8, -2 );
+    carWarningBox.material.transparent =true;
+    carWarningBox.material.opacity = 0.5;
+    scene.add( carWarningBox );
+
+
+    // set pedestrian 
+    const pedestrianMarker = new THREE.Mesh( new THREE.BoxGeometry( 0.6, 2, 0.6 ), warningBoxMaterial );
+    pedestrianMarker.position.set( -4.9, 1, 3.3 );
+    pedestrianMarker.material.transparent =true;
+    pedestrianMarker.material.opacity = 0.5;
+    scene.add( pedestrianMarker );
+
+    pedestrian.traverse( (o) => {
+      if (o.isMesh) {
+        o.material = whiteMaterial;
+      }
+    });
+
+
+    // set other cars
+    let otherCar1 = carObj.clone();
+    scene.add( otherCar1 );
+    otherCar1.position.set( -12, 0, -2 );
+    otherCar1.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.material = whiteMaterial;
+      }
+      
+    });
+
+    let otherCar2 = otherCar1.clone();
+    scene.add( otherCar2 );
+    otherCar2.position.set( -30, 0, 0 );
+
+    document.querySelector('.page-loader').remove();
+    
   }, function(xhr){
     // document.querySelector('.page-loader').innerHTML = Math.floor( xhr.loaded / xhr.total * 100 ) + "% loaded";
 		console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -383,7 +455,7 @@ function initScene(){
   // controls.maxPolarAngle = Math.PI * 0.25;
   controls.target.set( HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z );
   controls.enableDamping = true;
-
+  
 }
 
 function render() {
@@ -407,10 +479,6 @@ function onWindowResize() {
   camera.aspect = THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
-
-  let pos = toScreenPosition(meObj, camera);
-  setDivPosition(highlightMe, pos);
-
 }
 
 function toScreenPosition(obj, camera)

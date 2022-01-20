@@ -3,11 +3,25 @@
   text-decoration: none;
 }
 
+/* Scroll 2 */
+body::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+body::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.082);
+  border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #11171a75;
+  border-radius: 10px;
+}
+
 main{
   padding-left: 72px;
   padding-top: 32px;
-  padding-right: 16px;
-
+  padding-right: 32px;
+  padding-bottom: 32px;
 
   display: flex;
   flex-flow: column;
@@ -16,5 +30,27 @@ main{
 
 h1 {
   font-size: 3rem;
-  font-weight: lighter;
+  font-weight:300;
+}
+
+h2 {
+  font-size: medium;
+  font-weight:900;
+}
+
+p {
+  font-weight: 400;
+}
+
+figure {
+  display: flex;
+  flex-flow: column;
+}
+
+figcaption {
+  background-color: #222;
+  color: #fff;
+  font: italic smaller sans-serif;
+  padding: 3px;
+  text-align: center;
 }
