@@ -78,6 +78,7 @@ const SELF_INTRODUCTION_CONTAINER = document.getElementById('selfintro-container
 const RADIO_BTNS_CONTAINER = document.querySelector('.nav-bar form');
 const IFRAME_CONTAINER = document.getElementById('iframe-container');
 const NAV_BAR = document.querySelector('.nav-bar');
+const ABOUT_ME = document.getElementById('about-me-container');
 
 /*************** set state machine *****************/
 const promiseMachine = createMachine(
@@ -99,7 +100,7 @@ const promiseMachine = createMachine(
       },
       homePage: {
         entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid', 
-                 'showHomePageObjects', 'showHighLightOverLay' ],
+                 'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage' ],
         exit: [ 'hideGreeting', 'hideHighLightOverLay' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -120,8 +121,8 @@ const promiseMachine = createMachine(
           TO_PROJECT_PEDESTRIAN: { target: 'projectPedestrian' },
           TO_PROJECT_SOCIALCAR: { target: 'projectSocialCar' },
           TO_PROJECT_HUDAR: { target: 'projectHudAr' },
-          TO_PROJECT_ATEAM: { target: 'projectAteam' }
-
+          TO_PROJECT_ATEAM: { target: 'projectAteam' },
+          TO_PROJECT_LIKES_DISLIKES: { target: 'projectLikesAndDislikes' }
 
         }
       },
@@ -137,8 +138,8 @@ const promiseMachine = createMachine(
         }
       },
       aboutMePage: {
-        entry: [ 'transCamMe', 'showAboutMePageObjects' ],
-        // exit: [ ' ' ],
+        entry: [ 'transCamMe', 'showAboutMePage', 'showAboutMePageObjects' ],
+        exit: [ 'hideAboutMePage',  ],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -182,6 +183,13 @@ const promiseMachine = createMachine(
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
+      },
+      projectLikesAndDislikes: {
+        entry: [ 'showLikesAndDislikes', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
+        }
       }
     }
   },
@@ -193,7 +201,6 @@ const promiseMachine = createMachine(
       },
 
       transCamHome: () => {
-        // console.log('transCamHome');
         moveCamera( HOME_CAMERA_POS.position, HOME_CAMERA_POS.lookAt );
       },
       hideGreeting: () => {
@@ -225,6 +232,12 @@ const promiseMachine = createMachine(
 
       transCamMe: () => {
         moveCamera( ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt );
+      },
+      hideAboutMePage: () => {
+        hideContainer( ABOUT_ME );     
+      },
+      showAboutMePage: () => {
+        showContainer( ABOUT_ME );
       },
 
       clearRadioBtnRed: () => {
@@ -260,6 +273,12 @@ const promiseMachine = createMachine(
       },
       showAteam: () => {
         createProjectPage( './subpages/project-a-team.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
+      showLikesAndDislikes: () => {
+        createProjectPage( './subpages/project-likes-dislikes.html' ); 
         document.querySelector('.close').addEventListener( 'click', () => {
           promiseService.send({type: "TO_AUTO_PAGE"});
         });
@@ -358,6 +377,12 @@ function init() {
 
   let hudArPage = document.getElementById( 'hud-ar' );
   setProjectCard(hudArPage, "TO_PROJECT_HUDAR", socialCarMarkers);
+
+  let ateamPage = document.getElementById( 'a-team' );
+  setProjectCard(ateamPage, "TO_PROJECT_ATEAM", socialCarMarkers);
+
+  let likesDislikesPage = document.getElementById( 'like-dislike' );
+  setProjectCard(likesDislikesPage, "TO_PROJECT_LIKES_DISLIKES", socialCarMarkers);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
@@ -733,7 +758,6 @@ function createProjectPage( projectURL ) {
 
   document.querySelector('main').appendChild(projectIframe);
   document.querySelector('main').appendChild(closeBtn);
-
 }
 
 function destroyProjectPage(){
