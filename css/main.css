@@ -276,8 +276,7 @@ main{
 
 .card-content div:first-child{
   font-size: medium;
-  font-weight: bold;
-
+  font-weight: 500;
   display: inline-block;
   align-self: center;
   text-align: center;

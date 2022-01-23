@@ -4,14 +4,16 @@ let camera, scene, renderer, controls, effect;
 let dirLight, spotLight;
 let shadowGroup, renderTarget, renderTargetBlur, shadowCamera, cameraHelper, depthMaterial, horizontalBlurMaterial, verticalBlurMaterial;
 
-let meObj, carObj, robotObj;
-let egoTrajectory, otherTrajectory, pedestrian;
+let meObj, carObj, robotObj, pedestrianObj;
+let egoTrajectory, carWarningBox, pedestrianWarningBox;
+let musicIcon, starIcon, heartIcon;
+let autoPageObjects = [];
 
-
+let socialCarMarkers = [];
+let preAdMarkers = [];
+let pedestrianMarkers = [];
 
 let homePageMarkers = [];
-let autoPageMarkers = [];
-let robotPageMarkers = [];
 
 let projectIframe;
 
@@ -96,8 +98,9 @@ const promiseMachine = createMachine(
         }
       },
       homePage: {
-        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid', 'showHomePageObjects' ],
-        exit: [ 'hideGreeting' ],
+        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid', 
+                 'showHomePageObjects', 'showHighLightOverLay' ],
+        exit: [ 'hideGreeting', 'hideHighLightOverLay' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
@@ -106,18 +109,24 @@ const promiseMachine = createMachine(
       },
       autoPage: {
         entry: [ 'transCamAuto', 'showAutoGrid', 'showAutoPageObjects' ],
-        exit: [ 'hideAutoGrid' ],
+        exit: [ 'hideAutoGrid' , 'hideAutoPageObjects'],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
           TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
 
-          TO_PROJECT_PREAD: { target: 'projectPreAD' }
+          TO_PROJECT_PREAD: { target: 'projectPreAD' },
+          TO_PROJECT_PEDESTRIAN: { target: 'projectPedestrian' },
+          TO_PROJECT_SOCIALCAR: { target: 'projectSocialCar' },
+          TO_PROJECT_HUDAR: { target: 'projectHudAr' },
+          TO_PROJECT_ATEAM: { target: 'projectAteam' }
+
+
         }
       },
       robotPage: {
-        entry: [ 'transCamRobot', 'showRobotGrid' ],
+        entry: [ 'transCamRobot', 'showRobotGrid', 'showRobotPageObjects' ],
         exit: [ 'hideRobotGrid' ],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
@@ -128,7 +137,7 @@ const promiseMachine = createMachine(
         }
       },
       aboutMePage: {
-        entry: [ 'transCamMe' ],
+        entry: [ 'transCamMe', 'showAboutMePageObjects' ],
         // exit: [ ' ' ],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
@@ -138,8 +147,37 @@ const promiseMachine = createMachine(
         }
       },
 
+      /* sub project pages */
       projectPreAD: {
         entry: [ 'showProjectPreAD', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
+        }
+      },
+      projectPedestrian: {
+        entry: [ 'showProjectPedestrian', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
+        }
+      },
+      projectSocialCar: {
+        entry: [ 'showProjectSocialCar', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
+        }
+      },
+      projectHudAr: {
+        entry: [ 'showHudAr', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_AUTO_PAGE: { target: 'autoPage' }
+        }
+      },      
+      projectAteam: {
+        entry: [ 'showAteam', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
@@ -202,13 +240,37 @@ const promiseMachine = createMachine(
           promiseService.send({type: "TO_AUTO_PAGE"});
         });
       },
-
+      showProjectPedestrian: () => {
+        createProjectPage( './subpages/project-pedestrian.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
+      showProjectSocialCar: () => {
+        createProjectPage( './subpages/project-social-car.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
+      showHudAr: () => {
+        createProjectPage( './subpages/project-hudar.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
+      showAteam: () => {
+        createProjectPage( './subpages/project-a-team.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_AUTO_PAGE"});
+        });
+      },
       hide3DContainer: () => {
         hide3DContainer();
       },
 
       closeProjectPage: () => {
         destroyProjectPage();
+        setThreeObjectsVisibility( [egoTrajectory, carWarningBox, pedestrianWarningBox, musicIcon, starIcon, heartIcon], false);
       },
 
       hideNavBar: () => {
@@ -218,27 +280,52 @@ const promiseMachine = createMachine(
         NAV_BAR.style.visibility = "visible";
       },
 
+      hideHighLightOverLay: () => {
+        OVERLAY_CONTAINER.style.display = "none";
+      },
+      showHighLightOverLay: () => {
+        OVERLAY_CONTAINER.style.display = "block";
+      },
+
       showHomePageObjects: () => {
-        // meObj.visible = true;
         if (meObj !== undefined) meObj.visible = true;
         if (robotObj !== undefined) robotObj.visible = true;
         if (carObj !== undefined) carObj.visible = true;
+        setThreeObjectsVisibility(autoPageObjects, false);
 
       },
-      showAutoPageObjects: () =>{
+      showAutoPageObjects: () => {
         robotObj.visible = false;
         meObj.visible = false;
+        carObj.visible = true;
+        setThreeObjectsVisibility(autoPageObjects, true);
+      },
+      showRobotPageObjects: () => {
+        robotObj.visible = true;
+        meObj.visible = true;
+        carObj.visible = false;
+        setThreeObjectsVisibility(autoPageObjects, false);
+
+      },
+      showAboutMePageObjects: () => {
+        robotObj.visible = false;
+        meObj.visible = true;
+        carObj.visible = false;
+        setThreeObjectsVisibility(autoPageObjects, false);
+
       }
 
     }
   }
 );
 
-const promiseService = interpret(promiseMachine).onTransition((state) =>
-  console.log(state.value)
-);
+const promiseService = interpret(promiseMachine).onTransition((state) => {
+  console.log(state.value);
+  currentState = state.value;
+});
 promiseService.start();
 
+/*************** init *****************/
 function init() {
   initScene();
   window.addEventListener( 'resize', onWindowResize );
@@ -247,6 +334,7 @@ function init() {
     promiseService.send({type: "TO_HOME_PAGE"});
   } );
 
+  /* navbar buttons event listener */
   RADIO_BTNS_CONTAINER.addEventListener( 'change', () => {
     let id = RADIO_BTNS_CONTAINER.querySelector('input:checked').id;
     if ( id === "radio-btn-Automotive" ) {
@@ -258,13 +346,24 @@ function init() {
     }
   });
 
-  document.getElementById( 'cooperative-driving' ).addEventListener( 'click', () => {
-    promiseService.send({type: "TO_PROJECT_PREAD"});
-  });
+  /* sub project card event listener */
+  let cooperativeDrivingPage = document.getElementById( 'cooperative-driving' );
+  setProjectCard(cooperativeDrivingPage, "TO_PROJECT_PREAD", preAdMarkers);
 
+  let pedestrianCommunicationPage = document.getElementById( 'pedestrian-communication' );
+  setProjectCard(pedestrianCommunicationPage, "TO_PROJECT_PEDESTRIAN", pedestrianMarkers);
+
+  let socialCarPage = document.getElementById( 'social-car' );
+  setProjectCard(socialCarPage, "TO_PROJECT_SOCIALCAR", socialCarMarkers);
+
+  let hudArPage = document.getElementById( 'hud-ar' );
+  setProjectCard(hudArPage, "TO_PROJECT_HUDAR", socialCarMarkers);
+
+  /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
 }
 
+/*************** init Threejs *****************/
 function initScene(){
   scene = new THREE.Scene();
   scene.background = new THREE.Color( "rgb(255, 255, 255)" );
@@ -338,7 +437,7 @@ function initScene(){
 
     root.traverse( function( node ) {
 
-      if ( node.name === "me_meta" ){
+      if ( node.name === "me" ){
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         meObj = node;
@@ -353,8 +452,15 @@ function initScene(){
       } else if ( node.name === "ego_trajectory" ){
         egoTrajectory = node;
       } else if ( node.name === "pedestrian" ){
-        pedestrian = node;
-      }
+        pedestrianObj = node;
+        autoPageObjects.push(pedestrianObj);
+      } else if ( node.name === "heart" ){
+        heartIcon = node;
+      } else if ( node.name === "star" ){
+        starIcon = node;
+      } else if ( node.name === "music" ){
+        musicIcon = node;
+      } 
       
       if ( node.isMesh ) {
         if ( node.type === "SkinnedMesh" ) {
@@ -375,40 +481,12 @@ function initScene(){
 
     console.log(gltf);
 
-    const whiteMaterial = new THREE.MeshStandardMaterial({color: "rgb(240, 240, 245)"});
-    const warningBoxMaterial = new THREE.MeshBasicMaterial( {color: "rgb(254, 47, 47)"});
 
-    // set preAD markers
-    let trajectoryMaterial = new THREE.MeshStandardMaterial({color: "rgb(102, 255, 255)"});
-    egoTrajectory.traverse( (o) => {
-      if (o.isMesh) {
-        o.receiveShadow = false;
-        o.castShadow = true;
-        o.material = trajectoryMaterial;
-      }
-    });
-    const carWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 4.2, 1.6, 2 ), warningBoxMaterial );
-    carWarningBox.position.set( -10.6, 0.8, -2 );
-    carWarningBox.material.transparent =true;
-    carWarningBox.material.opacity = 0.5;
-    scene.add( carWarningBox );
+    /* set auto page objects */
+    const whiteMaterial = new THREE.MeshStandardMaterial( {color: "rgb(240, 240, 245)"} );
+    const warningBoxMaterial = new THREE.MeshToonMaterial( {color: "rgb(254, 47, 47)"} );
 
-
-    // set pedestrian 
-    const pedestrianMarker = new THREE.Mesh( new THREE.BoxGeometry( 0.6, 2, 0.6 ), warningBoxMaterial );
-    pedestrianMarker.position.set( -4.9, 1, 3.3 );
-    pedestrianMarker.material.transparent =true;
-    pedestrianMarker.material.opacity = 0.5;
-    scene.add( pedestrianMarker );
-
-    pedestrian.traverse( (o) => {
-      if (o.isMesh) {
-        o.material = whiteMaterial;
-      }
-    });
-
-
-    // set other cars
+    /* set other cars */
     let otherCar1 = carObj.clone();
     scene.add( otherCar1 );
     otherCar1.position.set( -12, 0, -2 );
@@ -417,13 +495,87 @@ function initScene(){
         o.receiveShadow = false;
         o.material = whiteMaterial;
       }
-      
     });
 
     let otherCar2 = otherCar1.clone();
     scene.add( otherCar2 );
     otherCar2.position.set( -30, 0, 0 );
 
+    autoPageObjects.push(otherCar1);
+    autoPageObjects.push(otherCar2);
+    setThreeObjectsVisibility(autoPageObjects, false);
+
+    /* set preAD markers */
+    let trajectoryMaterial = new THREE.MeshToonMaterial({color: "rgb(0, 134, 179)"});
+    egoTrajectory.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.castShadow = true;
+        o.material = trajectoryMaterial;
+      }
+    });
+
+    carWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 4.2, 1.6, 2 ), warningBoxMaterial );
+    carWarningBox.position.set( -10.6, 0.8, -2 );
+    carWarningBox.material.transparent =true;
+    carWarningBox.material.opacity = 0.5;
+    scene.add( carWarningBox );
+
+    preAdMarkers.push(egoTrajectory, carWarningBox);
+    setThreeObjectsVisibility(preAdMarkers, false);
+
+    /* set pedestrian markers */
+    pedestrianWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 0.6, 2, 0.6 ), warningBoxMaterial );
+    pedestrianWarningBox.position.set( -4.9, 1, 3.3 );
+    pedestrianWarningBox.material.transparent =true;
+    pedestrianWarningBox.material.opacity = 0.5;
+    scene.add( pedestrianWarningBox );
+
+    pedestrianMarkers.push(pedestrianWarningBox);
+    setThreeObjectsVisibility( pedestrianMarkers, false);
+
+    pedestrianObj.traverse( (o) => {
+      if (o.isMesh) {
+        o.material = whiteMaterial;
+      }
+    });
+
+    /* set social car markers */
+    const heartMaterial = new THREE.MeshToonMaterial( {color: "rgb(254, 47, 47)"} );
+    const starMaterial = new THREE.MeshToonMaterial( {color: "rgb(230, 184, 0)"} );
+    const musicMaterial = new THREE.MeshToonMaterial( {color: "rgb(0, 134, 179)"} );
+    heartIcon.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.castShadow = false;
+        o.material = heartMaterial;
+      }
+    });
+
+    starIcon.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.castShadow = false;
+        o.material = starMaterial;
+      }
+    });
+    musicIcon.traverse( (o) => {
+      if (o.isMesh) {
+        o.receiveShadow = false;
+        o.castShadow = false;
+        o.material = musicMaterial;
+      }
+    });
+
+    heartIcon.position.set(1,2,0);
+    starIcon.position.set(-30, 2, 0);
+    musicIcon.position.set(-12, 1.5, -2);
+    socialCarMarkers.push(starIcon);
+    socialCarMarkers.push(heartIcon);
+    socialCarMarkers.push(musicIcon);
+    setThreeObjectsVisibility( socialCarMarkers, false);
+
+    /* remove loading page */
     document.querySelector('.page-loader').remove();
     
   }, function(xhr){
@@ -455,6 +607,7 @@ function initScene(){
   // controls.maxPolarAngle = Math.PI * 0.25;
   controls.target.set( HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z );
   controls.enableDamping = true;
+  // controls.enablePan = false;
   
 }
 
@@ -479,6 +632,8 @@ function onWindowResize() {
   camera.aspect = THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
+  setMarkersPositions(homePageMarkers);
+
 }
 
 function toScreenPosition(obj, camera)
@@ -549,7 +704,7 @@ function onMarkerClicked(){
     promiseService.send({type: "TO_AUTO_PAGE"});
   }
 
-  if (this.id === "me_meta") {
+  if (this.id === "me") {
     promiseService.send({type: "TO_ABOUT_ME_PAGE"});
   }
 
@@ -593,6 +748,21 @@ function hide3DContainer(){
   OVERLAY_CONTAINER.style.visibility = 'hidden';
 }
 
-function hideNavBar() {
+function setThreeObjectsVisibility(objects, isVisible){
+  objects.forEach( obj => {
+    if (obj.visible !== isVisible) obj.visible = isVisible;
+  });
+}
 
+function setProjectCard(cardDiv, toState, relatedMarkers){
+  cardDiv.addEventListener( 'click', () => {
+    promiseService.send({type: toState});
+  });
+  cardDiv.addEventListener( 'mouseenter', () => {
+    setThreeObjectsVisibility( relatedMarkers, true);
+  });
+  cardDiv.addEventListener( 'mouseleave', () => {
+    if ( promiseService.state.value === 'autoPage' || promiseService.state.value === 'robotPage' ) 
+      setThreeObjectsVisibility( relatedMarkers, false);
+  });
 }

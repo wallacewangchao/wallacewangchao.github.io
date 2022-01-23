@@ -18,9 +18,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 main{
-  padding-left: 72px;
+  padding-left: 96px;
   padding-top: 32px;
-  padding-right: 32px;
+  padding-right: 96px;
   padding-bottom: 32px;
 
   display: flex;
@@ -40,6 +40,7 @@ h2 {
 
 p {
   font-weight: 400;
+  text-align:justify;
 }
 
 figure {
