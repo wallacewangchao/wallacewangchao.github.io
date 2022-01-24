@@ -4,7 +4,7 @@ let camera, scene, renderer, controls, effect;
 let dirLight, spotLight;
 let shadowGroup, renderTarget, renderTargetBlur, shadowCamera, cameraHelper, depthMaterial, horizontalBlurMaterial, verticalBlurMaterial;
 
-let meObj, carObj, robotObj, pedestrianObj;
+let meObj, carObj, robotObj, pedestrianObj, droneObj;
 let egoTrajectory, carWarningBox, pedestrianWarningBox;
 let musicIcon, starIcon, heartIcon;
 let autoPageObjects = [];
@@ -56,16 +56,29 @@ const ROBOT_CAMERA_POS = {
   }
 }
 
-const ME_CAMERA_POS = {
+const PUBLICATION_CAMERA_POS = {
   position: {
-    x: -2.6,
-    y: 1.5,
-    z: -0.9
+    x: -2.9980716789002773,
+    y: 1.7716514658571492,
+    z: -1.2982897690497368
   },
   lookAt: {
-    x: -2.3,
-    y: 1.5,
-    z: 1.8 
+    x: -2.293247692752894,
+    y: 1.4084096946581774,
+    z: 1.3000324904491558 
+  }
+}
+
+const ME_CAMERA_POS = {
+  position: {
+    x: -2.99,
+    y: 1.70,
+    z: -1.3
+  },
+  lookAt: {
+    x: -2.293247692752894,
+    y: 1.34,
+    z: 1.30 
   }
 }
 
@@ -133,7 +146,10 @@ const promiseMachine = createMachine(
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
-          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+
+          TO_PROJECT_ICPS: { target: 'projectIcps' }
+
 
         }
       },
@@ -189,6 +205,13 @@ const promiseMachine = createMachine(
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
+        }
+      },
+      projectIcps: {
+        entry: [ 'showIcps', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       }
     }
@@ -283,6 +306,12 @@ const promiseMachine = createMachine(
           promiseService.send({type: "TO_AUTO_PAGE"});
         });
       },
+      showIcps: () => {
+        createProjectPage( './subpages/project-icps.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -310,28 +339,29 @@ const promiseMachine = createMachine(
         if (meObj !== undefined) meObj.visible = true;
         if (robotObj !== undefined) robotObj.visible = true;
         if (carObj !== undefined) carObj.visible = true;
+        if (droneObj !== undefined) droneObj.visible = true;
         setThreeObjectsVisibility(autoPageObjects, false);
-
       },
       showAutoPageObjects: () => {
         robotObj.visible = false;
         meObj.visible = false;
         carObj.visible = true;
+        droneObj.visible = false;
         setThreeObjectsVisibility(autoPageObjects, true);
       },
       showRobotPageObjects: () => {
         robotObj.visible = true;
         meObj.visible = true;
         carObj.visible = false;
+        droneObj.visible = false;
         setThreeObjectsVisibility(autoPageObjects, false);
-
       },
       showAboutMePageObjects: () => {
         robotObj.visible = false;
         meObj.visible = true;
         carObj.visible = false;
+        droneObj.visible = true;
         setThreeObjectsVisibility(autoPageObjects, false);
-
       }
 
     }
@@ -379,10 +409,13 @@ function init() {
   setProjectCard(hudArPage, "TO_PROJECT_HUDAR", socialCarMarkers);
 
   let ateamPage = document.getElementById( 'a-team' );
-  setProjectCard(ateamPage, "TO_PROJECT_ATEAM", socialCarMarkers);
+  setProjectCard(ateamPage, "TO_PROJECT_ATEAM", null);
 
   let likesDislikesPage = document.getElementById( 'like-dislike' );
   setProjectCard(likesDislikesPage, "TO_PROJECT_LIKES_DISLIKES", socialCarMarkers);
+
+  let icpsPage = document.getElementById( 'ICPs' );
+  setProjectCard(icpsPage, "TO_PROJECT_ICPS", null);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
@@ -485,13 +518,15 @@ function initScene(){
         starIcon = node;
       } else if ( node.name === "music" ){
         musicIcon = node;
+      } else if ( node.name === "drone" ){
+        droneObj = node;
       } 
       
       if ( node.isMesh ) {
         if ( node.type === "SkinnedMesh" ) {
           node.frustumCulled = false;
         }
-        node.receiveShadow = true;
+        node.receiveShadow = false;
         node.castShadow = true;
       }
 
@@ -503,9 +538,10 @@ function initScene(){
     });
     
     setMarkersPositions(homePageMarkers);
-
     console.log(gltf);
 
+    droneObj.position.set(-2.4, 1.5, 0.2);
+    droneObj.rotation.set(-Math.PI/2, 0, 0);
 
     /* set auto page objects */
     const whiteMaterial = new THREE.MeshStandardMaterial( {color: "rgb(240, 240, 245)"} );
@@ -640,8 +676,8 @@ function render() {
   effect.render( scene, camera );
   setMarkersPositions(homePageMarkers);
 
-  // console.log("camera position", camera.position);
-  // console.log("camera target", controls.target);
+  console.log("camera position", camera.position);
+  console.log("camera target", controls.target);
 }
 
 function animate() {
@@ -782,11 +818,13 @@ function setProjectCard(cardDiv, toState, relatedMarkers){
   cardDiv.addEventListener( 'click', () => {
     promiseService.send({type: toState});
   });
-  cardDiv.addEventListener( 'mouseenter', () => {
-    setThreeObjectsVisibility( relatedMarkers, true);
-  });
-  cardDiv.addEventListener( 'mouseleave', () => {
-    if ( promiseService.state.value === 'autoPage' || promiseService.state.value === 'robotPage' ) 
-      setThreeObjectsVisibility( relatedMarkers, false);
-  });
+  if (relatedMarkers !== null) {
+    cardDiv.addEventListener( 'mouseenter', () => {
+      setThreeObjectsVisibility( relatedMarkers, true);
+    });
+    cardDiv.addEventListener( 'mouseleave', () => {
+      if ( promiseService.state.value === 'autoPage' || promiseService.state.value === 'robotPage' ) 
+        setThreeObjectsVisibility( relatedMarkers, false);
+    });
+  }
 }
