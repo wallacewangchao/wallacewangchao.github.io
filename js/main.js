@@ -148,9 +148,8 @@ const promiseMachine = createMachine(
           TO_ROBOT_PAGE: { target: 'robotPage' },
           TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
 
-          TO_PROJECT_ICPS: { target: 'projectIcps' }
-
-
+          TO_PROJECT_ICPS: { target: 'projectIcps' },
+          TO_PROJECT_XAI: { target: 'projectXAI' }
         }
       },
       aboutMePage: {
@@ -209,6 +208,13 @@ const promiseMachine = createMachine(
       },
       projectIcps: {
         entry: [ 'showIcps', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectXAI: {
+        entry: [ 'showXAI', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -308,6 +314,12 @@ const promiseMachine = createMachine(
       },
       showIcps: () => {
         createProjectPage( './subpages/project-icps.html' ); 
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+      showXAI: () => {
+        createProjectPage( './subpages/project-xai.html' );
         document.querySelector('.close').addEventListener( 'click', () => {
           promiseService.send({type: "TO_ROBOT_PAGE"});
         });
@@ -416,6 +428,9 @@ function init() {
 
   let icpsPage = document.getElementById( 'ICPs' );
   setProjectCard(icpsPage, "TO_PROJECT_ICPS", null);
+
+  let icpsXAI = document.getElementById( 'mobileCAM' );
+  setProjectCard(icpsXAI, "TO_PROJECT_XAI", null);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
@@ -664,11 +679,13 @@ function initScene(){
   // orbit control
   controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.addEventListener( 'change', render );
-  // controls.minPolarAngle = Math.PI * 0.25;
-  // controls.maxPolarAngle = Math.PI * 0.25;
+  controls.minPolarAngle = 0;
+  controls.maxPolarAngle = Math.PI / 2;
   controls.target.set( HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z );
   controls.enableDamping = true;
-  // controls.enablePan = false;
+  controls.enablePan = false;
+  controls.minDistance = 0.2;
+  controls.maxDistance = 30;
   
 }
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/sub-page.css">
+
+
+</head>
+<body>
+  <main>
+    <h1>
+      What is on CNN's mind?
+    </h1>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/XvpbadHeSzs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <p>
+      How to visualize the attention of AI? Here we introduce the class activation map, which is a technique for generating class activation maps using the global average pooling (GAP). A class activation map for a particular category indicates the discriminative image regions used by the CNN to identify that category.
+    </p>
+    <img src="../img/subpages/xai/title.png">
+
+    <h2>
+      Please scan the QR code to try the APP! (Web-based app, No need to download):
+    </h2>
+    <img src="../img/subpages/xai/scan.png">
+
+    <p>
+      Take a photo of any object you like, and compare if you and AI focus on the same area to identify it.
+    </p>
+    <img src="../img/subpages/xai/taking_pic.png">
+    <p>
+      Comparing the difference between your focus and AI's
+    </p>
+    <img src="../img/subpages/xai/scribble.png">
+    <br>
+    <br>
+
+    <h2>
+      Visualizing discriminative regions with Class Activation Mapping:
+    </h2>
+    <img src="../img/subpages/xai/explain.png">
+    <p>
+      fk(x, y) represents the activation of unit k in the last convolutional layer at spatial location (x, y). Fk is the result of performing global average pooling for the unit k. Then, for a certain prediction result, w1, w2 …wn are the weights for Fk to calculate the softmax input S (e.g., Sduck). As Fk comes from the global averaged pooling, the corresponding weight also indicates the importance of unit k. Thus, the aggregated heatmap (Mduck) reflects the activation of the last convolutional layer, hence indicating the most important regions (red squares) that have made the CNN to output a certain prediction result (e.g., duck).
+    </p>
+
+    <br>
+    <br>
+    <h2>
+      And here is the desktop version:
+    </h2>
+    <img src="../img/subpages/xai/desktop.jpg">
+    <p>
+      If you are using desktop, go to this <a href="https://wallacewangchao.github.io/let_me_think/">website</a>, then Press “control + v” to paste an image from any source, and see where AI pays more attention to.
+    </p>
+    
+    <br>
+    <br>
+    <h2>
+      Publications:
+    </h2>
+    <a href="https://www.honda-ri.de/pubs/pdf/4844.pdf" target="_blank">
+      Wang, C., & An, P. (2021, October). Explainability via Interactivity? Supporting Nonexperts' Sensemaking of pre-trained CNN by Interacting with Their Daily Surroundings. In Extended Abstracts of the 2021 Annual Symposium on Computer-Human Interaction in Play (pp. 274-279).    
+    </a>
+    <a href="https://www.researchgate.net/profile/Chao-Wang-276/publication/352676115_A_Mobile_Tool_that_Helps_Nonexperts_Make_Sense_of_Pretrained_CNN_by_Interacting_with_Their_Daily_Surroundings/links/60d2ba5ea6fdcce58baabe15/A-Mobile-Tool-that-Helps-Nonexperts-Make-Sense-of-Pretrained-CNN-by-Interacting-with-Their-Daily-Surroundings.pdf" target="_blank">
+      Wang, C., & An, P. (2021, September). A Mobile Tool that Helps Nonexperts Make Sense of Pretrained CNN by Interacting with Their Daily Surroundings. In Adjunct Publication of the 23rd International Conference on Mobile Human-Computer Interaction (pp. 1-5).
+    </a>
+
+  </main>
+
+</body>
+</html>
