@@ -693,8 +693,8 @@ function render() {
   effect.render( scene, camera );
   setMarkersPositions(homePageMarkers);
 
-  console.log("camera position", camera.position);
-  console.log("camera target", controls.target);
+  // console.log("camera position", camera.position);
+  // console.log("camera target", controls.target);
 }
 
 function animate() {
