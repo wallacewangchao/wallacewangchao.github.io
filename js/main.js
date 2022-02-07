@@ -501,8 +501,33 @@ function initScene(){
   dirLight2.castShadow = false;
   scene.add( dirLight2 );
 
+
+  /* loading Manager */
+  const loadingManager = new THREE.LoadingManager();
+  loadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+  };
+  
+  loadingManager.onLoad = function ( ) {
+    console.log( 'Loading complete!');
+    document.querySelector('.page-loader').remove();
+  };
+  
+  
+  loadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+    console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    document.querySelector('.page-loader p').innerText = "Loading 3D models: " + Math.floor( itemsLoaded / itemsTotal * 100 ) + "%";
+
+  };
+  
+  loadingManager.onError = function ( url ) {
+    console.log( 'There was an error loading ' + url );
+    document.querySelector('.page-loader p').innerText = "There was an error while loading models, please refresh the page";
+
+  };
+
   // model loader 
-  const loader = new THREE.GLTFLoader();
+  const loader = new THREE.GLTFLoader(loadingManager);
   loader.load( './models/robot_car_me_2/robot_car_me_2.gltf', function ( gltf ) {
     const root = gltf.scene;
     root.castShadow = true;
@@ -651,12 +676,10 @@ function initScene(){
     socialCarMarkers.push(musicIcon);
     setThreeObjectsVisibility( socialCarMarkers, false);
 
-    /* remove loading page */
-    document.querySelector('.page-loader').remove();
     
   }, function(xhr){
-    document.querySelector('.page-loader p').innerText = "loading 3D models: " + Math.floor( xhr.loaded / xhr.total * 100 ) + "%";
-		console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    // document.querySelector('.page-loader p').innerText = "loading 3D models: " + Math.floor( xhr.loaded / xhr.total * 100 ) + "%";
+		// console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
   }, function ( error ) { 
     console.error( error );
   } );
