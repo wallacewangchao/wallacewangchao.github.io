@@ -655,9 +655,9 @@ function initScene(){
     document.querySelector('.page-loader').remove();
     
   }, function(xhr){
-    // document.querySelector('.page-loader').innerHTML = Math.floor( xhr.loaded / xhr.total * 100 ) + "% loaded";
+    document.querySelector('.page-loader p').innerText = "loading 3D models: " + Math.floor( xhr.loaded / xhr.total * 100 ) + "%";
 		console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-  }, function ( error ) {
+  }, function ( error ) { 
     console.error( error );
   } );
   
