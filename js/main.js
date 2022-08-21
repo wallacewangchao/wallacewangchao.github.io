@@ -149,7 +149,9 @@ const promiseMachine = createMachine(
           TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
 
           TO_PROJECT_ICPS: { target: 'projectIcps' },
-          TO_PROJECT_XAI: { target: 'projectXAI' }
+          TO_PROJECT_XAI: { target: 'projectXAI' },
+          TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' }
+
         }
       },
       aboutMePage: {
@@ -215,6 +217,13 @@ const promiseMachine = createMachine(
       },
       projectXAI: {
         entry: [ 'showXAI', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectArRobot: {
+        entry: [ 'showArRobot', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -320,6 +329,12 @@ const promiseMachine = createMachine(
       },
       showXAI: () => {
         createProjectPage( './subpages/project-xai.html' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+      showArRobot: () => {
+        createProjectPage( './subpages/project-ar-robot.html' );
         document.querySelector('.close').addEventListener( 'click', () => {
           promiseService.send({type: "TO_ROBOT_PAGE"});
         });
@@ -431,6 +446,9 @@ function init() {
 
   let icpsXAI = document.getElementById( 'mobileCAM' );
   setProjectCard(icpsXAI, "TO_PROJECT_XAI", null);
+
+  let arRobot = document.getElementById( 'arRobot' );
+  setProjectCard(arRobot, "TO_PROJECT_AR_ROBOT", null);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
