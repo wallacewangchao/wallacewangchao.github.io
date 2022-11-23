@@ -150,7 +150,8 @@ const promiseMachine = createMachine(
 
           TO_PROJECT_ICPS: { target: 'projectIcps' },
           TO_PROJECT_XAI: { target: 'projectXAI' },
-          TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' }
+          TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' },
+          TO_PROJECT_KORE: { target: 'projectKore' }
 
         }
       },
@@ -224,6 +225,13 @@ const promiseMachine = createMachine(
       },
       projectArRobot: {
         entry: [ 'showArRobot', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectKore: {
+        entry: [ 'showKore', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -339,6 +347,12 @@ const promiseMachine = createMachine(
           promiseService.send({type: "TO_ROBOT_PAGE"});
         });
       },
+      showKore: () => {
+        createProjectPage( './subpages/project-kore.html' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -449,6 +463,9 @@ function init() {
 
   let arRobot = document.getElementById( 'arRobot' );
   setProjectCard(arRobot, "TO_PROJECT_AR_ROBOT", null);
+
+  let kore = document.getElementById( 'kore' );
+  setProjectCard(kore, "TO_PROJECT_KORE", null);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});

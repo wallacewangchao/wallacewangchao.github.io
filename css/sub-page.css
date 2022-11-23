@@ -3,6 +3,7 @@
   text-decoration: none;
   margin: 0;
   padding: 0;
+  background-color: rgb(231, 231, 231);
 }
 
 /* Scroll 2 */
@@ -20,9 +21,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 main{
-  padding-left: 96px;
+  padding-left: 12rem;
   padding-top: 64px;
-  padding-right: 96px;
+  padding-right: 12rem;
   padding-bottom: 32px;
 
   display: flex;
@@ -103,3 +104,15 @@ a{
   color:rgb(0, 112, 177);
   font-weight: 300;
 }
+
+.zoom-pic {
+  /* (A) OPTIONAL DIMENSIONS */
+  /* width: 600px;
+  height: auto; */
+ 
+  /* (B) ANIMATE ZOOM */
+  /* ease | ease-in | ease-out | linear */
+  transition: transform ease-in-out 0.3s;
+}
+
+.zoom-pic:hover { transform: scale(1.2); }

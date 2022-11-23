@@ -68,7 +68,7 @@ main{
 }
 
 .project-iframe-container{
-  grid-column: 1/8;
+  grid-column: 1/14;
   grid-row: 1/2;
   overflow-y: hidden;
 }
