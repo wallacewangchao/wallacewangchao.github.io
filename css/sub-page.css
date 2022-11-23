@@ -3,7 +3,6 @@
   text-decoration: none;
   margin: 0;
   padding: 0;
-  background-color: rgb(231, 231, 231);
 }
 
 /* Scroll 2 */
@@ -25,6 +24,7 @@ main{
   padding-top: 64px;
   padding-right: 12rem;
   padding-bottom: 32px;
+  background-color: rgb(231, 231, 231);
 
   display: flex;
   flex-flow: column;
@@ -61,6 +61,7 @@ figcaption {
 }
 
 .about-me{
+  background-color: #fff;
   padding-left: 0;
   padding-top: 32px;
   padding-right: 32px;
@@ -95,6 +96,12 @@ figcaption {
 .name-div:last-child{
   font-weight: 300;
 }
+
+.youtube-iframe{
+  width: 100%;
+  height: calc(100vw/2.55);
+ }
+
 
 .about-me > p{
   font-weight: 300;

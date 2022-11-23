@@ -31,30 +31,54 @@
         However, due to lacking the link between abstract knowledge of the real-world environment and the robot's actions, traditional visualization tools are incompatible for expert-user to understand, test, supervise and modify the graph-based reasoning system with the embodiment of the robots. 
         Therefore, we developed an interface which enables robotic experts to send commands to the robot in natural language, then interface visualizes the procedures of the robot mapping the command to the functions for querying in the commonsense knowledge database, links the result to the real world instances in a 3D map and demonstrate the execution of the robot from the first-person perspective of the robot. After 3 weeks of usage of the system by robotic experts in their daily development, some feedback was collected, which provides insight for designing such systems.     
     </p>
-
+    <br>
+    <br>
+    
     <h2>
       Universial Access
     </h2>
     <img src="../img/subpages/kore/scene.png" class="zoom-pic">
     <p>
-        A web-based graphical user interface (GUI) is designed and implemented. Expert users can visit the interface anywhere at Honda Research Institute with any device. The dialogue box of the interface allows the user to type in commands to the robot in natural language and receive the answer from the robot. 
+        A web-based graphical user interface (GUI) is designed and implemented. Expert users can visit the interface anywhere at Honda Research Institute with any device.
+        The dialogue box of the interface allows the user to type in commands to the robot in natural language and receive the answer from the robot.
         Users can switch between camera-mode, graph-mode and map-mode.
     </p>
-    
-    <h2>
-      Design of the AR interface
-    </h2>
-    <img src="../img/subpages/kore/cam_mode.png" class="zoom-pic">
+    <br>
+    <br>
+
 
     <h2>
         User Interface: Camera-mode
     </h2>
-    <img src="../img/subpages/kore/graph_mode.png" class="zoom-pic">
+    <img src="../img/subpages/kore/cam_mode.png" class="zoom-pic">
+    <p>
+        The video stream of the first-person view of the robot from the virtual home simulator is displayed. Referred objects from the dialogue box are highlighted with the red stroke in the image.   
+    </p>
+    <br>
+    <br>
 
     <h2>
-        System structure
-      </h2>
+        User Interface: Graph-mode
+    </h2>
+    <img src="../img/subpages/kore/graph_mode.png" class="zoom-pic">
+    <p>
+        The graph mode visualizes the called sequence of functions and corresponding input/output.
+        First level function can expand into a hull and show detailed information in the knowledge graph.
+        People can select and highlight the links for inspection. Furthermore, by pressing the "delete" button on the keyboard, the highlighted links will be deleted from the database.     
+    </p>
+    <br>
+    <br>
+
+    <h2>
+        User Interface: Map-mode
+    </h2>
     <img src="../img/subpages/kore/map_mode.png" class="zoom-pic">
+    <p>
+        User can zoom in/out and rotate the view to observe the map and the 3D graph.
+        Above the map, a 3D graph visualization is provided.    
+    </p>
+    <br>
+    <br>
 
     <h2>
       Publications:
