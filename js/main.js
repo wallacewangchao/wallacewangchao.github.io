@@ -540,30 +540,35 @@ function initScene(){
   /* loading Manager */
   const loadingManager = new THREE.LoadingManager();
   loadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
-    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    // console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
   };
   
   loadingManager.onLoad = function ( ) {
-    console.log( 'Loading complete!');
+    // console.log( 'Loading complete!');
     document.querySelector('.page-loader').remove();
   };
   
   
   loadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-    console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    // console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
     document.querySelector('.page-loader p').innerText = "Loading 3D models: " + Math.floor( itemsLoaded / itemsTotal * 100 ) + "%";
 
   };
   
   loadingManager.onError = function ( url ) {
-    console.log( 'There was an error loading ' + url );
+    // console.log( 'There was an error loading ' + url );
     document.querySelector('.page-loader p').innerText = "There was an error while loading models, please refresh the page";
 
   };
 
   // model loader 
-  const loader = new THREE.GLTFLoader(loadingManager);
-  loader.load( './models/robot_car_me_2/robot_car_me_2.gltf', function ( gltf ) {
+  const loader = new THREE.GLTFLoader( loadingManager );
+  const dracoLoader = new THREE.DRACOLoader();
+  dracoLoader.setDecoderPath( './js/' );
+  loader.setDRACOLoader( dracoLoader );
+  loader.setMeshoptDecoder( MeshoptDecoder );
+  
+  loader.load( './models/whole_scene.glb', function ( gltf ) {
     const root = gltf.scene;
     root.castShadow = true;
     gltf.scene.receiveShadow = true;
