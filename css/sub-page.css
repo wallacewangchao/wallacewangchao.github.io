@@ -20,9 +20,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 main{
-  padding-left: 20rem;
+  padding-left: 20%;
   padding-top: 64px;
-  padding-right: 20rem;
+  padding-right: 20%;
   padding-bottom: 32px;
   background-color: rgb(238, 238, 238);
 
@@ -38,7 +38,7 @@ h1 {
 }
 
 h2 {
-  font-size: medium;
+  font-size: x-large;
   font-weight:600;
 }
 
@@ -58,6 +58,15 @@ figcaption {
   font: italic smaller sans-serif;
   padding: 3px;
   text-align: center;
+}
+
+.figure-half-width {
+  width: 50%;
+}
+
+.video-flex {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .about-me{
@@ -102,6 +111,10 @@ figcaption {
   height: calc(100vw/2.55);
  }
 
+.youtube-iframe-half{
+  width: 50%;
+  height: calc(100vw/6);
+}
 
 .about-me > p{
   font-weight: 300;

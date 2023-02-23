@@ -21,8 +21,7 @@
   <body>
     <main>
       <h1> Human-Vehicle Cooperation on Prediction-Level</h1>
-      <iframe class="youtube-iframe" src="https://www.youtube.com/embed/xelY4qw0CQI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      <!-- <img src="../img/subpages/preAD/title.png">  -->
+      <iframe class="youtube-iframe" src="https://www.youtube.com/embed/RphavtH7Wpo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <p>
         It seems that autonomous driving systems are substituting human responsibilities in the driving task.
         However, this does not mean that vehicles should not interact with their driver anymore, even in case of full automation. 
@@ -30,28 +29,54 @@
         In contrast, a human driver may have a more reliable understanding of other road users' intentions which could complement that of the automation. 
         We implement an approach that lets a human driver quickly and intuitively supplement scene predictions to an autonomous driving system by gaze.
       </p>
+      <h2> Intevention on prediction models </h2>
+      <p>
+        Processing flow of prediction level cooperation in the iTFA AD framework. A human prediction about a cut-in of the truck changes internal predictions for future scene development and accordingly optimal vehicle behavior.        
+      </p>
+
       <img src="../img/subpages/preAD/before_intervention.jpg">
       <img src="../img/subpages/preAD/after_intervention.jpg"> 
 
-      <figure>
-        <img src="../img/subpages/preAD/gaze_cal.png"> 
-        <figcaption>The gaze calculation method</figcaption>  
-      </figure>
-
+      <h2> The interaction flow </h2>
+      <p>
+        The interaction flow of the second scenario: 1) A sports car is driving behind a truck. 2) The system does not predict the car to change its lane 3) The driver clicks the button while gazing on the sports car indicating that it may change lane. 4) After the system has received the driver's input: a sound feedback is provided; the sports car is highlighted in red in the GUI; iTFA changes the ego vehicle's planned trajectory to a lane change. 5) The system maneuvers the vehicle accordingly.
+      </p>
       <img src="../img/subpages/preAD/procedure.png"> 
 
+      <h2> The gaze calculation method </h2>
       <p>
-        The interaction flow of the second scenario: 1) A sports car is driving behind a truck. 2) The system does not predict the car to change its lane 3) The driver clicks the button while gazing on the sports car indicating that it may change lane. 4) After the system has received the driver’s input: a sound feedback is provided; the sports car is highlighted in red in the GUI; iTFA changes the ego vehicle's planned trajectory to a lane change. 5) The system maneuvers the vehicle accordingly.
+        Gaze-vector and distance-based vehicle selection method
+      </p>
+      <figure>
+        <img src="../img/subpages/preAD/gaze_cal.png"> 
+      </figure>
+
+      
+      <h1> Further improvement </h1>
+      <h2> Gaze-Tap instead of gaze-button as input </h2>
+      <p>
+        To make the interaction more intuitive, the button-pressing was replaced by double-tapping as trigger of the intervention (c); The steering wheel includes a piezoelectric sensor (c) to detect the double-tapping gesture. The gui-output was also improved (a).
       </p>
 
-      <iframe class="youtube-iframe" src="https://www.youtube.com/embed/RphavtH7Wpo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <img src="../img/subpages/preAD/preAD-cockpit.png">
+
+      <h2> Scenarios </h2>
       <p>
-        Full video description
+        More scenarios were implemented for testing
       </p>
+      <img src="../img/subpages/preAD/scenarios.png"> 
+
+      <div class="video-flex"> 
+        <iframe class="youtube-iframe-half" src="https://www.youtube.com/embed/M0yHDAbvulU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="youtube-iframe-half" src="https://www.youtube.com/embed/sqKQYGv0di0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
 
       <h2>
         Publications:
       </h2>
+      <a href="https://arxiv.org/abs/2204.13755" target="_blank">
+        Wang, C., Chu, D., Martens, M., Krüger, M., & Weisswange, T. H. (2022, September). Hybrid Eyes: Design and Evaluation of the Prediction-Level Cooperative Driving with a Real-World Automated Driving System. In Proceedings of the 14th International Conference on Automotive User Interfaces and Interactive Vehicular Applications (pp. 274-284).
+      </a>
       <a href="https://arxiv.org/abs/2104.03019" target="_blank">
         Wang, C., Weisswange, T. H., Krueger, M., & Wiebel-Herboth, C. B. (2021). Human-Vehicle Cooperation on Prediction-Level: Enhancing Automated Driving with Human Foresight. arXiv preprint arXiv:2104.03019. Accepted by IEEE Intelligent Vehicles Symposium (IV21)
       </a>
