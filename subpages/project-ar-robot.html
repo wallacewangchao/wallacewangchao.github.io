@@ -25,29 +25,67 @@
     <h1>
         Investigating Explainable Human-Robot Interaction with Augmented Reality
     </h1>
-    <iframe class="youtube-iframe" src="https://www.youtube.com/embed/c7vojX7NJjg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe class="youtube-iframe" src="https://www.youtube.com/embed/TyC9aVdhw8c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     <p>
-      In learning by demonstration with social robots, fluid and coordinated interaction between human teacher and robotic learner is particularly critical and yet often difficult to assess. This is even more so if robots are to learn from non-expert users. In such cases, it is sometimes troublesome for the teacher to get a grasp of what the robot knows or to assess if a correct representation of the task has been formed even before the robot demonstrates it back. Here, we introduce a new feedback modality making use of Augmented Reality to visualize the perceptual beliefs of the robot in an interactive way. Such cues are indeed overlaid directly on the shared workspace, as perceived by the teacher, without the need for an explicit inquiry.
+      The current spread of social and assistive robotics applications is increasingly highlighting the need for robots that can be easily taught and interacted with, even by users with no technical background. Still, it is often difficult to grasp what such robots know or to assess if a correct representation of the task is being formed. Augmented Reality (AR) has the potential to bridge this gap. We demonstrate three use cases where AR design elements enhance the explainability and efficiency of human-robot interaction: 1) a human teaching a robot some simple kitchen tasks by demonstration, 2) the robot showing its plan for solving novel tasks in AR to a human for validation, and 3) a robot communicating its intentions via AR while assisting people with limited mobility during daily activities.    
     </p>
+    <h2>
+      SYSTEM ARCHITECTURE
+    </h2>
+    <p>
+      Our system is composed of modules realizing the back-end functionalities (learning, planning, prediction and motion generation), and the front-end interface capabilities (visualization and interaction) of the AR glasses 
+    </p>
+    <img class="zoom-pic" src="../img/subpages/ar-robot/SysArch.png">
 
     <h2>
-      Story board
+      USE CASE 1: EXPLAINABLE HUMAN-ROBOT INTERACTION FOR IMITATION LEARNING
     </h2>
-    <img src="../img/subpages/ar-robot/Storyboard.png">
+    <p>
+      We developed a two-stage skill learning concept. In the first stage, the user demonstrates a skill to the robot, which acquires it using semantic skill learning concepts. The learned representation of the skill is formed by symbols that encode preconditions, actions, and effects. In the second stage, the robot takes initiative and asks curious questions about the demonstrated task to the user. Both stages are designed to enhance the user's mental model of the system using AR and social cues.
+    </p>
+    <figure>
+      <img class="zoom-pic" src="../img/subpages/ar-robot/demo-1.png">
+      <figcaption>
+        Learning from demonstration with XAI: while the user demonstrates a new skill the robot signals in AR which actions and objects it recognizes. Afterwards, it asks a related question while highlighting involved objects.
+      </figcaption>
+    </figure>
 
     <h2>
-      Design of the AR interface
+      USE CASE 2: VISUALIZATION OF THE ROBOT PLANNING
     </h2>
-    <img src="../img/subpages/ar-robot/design.jpg">
+
+    <p>
+      By learning the skills and applying them to new tasks and environments, the system generalizes from previously observed episodes. As a consequence, the generated plans may not be feasible or desired and need validation by a human. Here, we propose an interactive system which can show the plan of the robot to the human via AR glasses before it is executed. The user can give a command to the robot via speech%, such as "make a cup of ice tea". Then the robot will generate a plan to solve the query according to its knowledge at different levels. Before execution, the robot will ask the user to validate the plan in AR. The virtual "avatar" of the robot appears overlaid on the physical body of the robot and real object "shadows" (holographic twins) are displayed in the AR glasses. Then the virtual robot will execute the plan with the virtual objects.  
+    </p>
+    <figure>
+      <img class="zoom-pic" src="../img/subpages/ar-robot/demo-2.jpg">
+      <figcaption>
+        Visualization of planning phases, from left to right: the user instructs the robot by speech; the robot shows its avatar and digital twins of real objects; the avatar executes the plan; the human gives feedback on the plan. Red boxes show the user's commands as detected by speech recognition.
+      </figcaption>
+    </figure>
 
     <h2>
-      System structure
+      USE CASE 3: COMMUNICATING ROBOT'S INTENTIONS WHILE ASSISTING USERS
     </h2>
-    <img src="../img/subpages/ar-robot/Sys_architecture.png">
+    <p>
+      Our system is able to: (i) predict the sequence of humans actions, e.g. picking up a bottle and then pouring into a glass. (ii) Evaluating the human posture, e.g. human upper-body configuration while pouring, and decide how to adjust continuous quantities, e.g. change the pose of the glass to improve the human's upper-body configuration while pouring. (iii) Inform the human using AR (e.g. using holograms to show where objects will be relocated), while performing the assistive action. Utilizing AR to reveal the outcome of a future invention allows the user to understand the robot actions, enabling him to comfortably and fluently perform the task.
+    </p>
+    <figure>
+      <img class="zoom-pic" src="../img/subpages/ar-robot/demo-3v4.png">
+      <figcaption>
+        Instance (a) occurs in a scenario without assistance, where the human bends to pour into the glass, resulting in a inconvenient posture. In contrast, instances (b) and (c) are two consecutive frames from a scenario with assistance. In (b), the robots predicts that the human will pour into the glass and reveals the outcome of its intervention utilising XAI cues while relocating the glass. In (c), the human pours into the glass in a comfortable posture.      
+      </figcaption>
+    </figure>
+
 
     <h2>
       Publications:
     </h2>
+
+    <a href="https://arxiv.org/abs/2302.01039" target="_blank">
+      Wang, C., Belardinelli, A., Hasler, S., Stouraitis, T., Tanneberg, D., & Gienger, M. (2023). Explainable Human-Robot Training and Cooperation with Augmented Reality. arXiv preprint arXiv:2302.01039.
+    </a>
+
     <a href="https://openreview.net/pdf?id=S2zeAWt4hk5" target="_blank">
       Chao Wang, Anna Belardinelli (2022, March). Investigating explainable human-robot interaction with augmented reality. In VAM workshop of the 2022 ACM/IEEE International Conference on Human-Robot Interaction.
     </a>
