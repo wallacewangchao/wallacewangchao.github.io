@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>project holo car</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/sub-page.css">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ8WNGYXYL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ8WNGYXYL');
+  </script>
+
+</head>
+<body>
+  <main>
+    <h1>
+        Enhancing Perception of Risk Objects for Car Drivers Through Augmented Reality Glasses
+    </h1>
+    <p>
+        In complex driving scenarios, drivers often face the challenge of making quick decisions regarding the safety of crossing intersections or entering roundabouts. \
+        These decisions, prone to human error, can compromise road safety and driving efficiency. The recent advancements in augmented reality (AR) glasses hold significant potential for assisting drivers in avoiding such dangers. Unlike traditional AR heads-up displays (HUDs), AR glasses provide a larger field-of-view. While previous research has proposed various driving-assistance concepts using simulated displays, only a few have explored actual implementation or experimentation with real AR glasses. This study introduces a novel concept of visualizing risks through AR for driving assistance systems. We have designed and implemented two different interfaces specifically tailored for real AR glasses, integrating them into a driving simulator system. To evaluate the effectiveness of AR glasses in driving assistance, we plan to conduct experiments based on this platform in the future.
+    </p>
+
+    <h2> SYSTEM STRUCTURE AND APPARATUS </h2>
+    <p>
+        By combining the capabilities of the driving simulator and the HoloLens device, we aimed to create an immersive and interactive AR experience that could effectively visualize the risk areas in realtime.    </p>
+    <img class="zoom-pic" src="../img/subpages/holo-car/holo-car-system.jpg">
+
+    <h2> AUGMENTED REALITY UI DESIGN </h2>
+    <p>
+        We consider traffic objects as point-like representations, and assume that they maintain their current velocity vectors. Using this information, we can determine the time in the future when the ego vehicle and another object will be closest to each other. This time can be calculated using the following formula: 
+    </p>
+    <figure>
+      <img class="zoom-pic" width="30%" src="../img/subpages/holo-car/holo-car-formular.jpg">
+    </figure>
+
+    <h3>
+        Design 1: the red carpet
+    </h3>
+    <p>
+        The visualization of this design consists of a red plane accompanied by two slightly elevated edges. To determine the length of the "carpet," it is calculated by multiplying the speed difference with the time taken to reach the minimal distance.
+    </p>
+    <figure>
+        <img class="zoom-pic" src="../img/subpages/holo-car/design-1.png">
+    </figure>
+
+    <h3>
+        Design 2: the wall
+    </h3>
+
+    <p>
+        A different concept presents the risk in a vertical direction. The "wall" consists of a collection of transparent blocks stacked together. The height of the wall is calculated according to the following formula: 
+    </p>
+    <figure>
+      <img class="zoom-pic" src="../img/subpages/holo-car/design-2.jpg">
+    </figure>
+
+    <h2>
+        Scenarios:
+    </h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/r1Vya0LBll0?si=VBr3PnylKai0CxT3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/YK_pDIZzeL0?si=LRzKWRaoX_YPkSF4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/MIGzTlIRBvI?si=l_QCagy_PmPQnAuV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Un-CWMsEgNE?si=2S60CAYcUoQM7Op6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    
+    <p>
+        To assess the effectiveness of the AR visualization designs, we devised and implemented several scenarios including entering the roundabout or pedestrian jump into the road with the variations of velocity of the surrounding traffic participants.     
+    </p>
+
+    <h2>
+        Design 3: The ripple (patented)
+    </h2>
+    <iframe class="youtube-iframe" src="https://www.youtube.com/embed/5ivzhiTWbiQ?si=p16PAQvis4TltKx7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <p>
+        Design 3 combined 1 and 2, creating a ripple effect.
+    </p>
+
+    <h2>
+      Publications:
+    </h2>
+
+    <a href="https://dl.acm.org/doi/abs/10.1145/3581961.3609870" target="_blank">
+        Chao Wang, Derck Chu, and Marieke Martens. 2023. Enhancing Perception of Risk Objects for Car Drivers Through Augmented Reality Glasses. In Adjunct Proceedings of the 15th International Conference on Automotive User Interfaces and Interactive Vehicular Applications (AutomotiveUI '23 Adjunct). Association for Computing Machinery, New York, NY, USA, 83–86.    </a>
+    </a>
+
+  </main>
+
+</body>
+</html>

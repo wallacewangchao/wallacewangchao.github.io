@@ -151,7 +151,8 @@ const promiseMachine = createMachine(
           TO_PROJECT_ICPS: { target: 'projectIcps' },
           TO_PROJECT_XAI: { target: 'projectXAI' },
           TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' },
-          TO_PROJECT_KORE: { target: 'projectKore' }
+          TO_PROJECT_KORE: { target: 'projectKore' },
+          TO_PROJECT_HOLOCAR: { target: 'projectHoloCar' }
 
         }
       },
@@ -232,6 +233,13 @@ const promiseMachine = createMachine(
       },
       projectKore: {
         entry: [ 'showKore', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectHoloCar: {
+        entry: [ 'showHoloCar', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -353,6 +361,14 @@ const promiseMachine = createMachine(
           promiseService.send({type: "TO_ROBOT_PAGE"});
         });
       },
+
+      showHoloCar: () => {
+        createProjectPage( './subpages/project-holo-car.html' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -437,6 +453,11 @@ function init() {
   });
 
   /* sub project card event listener */
+
+  const pageIds = ["cooperative-driving", "pedestrian-communication", "social-car", "hud-ar", "a-team", "like-dislike", "ICPs", "mobileCAM", "arRobot", "kore" ];
+
+
+
   let cooperativeDrivingPage = document.getElementById( 'cooperative-driving' );
   setProjectCard(cooperativeDrivingPage, "TO_PROJECT_PREAD", preAdMarkers);
 
@@ -466,6 +487,8 @@ function init() {
 
   let kore = document.getElementById( 'kore' );
   setProjectCard(kore, "TO_PROJECT_KORE", null);
+  
+  setProjectCard(document.getElementById( 'holoCar' ), "TO_PROJECT_HOLOCAR", null);
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
