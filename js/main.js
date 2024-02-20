@@ -153,8 +153,8 @@ const promiseMachine = createMachine(
           TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' },
           TO_PROJECT_KORE: { target: 'projectKore' },
           TO_PROJECT_HOLOCAR: { target: 'projectHoloCar' },
-          TO_PROJECT_ICRA24: { target: 'projectIcra24' }
-
+          TO_PROJECT_ICRA24: { target: 'projectIcra24' },
+          TO_PROJECT_LAMI: { target: 'projectLami' }
 
         }
       },
@@ -253,7 +253,14 @@ const promiseMachine = createMachine(
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
-      }
+      },
+      projectLami: {
+        entry: [ 'showLami', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
     }
   },
   {
@@ -385,6 +392,13 @@ const promiseMachine = createMachine(
         });
       },
 
+      showLami: () => {
+        createProjectPage( 'https://hri-eu.github.io/Lami/index.html' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -503,6 +517,8 @@ function init() {
   
   setProjectCard(document.getElementById( 'holoCar' ), "TO_PROJECT_HOLOCAR", null);
   setProjectCard(document.getElementById( 'icra24' ), "TO_PROJECT_ICRA24", null);
+  setProjectCard(document.getElementById( 'lami' ), "TO_PROJECT_LAMI", null);
+
 
   /* go to home page after init */
   promiseService.send({type: "TO_HOME_PAGE"});
