@@ -8,7 +8,7 @@
 main{
   display: grid;
   grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: 100vh;
+  grid-template-rows: 10vh 50vh 5vh 35vh;
 }
 
 .page-loader{
@@ -35,33 +35,34 @@ main{
 /* containers layout */
 #selfintro-container{
   grid-column: 3/8;
-  grid-row: 1/2;
+  grid-row: 1/5;
   transition: opacity 0.25s ease-in-out;
 
   display: flex;
   flex-flow: column;
   justify-content: center;
+  overflow-y: hidden;
 
   z-index: 20;
 }
 
 #threejs-container{
   grid-column: 8/17;
-  grid-row: 1/2;
+  grid-row: 1/5;
 
   overflow: hidden;
 }
 
 #highlight-overlay{
   grid-column: 8/17;
-  grid-row: 1/2;
+  grid-row: 1/5;
   overflow-x: hidden;
 
 }
 
 #about-me-container{
   grid-column: 3/8;
-  grid-row: 1/2;
+  grid-row: 1/5;
   overflow-y: hidden;
   transition: opacity 0.25s ease-in-out;
 
@@ -69,13 +70,13 @@ main{
 
 .project-iframe-container{
   grid-column: 1/14;
-  grid-row: 1/2;
+  grid-row: 1/5;
   overflow-y: hidden;
 }
 
 .nav-bar{
   grid-column: 1/3;
-  grid-row: 1/2;
+  grid-row: 1/5;
   z-index: 15;
 
   display: flex;
@@ -85,7 +86,99 @@ main{
   padding-left: 2rem;
 }
 
+.sub-project-grid{
+  grid-column: 3/8;
+  grid-row: 1/5;
+  height: 70vh;
 
+  align-self: center;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  overflow-y: scroll;
+  z-index: 20;
+
+  padding: 2% 2% 2% 2%;
+}
+
+/* Scroll 2 */
+.sub-project-grid::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.sub-project-grid::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.082);
+  border-radius: 10px;
+}
+.sub-project-grid::-webkit-scrollbar-thumb {
+  background-color: #11171a75;
+  border-radius: 10px;
+}
+
+@media screen and (max-width:800px) {
+  #selfintro-container{
+    grid-column: 1/17;
+    grid-row: 4/5;
+    transition: opacity 0.25s ease-in-out;
+  
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  
+    z-index: 20;
+  }
+  
+  #threejs-container{
+    grid-column: 1/17;
+    grid-row: 1/4;
+  
+    overflow: hidden;
+  }
+  
+  #highlight-overlay{
+    grid-column: 1/17;
+    grid-row: 1/4;
+    overflow-x: hidden;
+  
+  }
+  
+  #about-me-container{
+    grid-column: 1/17;
+    grid-row: 4/5;
+    overflow-y: hidden;
+    transition: opacity 0.25s ease-in-out;
+  
+  }
+  
+  .project-iframe-container{
+    grid-column: 1/17;
+    grid-row: 4/5;
+    overflow-y: hidden;
+  }
+  
+  .nav-bar{
+    grid-column: 1/17;
+    grid-row: 1/2;
+    z-index: 15;
+  
+    display: flex;
+    flex-flow: column;
+    gap: 1.75rem;
+    justify-content: center;
+    padding-left: 2rem;
+  }
+
+  .sub-project-grid{
+    grid-column: 1/17;
+    grid-row: 4/5;  
+    height: 25vh;
+
+  }
+  
+}
 
 /*=====================================================================*/
 /* nav-bar contents */
@@ -207,20 +300,6 @@ main{
 
 /*=====================================================================*/
 /* grid of the projects in different categories */
-.sub-project-grid{
-  grid-column: 3/8;
-  grid-row: 1/2;
-  align-self: center;
-  opacity: 0;
-  transition: opacity 0.25s ease-in-out;
-
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 16vh;
-  gap: 0.6rem;
-
-  z-index: 20;
-}
 
 .grid-span-1{
   grid-column-start: span 1;
