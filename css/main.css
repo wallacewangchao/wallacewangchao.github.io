@@ -31,6 +31,20 @@ main{
   height: 8rem;
 }
 
+/* Scroll 2 */
+div::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+div::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.082);
+  border-radius: 10px;
+}
+div::-webkit-scrollbar-thumb {
+  background-color: #11171a75;
+  border-radius: 10px;
+}
+
 /*=====================================================================*/
 /* containers layout */
 #selfintro-container{
@@ -100,24 +114,10 @@ main{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.6rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: 20;
 
   padding: 2% 2% 2% 2%;
-}
-
-/* Scroll 2 */
-.sub-project-grid::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-.sub-project-grid::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.082);
-  border-radius: 10px;
-}
-.sub-project-grid::-webkit-scrollbar-thumb {
-  background-color: #11171a75;
-  border-radius: 10px;
 }
 
 /*=====================================================================*/
@@ -338,7 +338,7 @@ main{
   /* background-color: antiquewhite; */
   font-weight: 300;
   line-height: 1.5;
-  overflow-y:scroll;
+  overflow-y:auto;
 }
 
 /*=====================================================================*/
