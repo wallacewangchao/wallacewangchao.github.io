@@ -85,7 +85,7 @@ main{
   flex-flow: column;
   gap: 1.75rem;
   justify-content: center;
-  padding-left: 2rem;
+  padding-left: 2vw;
 }
 
 .sub-project-grid{
@@ -328,18 +328,17 @@ main{
 }
 
 .greeting_text{
-  width: 70%;
   align-self: center;
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 200;
   /* background-color:aquamarine; */
-
 }
 
 .intro_text{
   /* background-color: antiquewhite; */
   font-weight: 300;
   line-height: 1.5;
+  overflow-y:scroll;
 }
 
 /*=====================================================================*/
@@ -381,10 +380,12 @@ iframe {
 
 /*=====================================================================*/
 /* containers layout for Mobile Devices */
-@media screen and (max-width:800px) {
+@media screen and (max-width:900px) {
   #selfintro-container{
     grid-column: 1/17;
     grid-row: 4/5;
+    justify-content: start;
+
   }
   
   #threejs-container{
@@ -421,7 +422,6 @@ iframe {
     flex-flow: column;
     gap: 1rem;
     justify-content: flex-end;
-    padding-left: 3vw;
   }
 
   .sub-project-grid{
