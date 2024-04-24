@@ -527,67 +527,63 @@ function init() {
 /*************** init Threejs *****************/
 function initScene(){
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( "rgb(255, 255, 255)" );
-  // scene.fog = new THREE.Fog( "rgb(255, 255, 255)", 10, 50 );
+  scene.background = new THREE.Color( "#D1F2EB" );
 
   camera = new THREE.PerspectiveCamera( 25, THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight, 0.001, 1000 );
-  // camera = new THREE.OrthographicCamera( THREEJS_CONTAINER.clientWidth / - 2, THREEJS_CONTAINER.clientWidth / 2, THREEJS_CONTAINER.clientHeight / 2, THREEJS_CONTAINER.clientHeight / - 2, 1, 1000 );
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
   
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+  renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
   THREEJS_CONTAINER.appendChild( renderer.domElement );
   
   /**
    * LIGHTS
   **/
-  const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.3 );
-  hemiLight.color.setHSL( 0.6, 1, 0.6 );
+  const hemiLight = new THREE.HemisphereLight( "#D1F2EB", "#D1F2EB", 0.3 );
+  hemiLight.color.setHSL( 1, 1, 1);
   hemiLight.position.set( 300, 500, 200 );
   scene.add( hemiLight );
 
   // const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
   // scene.add( hemiLightHelper );
-
-  // const light = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.1 ); // soft white light
-  // scene.add( light );
-
+  
   // direction light
-  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.8 );
-  // dirLight.color.setHSL( 0.1, 1, 0.95 );
-  dirLight.position.set( - 1, 1.75, 1 );
-  dirLight.position.multiplyScalar( 10 );
+  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
+  // dirLight.position.set( - 3, 1.75, 1 );
+    dirLight.position.set( 2, 1.3, -2 );
 
-  const d = 30;
+  dirLight.position.multiplyScalar( 5 );
 
-  dirLight.shadow.camera.left = - d;
-  dirLight.shadow.camera.right = d;
-  dirLight.shadow.camera.top = d;
-  dirLight.shadow.camera.bottom = - d;
+  // const d = 30;
 
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
+  // dirLight.shadow.camera.left = - d;
+  // dirLight.shadow.camera.right = d;
+  // dirLight.shadow.camera.top = d;
+  // dirLight.shadow.camera.bottom = - d;
 
-  dirLight.shadow.camera.far = 45;
-  dirLight.shadow.camera.near = 0.1;
-  dirLight.shadow.camera.fov = 45;
+  // dirLight.shadow.mapSize.width = 2048;
+  // dirLight.shadow.mapSize.height = 2048;
 
-  dirLight.shadow.bias = - 0.0001;
+  // dirLight.shadow.camera.far = 45;
+  // dirLight.shadow.camera.near = 0.1;
+  // dirLight.shadow.camera.fov = 45;
+
+  // dirLight.shadow.bias = - 0.0001;
   dirLight.castShadow = true;
   scene.add( dirLight );
 
-  // const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 6 );
-  // scene.add( dirLightHelper );
+  const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 6 );
+  scene.add( dirLightHelper );
   
-  const dirLight2 = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
-  dirLight2.position.set( 1, 1.75, 0 );
+  // const dirLight2 = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
+  // dirLight2.position.set( 1, 1.75, 0 );
   // dirLight2.position.multiplyScalar( 5 );
-  dirLight2.castShadow = false;
-  scene.add( dirLight2 );
+  // dirLight2.castShadow = false;
+  // scene.add( dirLight2 );
 
 
   /* loading Manager */
@@ -621,7 +617,7 @@ function initScene(){
   loader.setDRACOLoader( dracoLoader );
   loader.setMeshoptDecoder( MeshoptDecoder );
   
-  loader.load( './models/whole_scene.glb', function ( gltf ) {
+  loader.load( './models/whole_scene_toon.glb', function ( gltf ) {
     const root = gltf.scene;
     root.castShadow = true;
     gltf.scene.receiveShadow = true;
@@ -677,8 +673,124 @@ function initScene(){
     droneObj.rotation.set(-Math.PI/2, 0, 0);
 
     /* set auto page objects */
-    const whiteMaterial = new THREE.MeshStandardMaterial( {color: "rgb(240, 240, 245)"} );
+    const whiteMaterial = new THREE.MeshToonMaterial( {color: "rgb(99, 125, 138)"} );
     const warningBoxMaterial = new THREE.MeshToonMaterial( {color: "rgb(254, 47, 47)"} );
+
+    meObj.traverse((o) => {
+      if (o.name === "OutfitBottom") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(118,181,197)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "OutfitTop") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(255,255,255)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "Head") {
+        let textureLoader = new THREE.TextureLoader();
+        const faceTexture = textureLoader.load("./models/face_s2.jpg");
+        faceTexture.flipY = false;
+        faceTexture.encoding = THREE.sRGBEncoding;
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(255, 255, 255)",
+          map: faceTexture,
+          gradientMap: createToonGradient([
+            // {"pos":0,"color":"rgb(125, 107, 101)"},
+            {"pos":0.35,"color":"rgb(125, 107, 101)"},
+            {"pos":0.8,"color":"rgb(255, 187, 166)"}
+          ]),
+        });
+      } else if (o.name === "Hands") {
+          o.material = new THREE.MeshToonMaterial({
+            color: "rgb(230, 230, 230)",
+            gradientMap: createToonGradient([
+              {"pos":0,"color":"rgb(41, 35, 33)"},
+              {"pos":0.35,"color":"rgb(125, 107, 101)"},
+              {"pos":1,"color":"rgb(232, 197, 186)"}]),
+          });
+      } else if (o.name === "Hair") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10, 10, 10)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "Shoes") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10, 10, 10)",
+          gradientMap: createToonGradient(),
+        });
+      }
+    });
+
+    carObj.traverse((o) => {
+      if (o.name === "CarBodyModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(245,245,245)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "GlassesModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(5,5,5)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "BodyFrontBackPlasticModel" || o.name === "RoofPlasticModel" || o.name === "BaseModel" || o.name === "FrontBajosPalitos_Plastic25_0001" 
+      || o.name === "HeadBeamModel" || o.name === "BeamFrameModel" ) {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10,10,10)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "WheelRubberModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(5,5,5)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "WheelFrameModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(155,155,155)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "BrakeLightModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(204, 51, 0)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "BackLampFrameModel" || o.name === "FrontLampFrameModel") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(30, 30, 30)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "HeadLampCircleModel" ) {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(204, 255, 255)",
+          gradientMap: createToonGradient(),
+        });
+      }
+
+    });
+
+    robotObj.traverse((o) => {
+      if (o.name === "body" || o.name === "base" || o.name === "neck_base") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(245,245,245)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "arms_model") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(204, 239, 255)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "ears" || o.name === "eye") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10, 10, 10)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "head" ) {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(245, 245, 245)",
+          gradientMap: createToonGradient(),
+        });
+      }
+    })
 
     /* set other cars */
     let otherCar1 = carObj.clone();
@@ -686,8 +798,8 @@ function initScene(){
     otherCar1.position.set( -12, 0, -2 );
     otherCar1.traverse( (o) => {
       if (o.isMesh) {
-        o.receiveShadow = false;
-        o.material = whiteMaterial;
+        o.receiveShadow = true;
+        o.material = createToonGradient();
       }
     });
 
@@ -777,15 +889,39 @@ function initScene(){
     console.error( error );
   } );
   
+  function createToonGradient(colorStops = [{ "pos": 0, "color": 'rgb(0, 0, 0)' }, 
+                                                { "pos": 0.5, "color": 'rgb(120, 120, 120)' }, 
+                                                { "pos": 1, "color": 'rgb(256, 256, 256)' }]) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 4;
+    canvas.height = 1;
 
-  const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: "rgb(255, 240, 210)", depthWrite: false } ) );
+    const context = canvas.getContext('2d');
+    const gradient = context.createLinearGradient(0, 0, 4, 0);
+
+    colorStops.forEach((e) => {
+      gradient.addColorStop(e["pos"], e["color"]);
+    });
+
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 4, 1);
+
+    const gradientMap = new THREE.CanvasTexture(canvas);
+    gradientMap.magFilter = THREE.NearestFilter;
+    gradientMap.minFilter = THREE.NearestFilter;
+    gradientMap.needsUpdate = true;
+
+    return gradientMap;
+  }
+
+  const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: "#D1F2EB", depthWrite: false } ) );
   mesh.rotation.x = - Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add( mesh );
 
   // Axes Helper
-  // const axesHelper = new THREE.AxesHelper( 5 );
-  // scene.add( axesHelper );
+  const axesHelper = new THREE.AxesHelper( 5 );
+  scene.add( axesHelper );
   
   // set initial camera positions
   camera.position.set( HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z ); // Set position like this
