@@ -9,6 +9,8 @@ main{
   display: grid;
   grid-template-columns: repeat(16, 1fr);
   grid-template-rows: 10vh 50vh 5vh 35vh;
+  background: #FEF9E7;
+
 }
 
 .page-loader{

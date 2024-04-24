@@ -527,7 +527,7 @@ function init() {
 /*************** init Threejs *****************/
 function initScene(){
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( "#D1F2EB" );
+  scene.background = new THREE.Color( "#FEF9E7" );
 
   camera = new THREE.PerspectiveCamera( 25, THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight, 0.001, 1000 );
 
@@ -543,8 +543,8 @@ function initScene(){
   /**
    * LIGHTS
   **/
-  const hemiLight = new THREE.HemisphereLight( "#D1F2EB", "#D1F2EB", 0.3 );
-  hemiLight.color.setHSL( 1, 1, 1);
+  const hemiLight = new THREE.HemisphereLight( "#E8F8F5", "#E8F8F5", 0.3 );
+  // hemiLight.color.setHSL( 1, 1, 1);
   hemiLight.position.set( 300, 500, 200 );
   scene.add( hemiLight );
 
@@ -552,9 +552,8 @@ function initScene(){
   // scene.add( hemiLightHelper );
   
   // direction light
-  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
-  // dirLight.position.set( - 3, 1.75, 1 );
-    dirLight.position.set( 2, 1.3, -2 );
+  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.8 );
+  dirLight.position.set( 2, 1.3, -2 );
 
   dirLight.position.multiplyScalar( 5 );
 
@@ -576,8 +575,8 @@ function initScene(){
   dirLight.castShadow = true;
   scene.add( dirLight );
 
-  const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 6 );
-  scene.add( dirLightHelper );
+  // const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 6 );
+  // scene.add( dirLightHelper );
   
   // const dirLight2 = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
   // dirLight2.position.set( 1, 1.75, 0 );
@@ -684,8 +683,12 @@ function initScene(){
         });
       } else if (o.name === "OutfitTop") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(255,255,255)",
-          gradientMap: createToonGradient(),
+          color: "rgb(235,235,235)",
+          gradientMap: createToonGradient([
+            { "pos": 0.1, "color": 'rgb(0, 0, 0)' }, 
+            { "pos": 0.5, "color": 'rgb(120, 120, 120)' }, 
+            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }
+          ]),
         });
       } else if (o.name === "Head") {
         let textureLoader = new THREE.TextureLoader();
@@ -696,18 +699,17 @@ function initScene(){
           color: "rgb(255, 255, 255)",
           map: faceTexture,
           gradientMap: createToonGradient([
-            // {"pos":0,"color":"rgb(125, 107, 101)"},
             {"pos":0.35,"color":"rgb(125, 107, 101)"},
             {"pos":0.8,"color":"rgb(255, 187, 166)"}
           ]),
         });
       } else if (o.name === "Hands") {
           o.material = new THREE.MeshToonMaterial({
-            color: "rgb(230, 230, 230)",
+            color: "rgb(255, 255, 255)",
             gradientMap: createToonGradient([
-              {"pos":0,"color":"rgb(41, 35, 33)"},
               {"pos":0.35,"color":"rgb(125, 107, 101)"},
-              {"pos":1,"color":"rgb(232, 197, 186)"}]),
+              {"pos":0.8,"color":"rgb(255, 187, 166)"}
+            ]),
           });
       } else if (o.name === "Hair") {
         o.material = new THREE.MeshToonMaterial({
@@ -716,8 +718,8 @@ function initScene(){
         });
       } else if (o.name === "Shoes") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(10, 10, 10)",
-          gradientMap: createToonGradient(),
+          color: "#3E2723",
+          // gradientMap: createToonGradient(),
         });
       }
     });
@@ -726,15 +728,19 @@ function initScene(){
       if (o.name === "CarBodyModel") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(245,245,245)",
-          gradientMap: createToonGradient(),
+          gradientMap: createToonGradient([
+            { "pos": 0, "color": 'rgb(0, 0, 0)' }, 
+            { "pos": 0.2, "color": 'rgb(120, 120, 120)' }, 
+            { "pos": 1, "color": 'rgb(256, 256, 256)' }]),
         });
       } else if (o.name === "GlassesModel") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(5,5,5)",
+          color: "rgb(15,15,15)",
           gradientMap: createToonGradient(),
         });
-      } else if (o.name === "BodyFrontBackPlasticModel" || o.name === "RoofPlasticModel" || o.name === "BaseModel" || o.name === "FrontBajosPalitos_Plastic25_0001" 
-      || o.name === "HeadBeamModel" || o.name === "BeamFrameModel" ) {
+      } else if (o.name === "BodyFrontBackPlasticModel" || o.name === "RoofPlasticModel" || o.name === "BaseModel" 
+      || o.name === "FrontBajosPalitos_Plastic25_0001" || o.name === "BrakeLightFrameModel"
+      || o.name === "HeadBeamModel" || o.name === "BeamFrameModel" || o.name === "WheelScrewerModel" ) {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(10,10,10)",
           gradientMap: createToonGradient(),
@@ -751,7 +757,7 @@ function initScene(){
         });
       } else if (o.name === "BrakeLightModel") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(204, 51, 0)",
+          color: "#E74C3C",
           gradientMap: createToonGradient(),
         });
       } else if (o.name === "BackLampFrameModel" || o.name === "FrontLampFrameModel") {
@@ -765,14 +771,16 @@ function initScene(){
           gradientMap: createToonGradient(),
         });
       }
-
     });
 
     robotObj.traverse((o) => {
       if (o.name === "body" || o.name === "base" || o.name === "neck_base") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(245,245,245)",
-          gradientMap: createToonGradient(),
+          gradientMap: createToonGradient([
+            { "pos": 0, "color": 'rgb(0, 0, 0)' }, 
+            { "pos": 0.1, "color": 'rgb(120, 120, 120)' }, 
+            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]),
         });
       } else if (o.name === "arms_model") {
         o.material = new THREE.MeshToonMaterial({
@@ -784,9 +792,9 @@ function initScene(){
           color: "rgb(10, 10, 10)",
           gradientMap: createToonGradient(),
         });
-      } else if (o.name === "head" ) {
+      } else if (o.name === "head" || o.name === "neck") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(245, 245, 245)",
+          color: "rgb(235,235,235)",
           gradientMap: createToonGradient(),
         });
       }
@@ -799,7 +807,7 @@ function initScene(){
     otherCar1.traverse( (o) => {
       if (o.isMesh) {
         o.receiveShadow = true;
-        o.material = createToonGradient();
+        o.material = whiteMaterial;
       }
     });
 
@@ -810,6 +818,30 @@ function initScene(){
     autoPageObjects.push(otherCar1);
     autoPageObjects.push(otherCar2);
     setThreeObjectsVisibility(autoPageObjects, false);
+
+
+    droneObj.traverse((o) => {
+      if (o.name === "propellers" ) {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10,10,10)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "Arms" || o.name === "BodyBase") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(10, 10, 10)",
+        });
+      } else if (o.name === "Moters" || o.name === "eye") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(200, 200, 200)",
+          gradientMap: createToonGradient(),
+        });
+      } else if (o.name === "BodyTop") {
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(235,235,235)",
+          gradientMap: createToonGradient(),
+        });
+      }
+    })
 
     /* set preAD markers */
     let trajectoryMaterial = new THREE.MeshToonMaterial({color: "rgb(0, 134, 179)"});
@@ -890,8 +922,8 @@ function initScene(){
   } );
   
   function createToonGradient(colorStops = [{ "pos": 0, "color": 'rgb(0, 0, 0)' }, 
-                                                { "pos": 0.5, "color": 'rgb(120, 120, 120)' }, 
-                                                { "pos": 1, "color": 'rgb(256, 256, 256)' }]) {
+                                            { "pos": 0.2, "color": 'rgb(120, 120, 120)' }, 
+                                            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]) {
     const canvas = document.createElement('canvas');
     canvas.width = 4;
     canvas.height = 1;
@@ -917,11 +949,11 @@ function initScene(){
   const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: "#D1F2EB", depthWrite: false } ) );
   mesh.rotation.x = - Math.PI / 2;
   mesh.receiveShadow = true;
-  scene.add( mesh );
+  // scene.add( mesh );
 
   // Axes Helper
-  const axesHelper = new THREE.AxesHelper( 5 );
-  scene.add( axesHelper );
+  // const axesHelper = new THREE.AxesHelper( 5 );
+  // scene.add( axesHelper );
   
   // set initial camera positions
   camera.position.set( HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z ); // Set position like this
