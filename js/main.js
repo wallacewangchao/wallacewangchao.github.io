@@ -310,13 +310,6 @@ const promiseMachine = createMachine(
         showContainer( ABOUT_ME );
       },
 
-      clearRadioBtnRed: () => {
-        let checked = RADIO_BTNS_CONTAINER.querySelector('input:checked');
-        if (checked !== null) {
-          checked.checked = false;
-        }
-      },
-
       showProjectPreAD: () => {
         createProjectPage( './subpages/project-preAD.html' ); 
         document.querySelector('.close').addEventListener( 'click', () => {
@@ -1064,15 +1057,16 @@ function setMarkersPositions( markers ) {
 function onMarkerClicked(){
   console.log("marker id: ", this.id);
   if (this.id === "honda_e") {
-    promiseService.send({type: "TO_AUTO_PAGE"});
+    document.getElementById("radio-btn-Automotive").click();
+    // promiseService.send({type: "TO_AUTO_PAGE"});
   }
 
   if (this.id === "me") {
-    promiseService.send({type: "TO_ABOUT_ME_PAGE"});
+    document.getElementById("radio-btn-AboutMe").click();
   }
 
   if (this.id === "robot") {
-    promiseService.send({type: "TO_ROBOT_PAGE"});
+    document.getElementById("radio-btn-Robotics&AI").click();
   }
 }
 
