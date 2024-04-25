@@ -112,7 +112,7 @@ const promiseMachine = createMachine(
         }
       },
       homePage: {
-        entry: [ 'transCamHome', 'showGreeting', 'clearRadioBtnRed', 'hideAutoGrid', 'hideRobotGrid', 
+        entry: [ 'transCamHome', 'showGreeting', 'hideAutoGrid', 'hideRobotGrid', 
                  'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage' ],
         exit: [ 'hideGreeting', 'hideHighLightOverLay' ],
         on: {
@@ -467,6 +467,7 @@ function init() {
   window.addEventListener( 'resize', onWindowResize );
 
   LOGO.addEventListener( 'click', () => {
+    document.getElementById('radio-btn-Home').checked = true;
     promiseService.send({type: "TO_HOME_PAGE"});
   } );
 
@@ -479,6 +480,8 @@ function init() {
       promiseService.send({type: "TO_ROBOT_PAGE"});
     } else if ( id === "radio-btn-AboutMe" ){
       promiseService.send({type: "TO_ABOUT_ME_PAGE"});
+    } else if ( id === "radio-btn-Home" ){
+      promiseService.send({type: "TO_HOME_PAGE"});
     }
   });
 
