@@ -19,9 +19,9 @@ let projectIframe;
 
 const HOME_CAMERA_POS = {
   position: {
-    x: -7,
-    y: 8,
-    z: 7
+    x: -7.9,
+    y: 6,
+    z: 5.6
   },
   lookAt: {
     x: 0,
@@ -543,7 +543,7 @@ function initScene(){
   /**
    * LIGHTS
   **/
-  const hemiLight = new THREE.HemisphereLight( "#E8F8F5", "#E8F8F5", 0.3 );
+  const hemiLight = new THREE.HemisphereLight( "#E8F8F5", "#E8F8F5", 0.1 );
   // hemiLight.color.setHSL( 1, 1, 1);
   hemiLight.position.set( 300, 500, 200 );
   scene.add( hemiLight );
@@ -552,10 +552,10 @@ function initScene(){
   // scene.add( hemiLightHelper );
   
   // direction light
-  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.8 );
+  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.9 );
   dirLight.position.set( 2, 1.3, -2 );
 
-  dirLight.position.multiplyScalar( 5 );
+  // dirLight.position.multiplyScalar( 5 );
 
   // const d = 30;
 
@@ -685,9 +685,9 @@ function initScene(){
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(235,235,235)",
           gradientMap: createToonGradient([
-            { "pos": 0.1, "color": 'rgb(0, 0, 0)' }, 
+            { "pos": 0.1, "color": 'rgb(50, 50, 50)' }, 
             { "pos": 0.5, "color": 'rgb(120, 120, 120)' }, 
-            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }
+            { "pos": 1, "color": 'rgb(256, 256, 256)' }
           ]),
         });
       } else if (o.name === "Head") {
@@ -719,7 +719,6 @@ function initScene(){
       } else if (o.name === "Shoes") {
         o.material = new THREE.MeshToonMaterial({
           color: "#3E2723",
-          // gradientMap: createToonGradient(),
         });
       }
     });
@@ -727,11 +726,10 @@ function initScene(){
     carObj.traverse((o) => {
       if (o.name === "CarBodyModel") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(245,245,245)",
+          color: "rgb(255,255,255)",
           gradientMap: createToonGradient([
-            { "pos": 0, "color": 'rgb(0, 0, 0)' }, 
-            { "pos": 0.2, "color": 'rgb(120, 120, 120)' }, 
-            { "pos": 1, "color": 'rgb(256, 256, 256)' }]),
+            { "pos": 0.2, "color": 'rgb(160, 160, 160)' }, 
+            { "pos": 0.7, "color": 'rgb(255, 255, 255)' }]),
         });
       } else if (o.name === "GlassesModel") {
         o.material = new THREE.MeshToonMaterial({
@@ -946,9 +944,9 @@ function initScene(){
     return gradientMap;
   }
 
-  const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: "#D1F2EB", depthWrite: false } ) );
-  mesh.rotation.x = - Math.PI / 2;
-  mesh.receiveShadow = true;
+  // const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: "#D1F2EB", depthWrite: false } ) );
+  // mesh.rotation.x = - Math.PI / 2;
+  // mesh.receiveShadow = true;
   // scene.add( mesh );
 
   // Axes Helper
