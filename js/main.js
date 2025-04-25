@@ -135,7 +135,8 @@ const promiseMachine = createMachine(
           TO_PROJECT_SOCIALCAR: { target: 'projectSocialCar' },
           TO_PROJECT_HUDAR: { target: 'projectHudAr' },
           TO_PROJECT_ATEAM: { target: 'projectAteam' },
-          TO_PROJECT_LIKES_DISLIKES: { target: 'projectLikesAndDislikes' }
+          TO_PROJECT_LIKES_DISLIKES: { target: 'projectLikesAndDislikes' },
+          TO_PROJECT_HOLOCAR: { target: 'projectHoloCar' },
 
         }
       },
@@ -152,9 +153,9 @@ const promiseMachine = createMachine(
           TO_PROJECT_XAI: { target: 'projectXAI' },
           TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' },
           TO_PROJECT_KORE: { target: 'projectKore' },
-          TO_PROJECT_HOLOCAR: { target: 'projectHoloCar' },
           TO_PROJECT_ICRA24: { target: 'projectIcra24' },
-          TO_PROJECT_LAMI: { target: 'projectLami' }
+          TO_PROJECT_LAMI: { target: 'projectLami' },
+          TO_PROJECT_MIRROREYE: { target: 'projectMirrorEye' }
 
         }
       },
@@ -244,7 +245,7 @@ const promiseMachine = createMachine(
         entry: [ 'showHoloCar', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
-          TO_ROBOT_PAGE: { target: 'robotPage' }
+          TO_ROBOT_PAGE: { target: 'autoPage' }
         }
       },
       projectIcra24: {
@@ -256,6 +257,13 @@ const promiseMachine = createMachine(
       },
       projectLami: {
         entry: [ 'showLami', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectMirrorEye: {
+        entry: [ 'showMirrorEye', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -392,6 +400,13 @@ const promiseMachine = createMachine(
         });
       },
 
+      showMirrorEye: () => {
+        createProjectPage( 'https://hri-eu.github.io/MirrorEyes/' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -514,6 +529,8 @@ function init() {
   setProjectCard(document.getElementById( 'holoCar' ), "TO_PROJECT_HOLOCAR", null);
   setProjectCard(document.getElementById( 'icra24' ), "TO_PROJECT_ICRA24", null);
   setProjectCard(document.getElementById( 'lami' ), "TO_PROJECT_LAMI", null);
+  setProjectCard(document.getElementById( 'mirror-eyes' ), "TO_PROJECT_MIRROREYE", null);
+
 
 
   /* go to home page after init */
