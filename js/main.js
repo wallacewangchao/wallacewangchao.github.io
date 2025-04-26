@@ -155,7 +155,9 @@ const promiseMachine = createMachine(
           TO_PROJECT_KORE: { target: 'projectKore' },
           TO_PROJECT_ICRA24: { target: 'projectIcra24' },
           TO_PROJECT_LAMI: { target: 'projectLami' },
-          TO_PROJECT_MIRROREYE: { target: 'projectMirrorEye' }
+          TO_PROJECT_MIRROREYE: { target: 'projectMirrorEye' },
+          TO_PROJECT_CURIOUSBOT: { target: 'projectCuriousBot' }
+
 
         }
       },
@@ -264,6 +266,13 @@ const promiseMachine = createMachine(
       },
       projectMirrorEye: {
         entry: [ 'showMirrorEye', 'hideNavBar' ],
+        exit: [ 'showNavBar', 'closeProjectPage' ],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectCuriousBot: {
+        entry: [ 'showCuriousBot', 'hideNavBar' ],
         exit: [ 'showNavBar', 'closeProjectPage' ],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -407,6 +416,14 @@ const promiseMachine = createMachine(
         });
       },
 
+      showCuriousBot: () => {
+        createProjectPage( 'https://wallacewangchao.github.io/curious_robot/' );
+        document.querySelector('.close').addEventListener( 'click', () => {
+          promiseService.send({type: "TO_ROBOT_PAGE"});
+        });
+      },
+
+
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -530,6 +547,7 @@ function init() {
   setProjectCard(document.getElementById( 'icra24' ), "TO_PROJECT_ICRA24", null);
   setProjectCard(document.getElementById( 'lami' ), "TO_PROJECT_LAMI", null);
   setProjectCard(document.getElementById( 'mirror-eyes' ), "TO_PROJECT_MIRROREYE", null);
+  setProjectCard(document.getElementById( 'curious-bot' ), "TO_PROJECT_CURIOUSBOT", null);
 
 
 
