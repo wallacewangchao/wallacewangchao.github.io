@@ -26,7 +26,7 @@ const HOME_CAMERA_POS = {
   lookAt: {
     x: 0,
     y: 0,
-    z: 0 
+    z: 0
   }
 }
 
@@ -39,7 +39,7 @@ const AUTO_CAMERA_POS = {
   lookAt: {
     x: 0,
     y: 2,
-    z: 0 
+    z: 0
   }
 }
 
@@ -65,7 +65,7 @@ const PUBLICATION_CAMERA_POS = {
   lookAt: {
     x: -2.293247692752894,
     y: 1.4084096946581774,
-    z: 1.3000324904491558 
+    z: 1.3000324904491558
   }
 }
 
@@ -78,7 +78,7 @@ const ME_CAMERA_POS = {
   lookAt: {
     x: -2.293247692752894,
     y: 1.34,
-    z: 1.30 
+    z: 1.30
   }
 }
 
@@ -98,23 +98,23 @@ const promiseMachine = createMachine(
   {
     id: 'myWeb',
     initial: 'loading',
-    context: 
-    { 
+    context:
+    {
       HOME_CAM_TRANSFORM: { position: HOME_CAMERA_POS.position, lookAt: HOME_CAMERA_POS.lookAt },
-      AUTO_CAM_TRANSFORM: undefined, 
-      AUTO_CAM_TRANSFORM: undefined 
+      AUTO_CAM_TRANSFORM: undefined,
+      AUTO_CAM_TRANSFORM: undefined
     },
     states: {
       loading: {
-        entry: [ 'initialize' ],
+        entry: ['initialize'],
         on: {
           TO_HOME_PAGE: { target: 'homePage' }
         }
       },
       homePage: {
-        entry: [ 'transCamHome', 'showGreeting', 'hideAutoGrid', 'hideRobotGrid', 
-                 'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage' ],
-        exit: [ 'hideGreeting', 'hideHighLightOverLay' ],
+        entry: ['transCamHome', 'showGreeting', 'hideAutoGrid', 'hideRobotGrid',
+          'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage'],
+        exit: ['hideGreeting', 'hideHighLightOverLay'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
@@ -122,8 +122,8 @@ const promiseMachine = createMachine(
         }
       },
       autoPage: {
-        entry: [ 'transCamAuto', 'showAutoGrid', 'showAutoPageObjects' ],
-        exit: [ 'hideAutoGrid' , 'hideAutoPageObjects'],
+        entry: ['transCamAuto', 'showAutoGrid', 'showAutoPageObjects'],
+        exit: ['hideAutoGrid', 'hideAutoPageObjects'],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -141,8 +141,8 @@ const promiseMachine = createMachine(
         }
       },
       robotPage: {
-        entry: [ 'transCamRobot', 'showRobotGrid', 'showRobotPageObjects' ],
-        exit: [ 'hideRobotGrid' ],
+        entry: ['transCamRobot', 'showRobotGrid', 'showRobotPageObjects'],
+        exit: ['hideRobotGrid'],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -156,14 +156,15 @@ const promiseMachine = createMachine(
           TO_PROJECT_ICRA24: { target: 'projectIcra24' },
           TO_PROJECT_LAMI: { target: 'projectLami' },
           TO_PROJECT_MIRROREYE: { target: 'projectMirrorEye' },
-          TO_PROJECT_CURIOUSBOT: { target: 'projectCuriousBot' }
-
+          TO_PROJECT_CURIOUSBOT: { target: 'projectCuriousBot' },
+          TO_PROJECT_AURA: { target: 'projectAura' },
+          TO_PROJECT_FMEXPRESSION: { target: 'projectFMExpression' },
 
         }
       },
       aboutMePage: {
-        entry: [ 'transCamMe', 'showAboutMePage', 'showAboutMePageObjects' ],
-        exit: [ 'hideAboutMePage',  ],
+        entry: ['transCamMe', 'showAboutMePage', 'showAboutMePageObjects'],
+        exit: ['hideAboutMePage',],
         on: {
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
@@ -174,255 +175,282 @@ const promiseMachine = createMachine(
 
       /* sub project pages */
       projectPreAD: {
-        entry: [ 'showProjectPreAD', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showProjectPreAD', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectPedestrian: {
-        entry: [ 'showProjectPedestrian', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showProjectPedestrian', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectSocialCar: {
-        entry: [ 'showProjectSocialCar', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showProjectSocialCar', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectHudAr: {
-        entry: [ 'showHudAr', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showHudAr', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
-      },      
+      },
       projectAteam: {
-        entry: [ 'showAteam', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showAteam', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectLikesAndDislikes: {
-        entry: [ 'showLikesAndDislikes', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showLikesAndDislikes', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectIcps: {
-        entry: [ 'showIcps', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showIcps', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectXAI: {
-        entry: [ 'showXAI', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showXAI', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectArRobot: {
-        entry: [ 'showArRobot', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showArRobot', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectKore: {
-        entry: [ 'showKore', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showKore', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectHoloCar: {
-        entry: [ 'showHoloCar', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showHoloCar', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'autoPage' }
         }
       },
       projectIcra24: {
-        entry: [ 'showIcra24', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showIcra24', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectLami: {
-        entry: [ 'showLami', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showLami', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectMirrorEye: {
-        entry: [ 'showMirrorEye', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showMirrorEye', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectCuriousBot: {
-        entry: [ 'showCuriousBot', 'hideNavBar' ],
-        exit: [ 'showNavBar', 'closeProjectPage' ],
+        entry: ['showCuriousBot', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
+      projectFMExpression: {
+        entry: ['showFMExpression', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectAura: {
+        entry: ['showAura', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      }
     }
   },
   {
-    actions:{
+    actions: {
       initialize: () => {
         init();
         animate();
       },
 
       transCamHome: () => {
-        moveCamera( HOME_CAMERA_POS.position, HOME_CAMERA_POS.lookAt );
+        moveCamera(HOME_CAMERA_POS.position, HOME_CAMERA_POS.lookAt);
       },
       hideGreeting: () => {
-        hideContainer( SELF_INTRODUCTION_CONTAINER );
+        hideContainer(SELF_INTRODUCTION_CONTAINER);
       },
       showGreeting: () => {
-        showContainer( SELF_INTRODUCTION_CONTAINER );
+        showContainer(SELF_INTRODUCTION_CONTAINER);
       },
 
       transCamAuto: () => {
-        moveCamera( AUTO_CAMERA_POS.position, AUTO_CAMERA_POS.lookAt );
+        moveCamera(AUTO_CAMERA_POS.position, AUTO_CAMERA_POS.lookAt);
       },
       hideAutoGrid: () => {
-        hideContainer( AUTOMOTIVE_GRID );     
+        hideContainer(AUTOMOTIVE_GRID);
       },
       showAutoGrid: () => {
-        showContainer( AUTOMOTIVE_GRID );
+        showContainer(AUTOMOTIVE_GRID);
       },
 
       transCamRobot: () => {
-        moveCamera( ROBOT_CAMERA_POS.position, ROBOT_CAMERA_POS.lookAt );
+        moveCamera(ROBOT_CAMERA_POS.position, ROBOT_CAMERA_POS.lookAt);
       },
       hideRobotGrid: () => {
-        hideContainer( ROBOT_GRID );     
+        hideContainer(ROBOT_GRID);
       },
       showRobotGrid: () => {
-        showContainer( ROBOT_GRID );
+        showContainer(ROBOT_GRID);
       },
 
       transCamMe: () => {
-        moveCamera( ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt );
+        moveCamera(ME_CAMERA_POS.position, ME_CAMERA_POS.lookAt);
       },
       hideAboutMePage: () => {
-        hideContainer( ABOUT_ME );     
+        hideContainer(ABOUT_ME);
       },
       showAboutMePage: () => {
-        showContainer( ABOUT_ME );
+        showContainer(ABOUT_ME);
       },
 
       showProjectPreAD: () => {
-        createProjectPage( './subpages/project-preAD.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-preAD.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showProjectPedestrian: () => {
-        createProjectPage( './subpages/project-pedestrian.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-pedestrian.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showProjectSocialCar: () => {
-        createProjectPage( './subpages/project-social-car.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-social-car.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showHudAr: () => {
-        createProjectPage( './subpages/project-hudar.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-hudar.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showAteam: () => {
-        createProjectPage( './subpages/project-a-team.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-a-team.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showLikesAndDislikes: () => {
-        createProjectPage( './subpages/project-likes-dislikes.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_AUTO_PAGE"});
+        createProjectPage('./subpages/project-likes-dislikes.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_AUTO_PAGE" });
         });
       },
       showIcps: () => {
-        createProjectPage( './subpages/project-icps.html' ); 
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('./subpages/project-icps.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
       showXAI: () => {
-        createProjectPage( './subpages/project-xai.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('./subpages/project-xai.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
       showArRobot: () => {
-        createProjectPage( './subpages/project-ar-robot.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('./subpages/project-ar-robot.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
       showKore: () => {
-        createProjectPage( './subpages/project-kore.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('./subpages/project-kore.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
       showHoloCar: () => {
-        createProjectPage( './subpages/project-holo-car.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('./subpages/project-holo-car.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
       showIcra24: () => {
-        createProjectPage( 'https://hri-eu.github.io/Loom/index.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('https://hri-eu.github.io/Loom/index.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
       showLami: () => {
-        createProjectPage( 'https://hri-eu.github.io/Lami/index.html' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('https://hri-eu.github.io/Lami/index.html');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
       showMirrorEye: () => {
-        createProjectPage( 'https://hri-eu.github.io/MirrorEyes/' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('https://hri-eu.github.io/MirrorEyes/');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
       showCuriousBot: () => {
-        createProjectPage( 'https://wallacewangchao.github.io/curious_robot/' );
-        document.querySelector('.close').addEventListener( 'click', () => {
-          promiseService.send({type: "TO_ROBOT_PAGE"});
+        createProjectPage('https://wallacewangchao.github.io/curious_robot/');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
         });
       },
 
+      showFMExpression: () => {
+        createProjectPage('https://wallacewangchao.github.io/fm-expressions/');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
+        });
+      },
+
+      showAura: () => {
+        createProjectPage('https://sites.google.com/view/aura-robot/home');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
+        });
+      },
 
       hide3DContainer: () => {
         hide3DContainer();
@@ -430,7 +458,7 @@ const promiseMachine = createMachine(
 
       closeProjectPage: () => {
         destroyProjectPage();
-        setThreeObjectsVisibility( [egoTrajectory, carWarningBox, pedestrianWarningBox, musicIcon, starIcon, heartIcon], false);
+        setThreeObjectsVisibility([egoTrajectory, carWarningBox, pedestrianWarningBox, musicIcon, starIcon, heartIcon], false);
       },
 
       hideNavBar: () => {
@@ -489,102 +517,110 @@ promiseService.start();
 /*************** init *****************/
 function init() {
   initScene();
-  window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener('resize', onWindowResize);
 
-  LOGO.addEventListener( 'click', () => {
+  LOGO.addEventListener('click', () => {
     document.getElementById('radio-btn-Home').checked = true;
-    promiseService.send({type: "TO_HOME_PAGE"});
-  } );
+    promiseService.send({ type: "TO_HOME_PAGE" });
+  });
 
   /* navbar buttons event listener */
-  RADIO_BTNS_CONTAINER.addEventListener( 'change', () => {
+  RADIO_BTNS_CONTAINER.addEventListener('change', () => {
     let id = RADIO_BTNS_CONTAINER.querySelector('input:checked').id;
-    if ( id === "radio-btn-Automotive" ) {
-      promiseService.send({type: "TO_AUTO_PAGE"});
-    } else if ( id === "radio-btn-Robotics&AI" ) {
-      promiseService.send({type: "TO_ROBOT_PAGE"});
-    } else if ( id === "radio-btn-AboutMe" ){
-      promiseService.send({type: "TO_ABOUT_ME_PAGE"});
-    } else if ( id === "radio-btn-Home" ){
-      promiseService.send({type: "TO_HOME_PAGE"});
+    if (id === "radio-btn-Automotive") {
+      promiseService.send({ type: "TO_AUTO_PAGE" });
+    } else if (id === "radio-btn-Robotics&AI") {
+      promiseService.send({ type: "TO_ROBOT_PAGE" });
+    } else if (id === "radio-btn-AboutMe") {
+      promiseService.send({ type: "TO_ABOUT_ME_PAGE" });
+    } else if (id === "radio-btn-Home") {
+      promiseService.send({ type: "TO_HOME_PAGE" });
     }
   });
 
   /* sub project card event listener */
-  const pageIds = ["cooperative-driving", "pedestrian-communication", "social-car", "hud-ar", "a-team", "like-dislike", "ICPs", "mobileCAM", "arRobot", "kore" ];
+  const pageIds = ["cooperative-driving", "pedestrian-communication", "social-car", "hud-ar", "a-team", "like-dislike", "ICPs", "mobileCAM", "arRobot", "kore"];
 
-  let cooperativeDrivingPage = document.getElementById( 'cooperative-driving' );
+  let cooperativeDrivingPage = document.getElementById('cooperative-driving');
   setProjectCard(cooperativeDrivingPage, "TO_PROJECT_PREAD", preAdMarkers);
 
-  let pedestrianCommunicationPage = document.getElementById( 'pedestrian-communication' );
+  let pedestrianCommunicationPage = document.getElementById('pedestrian-communication');
   setProjectCard(pedestrianCommunicationPage, "TO_PROJECT_PEDESTRIAN", pedestrianMarkers);
 
-  let socialCarPage = document.getElementById( 'social-car' );
+  let socialCarPage = document.getElementById('social-car');
   setProjectCard(socialCarPage, "TO_PROJECT_SOCIALCAR", socialCarMarkers);
 
-  let hudArPage = document.getElementById( 'hud-ar' );
+  let hudArPage = document.getElementById('hud-ar');
   setProjectCard(hudArPage, "TO_PROJECT_HUDAR", socialCarMarkers);
 
-  let ateamPage = document.getElementById( 'a-team' );
+  let ateamPage = document.getElementById('a-team');
   setProjectCard(ateamPage, "TO_PROJECT_ATEAM", null);
 
-  let likesDislikesPage = document.getElementById( 'like-dislike' );
+  let likesDislikesPage = document.getElementById('like-dislike');
   setProjectCard(likesDislikesPage, "TO_PROJECT_LIKES_DISLIKES", socialCarMarkers);
 
-  let icpsPage = document.getElementById( 'ICPs' );
+  let icpsPage = document.getElementById('ICPs');
   setProjectCard(icpsPage, "TO_PROJECT_ICPS", null);
 
-  let icpsXAI = document.getElementById( 'mobileCAM' );
+  let icpsXAI = document.getElementById('mobileCAM');
   setProjectCard(icpsXAI, "TO_PROJECT_XAI", null);
 
-  let arRobot = document.getElementById( 'arRobot' );
+  let arRobot = document.getElementById('arRobot');
   setProjectCard(arRobot, "TO_PROJECT_AR_ROBOT", null);
 
-  let kore = document.getElementById( 'kore' );
+  let kore = document.getElementById('kore');
   setProjectCard(kore, "TO_PROJECT_KORE", null);
-  
-  setProjectCard(document.getElementById( 'holoCar' ), "TO_PROJECT_HOLOCAR", null);
-  setProjectCard(document.getElementById( 'icra24' ), "TO_PROJECT_ICRA24", null);
-  setProjectCard(document.getElementById( 'lami' ), "TO_PROJECT_LAMI", null);
-  setProjectCard(document.getElementById( 'mirror-eyes' ), "TO_PROJECT_MIRROREYE", null);
-  setProjectCard(document.getElementById( 'curious-bot' ), "TO_PROJECT_CURIOUSBOT", null);
 
+  setProjectCard(document.getElementById('holoCar'), "TO_PROJECT_HOLOCAR", null);
+  setProjectCard(document.getElementById('icra24'), "TO_PROJECT_ICRA24", null);
+  setProjectCard(document.getElementById('lami'), "TO_PROJECT_LAMI", null);
+  setProjectCard(document.getElementById('mirror-eyes'), "TO_PROJECT_MIRROREYE", null);
+  setProjectCard(document.getElementById('curious-bot'), "TO_PROJECT_CURIOUSBOT", null);
+  setProjectCard(document.getElementById('fm-expression'), "TO_PROJECT_FMEXPRESSION", null);
+  // Aura site (Google Sites) blocks embedding in iframes. Open in new tab and do NOT change app state.
+  const auraCard = document.getElementById('aura');
+  if (auraCard) {
+    auraCard.addEventListener('click', (e) => {
+      if (e) e.preventDefault();
+      window.open('https://sites.google.com/view/aura-robot/home', '_blank', 'noopener,noreferrer');
+    });
+  }
 
 
   /* go to home page after init */
-  promiseService.send({type: "TO_HOME_PAGE"});
+  promiseService.send({ type: "TO_HOME_PAGE" });
 }
 
 /*************** init Threejs *****************/
-function initScene(){
+function initScene() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( "#FEF9E7" );
+  scene.background = new THREE.Color("#FEF9E7");
 
-  camera = new THREE.PerspectiveCamera( 25, THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight, 0.001, 1000 );
+  camera = new THREE.PerspectiveCamera(25, THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight, 0.001, 1000);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
-  
+  renderer.setSize(THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight);
+
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
-  THREEJS_CONTAINER.appendChild( renderer.domElement );
-  
+  THREEJS_CONTAINER.appendChild(renderer.domElement);
+
   /**
    * LIGHTS
   **/
-  const hemiLight = new THREE.HemisphereLight( "#E8F8F5", "#E8F8F5", 0.1 );
+  const hemiLight = new THREE.HemisphereLight("#E8F8F5", "#E8F8F5", 0.1);
   // hemiLight.color.setHSL( 1, 1, 1);
-  hemiLight.position.set( 300, 500, 200 );
-  scene.add( hemiLight );
+  hemiLight.position.set(300, 500, 200);
+  scene.add(hemiLight);
 
   // const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
   // scene.add( hemiLightHelper );
-  
+
   // direction light
-  dirLight = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.9 );
-  dirLight.position.set( 2, 1.3, -2 );
+  dirLight = new THREE.DirectionalLight("rgb(255, 255, 255)", 0.9);
+  dirLight.position.set(2, 1.3, -2);
 
   // dirLight.position.multiplyScalar( 5 );
 
@@ -604,11 +640,11 @@ function initScene(){
 
   // dirLight.shadow.bias = - 0.0001;
   dirLight.castShadow = true;
-  scene.add( dirLight );
+  scene.add(dirLight);
 
   // const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 6 );
   // scene.add( dirLightHelper );
-  
+
   // const dirLight2 = new THREE.DirectionalLight( "rgb(255, 255, 255)", 0.6 );
   // dirLight2.position.set( 1, 1.75, 0 );
   // dirLight2.position.multiplyScalar( 5 );
@@ -618,71 +654,71 @@ function initScene(){
 
   /* loading Manager */
   const loadingManager = new THREE.LoadingManager();
-  loadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+  loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
     // console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
   };
-  
-  loadingManager.onLoad = function ( ) {
+
+  loadingManager.onLoad = function () {
     // console.log( 'Loading complete!');
     document.querySelector('.page-loader').remove();
   };
-  
-  
-  loadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+
+
+  loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
     // console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-    document.querySelector('.page-loader p').innerText = "Loading 3D models: " + Math.floor( itemsLoaded / itemsTotal * 100 ) + "%";
+    document.querySelector('.page-loader p').innerText = "Loading 3D models: " + Math.floor(itemsLoaded / itemsTotal * 100) + "%";
 
   };
-  
-  loadingManager.onError = function ( url ) {
+
+  loadingManager.onError = function (url) {
     // console.log( 'There was an error loading ' + url );
     document.querySelector('.page-loader p').innerText = "There was an error while loading models, please refresh the page";
 
   };
 
   // model loader 
-  const loader = new THREE.GLTFLoader( loadingManager );
+  const loader = new THREE.GLTFLoader(loadingManager);
   const dracoLoader = new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath( './js/' );
-  loader.setDRACOLoader( dracoLoader );
-  loader.setMeshoptDecoder( MeshoptDecoder );
-  
-  loader.load( './models/whole_scene_toon.glb', function ( gltf ) {
+  dracoLoader.setDecoderPath('./js/');
+  loader.setDRACOLoader(dracoLoader);
+  loader.setMeshoptDecoder(MeshoptDecoder);
+
+  loader.load('./models/whole_scene_toon.glb', function (gltf) {
     const root = gltf.scene;
     root.castShadow = true;
     gltf.scene.receiveShadow = true;
 
-    root.traverse( function( node ) {
+    root.traverse(function (node) {
 
-      if ( node.name === "me" ){
+      if (node.name === "me") {
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         meObj = node;
-      } else if ( node.name === "honda_e" ){
+      } else if (node.name === "honda_e") {
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         carObj = node;
-      } else if ( node.name === "robot" ){
+      } else if (node.name === "robot") {
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         robotObj = node;
-      } else if ( node.name === "ego_trajectory" ){
+      } else if (node.name === "ego_trajectory") {
         egoTrajectory = node;
-      } else if ( node.name === "pedestrian" ){
+      } else if (node.name === "pedestrian") {
         pedestrianObj = node;
         autoPageObjects.push(pedestrianObj);
-      } else if ( node.name === "heart" ){
+      } else if (node.name === "heart") {
         heartIcon = node;
-      } else if ( node.name === "star" ){
+      } else if (node.name === "star") {
         starIcon = node;
-      } else if ( node.name === "music" ){
+      } else if (node.name === "music") {
         musicIcon = node;
-      } else if ( node.name === "drone" ){
+      } else if (node.name === "drone") {
         droneObj = node;
-      } 
-      
-      if ( node.isMesh ) {
-        if ( node.type === "SkinnedMesh" ) {
+      }
+
+      if (node.isMesh) {
+        if (node.type === "SkinnedMesh") {
           node.frustumCulled = false;
         }
         node.receiveShadow = false;
@@ -690,21 +726,21 @@ function initScene(){
       }
 
     });
-    scene.add( root );
+    scene.add(root);
 
-    homePageMarkers.forEach( marker => {
+    homePageMarkers.forEach(marker => {
       OVERLAY_CONTAINER.appendChild(marker);
     });
-    
+
     setMarkersPositions(homePageMarkers);
     console.log(gltf);
 
     droneObj.position.set(-2.4, 1.5, 0.2);
-    droneObj.rotation.set(-Math.PI/2, 0, 0);
+    droneObj.rotation.set(-Math.PI / 2, 0, 0);
 
     /* set auto page objects */
-    const whiteMaterial = new THREE.MeshToonMaterial( {color: "rgb(99, 125, 138)"} );
-    const warningBoxMaterial = new THREE.MeshToonMaterial( {color: "rgb(254, 47, 47)"} );
+    const whiteMaterial = new THREE.MeshToonMaterial({ color: "rgb(99, 125, 138)" });
+    const warningBoxMaterial = new THREE.MeshToonMaterial({ color: "rgb(254, 47, 47)" });
 
     meObj.traverse((o) => {
       if (o.name === "OutfitBottom") {
@@ -716,8 +752,8 @@ function initScene(){
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(235,235,235)",
           gradientMap: createToonGradient([
-            { "pos": 0.1, "color": 'rgb(50, 50, 50)' }, 
-            { "pos": 0.5, "color": 'rgb(120, 120, 120)' }, 
+            { "pos": 0.1, "color": 'rgb(50, 50, 50)' },
+            { "pos": 0.5, "color": 'rgb(120, 120, 120)' },
             { "pos": 1, "color": 'rgb(256, 256, 256)' }
           ]),
         });
@@ -730,18 +766,18 @@ function initScene(){
           color: "rgb(255, 255, 255)",
           map: faceTexture,
           gradientMap: createToonGradient([
-            {"pos":0.35,"color":"rgb(125, 107, 101)"},
-            {"pos":0.8,"color":"rgb(255, 187, 166)"}
+            { "pos": 0.35, "color": "rgb(125, 107, 101)" },
+            { "pos": 0.8, "color": "rgb(255, 187, 166)" }
           ]),
         });
       } else if (o.name === "Hands") {
-          o.material = new THREE.MeshToonMaterial({
-            color: "rgb(255, 255, 255)",
-            gradientMap: createToonGradient([
-              {"pos":0.35,"color":"rgb(125, 107, 101)"},
-              {"pos":0.8,"color":"rgb(255, 187, 166)"}
-            ]),
-          });
+        o.material = new THREE.MeshToonMaterial({
+          color: "rgb(255, 255, 255)",
+          gradientMap: createToonGradient([
+            { "pos": 0.35, "color": "rgb(125, 107, 101)" },
+            { "pos": 0.8, "color": "rgb(255, 187, 166)" }
+          ]),
+        });
       } else if (o.name === "Hair") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(10, 10, 10)",
@@ -759,7 +795,7 @@ function initScene(){
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(255,255,255)",
           gradientMap: createToonGradient([
-            { "pos": 0.2, "color": 'rgb(160, 160, 160)' }, 
+            { "pos": 0.2, "color": 'rgb(160, 160, 160)' },
             { "pos": 0.7, "color": 'rgb(255, 255, 255)' }]),
         });
       } else if (o.name === "GlassesModel") {
@@ -767,9 +803,9 @@ function initScene(){
           color: "rgb(15,15,15)",
           gradientMap: createToonGradient(),
         });
-      } else if (o.name === "BodyFrontBackPlasticModel" || o.name === "RoofPlasticModel" || o.name === "BaseModel" 
-      || o.name === "FrontBajosPalitos_Plastic25_0001" || o.name === "BrakeLightFrameModel"
-      || o.name === "HeadBeamModel" || o.name === "BeamFrameModel" || o.name === "WheelScrewerModel" ) {
+      } else if (o.name === "BodyFrontBackPlasticModel" || o.name === "RoofPlasticModel" || o.name === "BaseModel"
+        || o.name === "FrontBajosPalitos_Plastic25_0001" || o.name === "BrakeLightFrameModel"
+        || o.name === "HeadBeamModel" || o.name === "BeamFrameModel" || o.name === "WheelScrewerModel") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(10,10,10)",
           gradientMap: createToonGradient(),
@@ -794,7 +830,7 @@ function initScene(){
           color: "rgb(30, 30, 30)",
           gradientMap: createToonGradient(),
         });
-      } else if (o.name === "HeadLampCircleModel" ) {
+      } else if (o.name === "HeadLampCircleModel") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(204, 255, 255)",
           gradientMap: createToonGradient(),
@@ -807,8 +843,8 @@ function initScene(){
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(245,245,245)",
           gradientMap: createToonGradient([
-            { "pos": 0, "color": 'rgb(0, 0, 0)' }, 
-            { "pos": 0.1, "color": 'rgb(120, 120, 120)' }, 
+            { "pos": 0, "color": 'rgb(0, 0, 0)' },
+            { "pos": 0.1, "color": 'rgb(120, 120, 120)' },
             { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]),
         });
       } else if (o.name === "arms_model") {
@@ -831,9 +867,9 @@ function initScene(){
 
     /* set other cars */
     let otherCar1 = carObj.clone();
-    scene.add( otherCar1 );
-    otherCar1.position.set( -12, 0, -2 );
-    otherCar1.traverse( (o) => {
+    scene.add(otherCar1);
+    otherCar1.position.set(-12, 0, -2);
+    otherCar1.traverse((o) => {
       if (o.isMesh) {
         o.receiveShadow = true;
         o.material = whiteMaterial;
@@ -841,8 +877,8 @@ function initScene(){
     });
 
     let otherCar2 = otherCar1.clone();
-    scene.add( otherCar2 );
-    otherCar2.position.set( -30, 0, 0 );
+    scene.add(otherCar2);
+    otherCar2.position.set(-30, 0, 0);
 
     autoPageObjects.push(otherCar1);
     autoPageObjects.push(otherCar2);
@@ -850,7 +886,7 @@ function initScene(){
 
 
     droneObj.traverse((o) => {
-      if (o.name === "propellers" ) {
+      if (o.name === "propellers") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(10,10,10)",
           gradientMap: createToonGradient(),
@@ -873,8 +909,8 @@ function initScene(){
     })
 
     /* set preAD markers */
-    let trajectoryMaterial = new THREE.MeshToonMaterial({color: "rgb(0, 134, 179)"});
-    egoTrajectory.traverse( (o) => {
+    let trajectoryMaterial = new THREE.MeshToonMaterial({ color: "rgb(0, 134, 179)" });
+    egoTrajectory.traverse((o) => {
       if (o.isMesh) {
         o.receiveShadow = false;
         o.castShadow = true;
@@ -882,36 +918,36 @@ function initScene(){
       }
     });
 
-    carWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 4.2, 1.6, 2 ), warningBoxMaterial );
-    carWarningBox.position.set( -10.6, 0.8, -2 );
-    carWarningBox.material.transparent =true;
+    carWarningBox = new THREE.Mesh(new THREE.BoxGeometry(4.2, 1.6, 2), warningBoxMaterial);
+    carWarningBox.position.set(-10.6, 0.8, -2);
+    carWarningBox.material.transparent = true;
     carWarningBox.material.opacity = 0.5;
-    scene.add( carWarningBox );
+    scene.add(carWarningBox);
 
     preAdMarkers.push(egoTrajectory, carWarningBox);
     setThreeObjectsVisibility(preAdMarkers, false);
 
     /* set pedestrian markers */
-    pedestrianWarningBox = new THREE.Mesh( new THREE.BoxGeometry( 0.6, 2, 0.6 ), warningBoxMaterial );
-    pedestrianWarningBox.position.set( -4.9, 1, 3.3 );
-    pedestrianWarningBox.material.transparent =true;
+    pedestrianWarningBox = new THREE.Mesh(new THREE.BoxGeometry(0.6, 2, 0.6), warningBoxMaterial);
+    pedestrianWarningBox.position.set(-4.9, 1, 3.3);
+    pedestrianWarningBox.material.transparent = true;
     pedestrianWarningBox.material.opacity = 0.5;
-    scene.add( pedestrianWarningBox );
+    scene.add(pedestrianWarningBox);
 
     pedestrianMarkers.push(pedestrianWarningBox);
-    setThreeObjectsVisibility( pedestrianMarkers, false);
+    setThreeObjectsVisibility(pedestrianMarkers, false);
 
-    pedestrianObj.traverse( (o) => {
+    pedestrianObj.traverse((o) => {
       if (o.isMesh) {
         o.material = whiteMaterial;
       }
     });
 
     /* set social car markers */
-    const heartMaterial = new THREE.MeshToonMaterial( {color: "rgb(254, 47, 47)"} );
-    const starMaterial = new THREE.MeshToonMaterial( {color: "rgb(230, 184, 0)"} );
-    const musicMaterial = new THREE.MeshToonMaterial( {color: "rgb(0, 134, 179)"} );
-    heartIcon.traverse( (o) => {
+    const heartMaterial = new THREE.MeshToonMaterial({ color: "rgb(254, 47, 47)" });
+    const starMaterial = new THREE.MeshToonMaterial({ color: "rgb(230, 184, 0)" });
+    const musicMaterial = new THREE.MeshToonMaterial({ color: "rgb(0, 134, 179)" });
+    heartIcon.traverse((o) => {
       if (o.isMesh) {
         o.receiveShadow = false;
         o.castShadow = false;
@@ -919,14 +955,14 @@ function initScene(){
       }
     });
 
-    starIcon.traverse( (o) => {
+    starIcon.traverse((o) => {
       if (o.isMesh) {
         o.receiveShadow = false;
         o.castShadow = false;
         o.material = starMaterial;
       }
     });
-    musicIcon.traverse( (o) => {
+    musicIcon.traverse((o) => {
       if (o.isMesh) {
         o.receiveShadow = false;
         o.castShadow = false;
@@ -934,25 +970,25 @@ function initScene(){
       }
     });
 
-    heartIcon.position.set(1,2,0);
+    heartIcon.position.set(1, 2, 0);
     starIcon.position.set(-30, 2, 0);
     musicIcon.position.set(-12, 1.5, -2);
     socialCarMarkers.push(starIcon);
     socialCarMarkers.push(heartIcon);
     socialCarMarkers.push(musicIcon);
-    setThreeObjectsVisibility( socialCarMarkers, false);
+    setThreeObjectsVisibility(socialCarMarkers, false);
 
-    
-  }, function(xhr){
+
+  }, function (xhr) {
     // document.querySelector('.page-loader p').innerText = "loading 3D models: " + Math.floor( xhr.loaded / xhr.total * 100 ) + "%";
-		// console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-  }, function ( error ) { 
-    console.error( error );
-  } );
-  
-  function createToonGradient(colorStops = [{ "pos": 0, "color": 'rgb(0, 0, 0)' }, 
-                                            { "pos": 0.2, "color": 'rgb(120, 120, 120)' }, 
-                                            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]) {
+    // console.log( Math.floor( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+  }, function (error) {
+    console.error(error);
+  });
+
+  function createToonGradient(colorStops = [{ "pos": 0, "color": 'rgb(0, 0, 0)' },
+  { "pos": 0.2, "color": 'rgb(120, 120, 120)' },
+  { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]) {
     const canvas = document.createElement('canvas');
     canvas.width = 4;
     canvas.height = 1;
@@ -983,27 +1019,27 @@ function initScene(){
   // Axes Helper
   // const axesHelper = new THREE.AxesHelper( 5 );
   // scene.add( axesHelper );
-  
-  // set initial camera positions
-  camera.position.set( HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z ); // Set position like this
 
-  effect = new THREE.OutlineEffect( renderer );
+  // set initial camera positions
+  camera.position.set(HOME_CAMERA_POS.position.x, HOME_CAMERA_POS.position.y, HOME_CAMERA_POS.position.z); // Set position like this
+
+  effect = new THREE.OutlineEffect(renderer);
 
   // orbit control
-  controls = new THREE.OrbitControls( camera, renderer.domElement );
-  controls.addEventListener( 'change', render );
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.addEventListener('change', render);
   controls.minPolarAngle = 0;
   controls.maxPolarAngle = Math.PI / 2;
-  controls.target.set( HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z );
+  controls.target.set(HOME_CAMERA_POS.lookAt.x, HOME_CAMERA_POS.lookAt.y, HOME_CAMERA_POS.lookAt.z);
   controls.enableDamping = true;
   controls.enablePan = false;
   controls.minDistance = 0.2;
   controls.maxDistance = 30;
-  
+
 }
 
 function render() {
-  effect.render( scene, camera );
+  effect.render(scene, camera);
   setMarkersPositions(homePageMarkers);
 
   // console.log("camera position", camera.position);
@@ -1011,9 +1047,9 @@ function render() {
 }
 
 function animate() {
-  requestAnimationFrame( animate );
+  requestAnimationFrame(animate);
   controls.update(); // required if damping enabled
-  renderer.render( scene, camera );
+  renderer.render(scene, camera);
 
   TWEEN.update();
 
@@ -1022,74 +1058,73 @@ function animate() {
 function onWindowResize() {
   camera.aspect = THREEJS_CONTAINER.clientWidth / THREEJS_CONTAINER.clientHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize( THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight );
+  renderer.setSize(THREEJS_CONTAINER.clientWidth, THREEJS_CONTAINER.clientHeight);
   setMarkersPositions(homePageMarkers);
 
 }
 
-function toScreenPosition(obj, camera)
-{
-    var vector = new THREE.Vector3();
+function toScreenPosition(obj, camera) {
+  var vector = new THREE.Vector3();
 
-    var widthHalf = 0.5*renderer.getContext().canvas.width;
-    var heightHalf = 0.5*renderer.getContext().canvas.height;
+  var widthHalf = 0.5 * renderer.getContext().canvas.width;
+  var heightHalf = 0.5 * renderer.getContext().canvas.height;
 
-    obj.updateMatrixWorld();
-    vector.setFromMatrixPosition(obj.matrixWorld);
-    vector.project(camera);
+  obj.updateMatrixWorld();
+  vector.setFromMatrixPosition(obj.matrixWorld);
+  vector.project(camera);
 
-    vector.x = ( vector.x * widthHalf ) + widthHalf;
-    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+  vector.x = (vector.x * widthHalf) + widthHalf;
+  vector.y = - (vector.y * heightHalf) + heightHalf;
 
-    return { 
-        x: vector.x,
-        y: vector.y
-    };
+  return {
+    x: vector.x,
+    y: vector.y
+  };
 };
 
-function setDivPosition(div, pos){
+function setDivPosition(div, pos) {
   div.style.left = pos.x + 'px';
   div.style.top = pos.y + 'px';
 }
 
-function moveCamera(cameraTargetPosition, cameraTargetLookAt){
+function moveCamera(cameraTargetPosition, cameraTargetLookAt) {
 
   TWEEN.removeAll();
-  new TWEEN.Tween( camera.position )
-						.to( cameraTargetPosition, 1000 )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
+  new TWEEN.Tween(camera.position)
+    .to(cameraTargetPosition, 1000)
+    .easing(TWEEN.Easing.Exponential.InOut)
+    .start();
 
-  new TWEEN.Tween( controls.target )
-						.to( cameraTargetLookAt, 1000 )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
+  new TWEEN.Tween(controls.target)
+    .to(cameraTargetLookAt, 1000)
+    .easing(TWEEN.Easing.Exponential.InOut)
+    .start();
 
 }
 
-function onHightClicked(){
-  promiseService.send({type: "TO_AUTO_PAGE"});
+function onHightClicked() {
+  promiseService.send({ type: "TO_AUTO_PAGE" });
 }
 
-function makeMarker( node ) {
+function makeMarker(node) {
   let markerDiv = document.createElement('div');
   markerDiv.classList.add('highlight-rect');
   markerDiv.id = node.name;
-  markerDiv.addEventListener( 'click', onMarkerClicked );
+  markerDiv.addEventListener('click', onMarkerClicked);
 
   return markerDiv;
 }
 
-function setMarkersPositions( markers ) {
-  markers.forEach( marker => {
-    let object = scene.getObjectByName( marker.id );
-    let position = toScreenPosition( object, camera );
+function setMarkersPositions(markers) {
+  markers.forEach(marker => {
+    let object = scene.getObjectByName(marker.id);
+    let position = toScreenPosition(object, camera);
     marker.style.left = position.x + 'px';
     marker.style.top = position.y + 'px';
   });
 }
 
-function onMarkerClicked(){
+function onMarkerClicked() {
   console.log("marker id: ", this.id);
   if (this.id === "honda_e") {
     document.getElementById("radio-btn-Automotive").click();
@@ -1105,17 +1140,17 @@ function onMarkerClicked(){
   }
 }
 
-function hideContainer(div){
+function hideContainer(div) {
   div.style.visibility = 'hidden';
   div.style.opacity = 0;
 }
 
-function showContainer(div){
+function showContainer(div) {
   div.style.visibility = 'visible';
   div.style.opacity = 1;
 }
 
-function createProjectPage( projectURL ) {
+function createProjectPage(projectURL) {
   projectIframe = document.createElement('iframe');
   projectIframe.src = projectURL;
   projectIframe.classList.add('project-iframe-container');
@@ -1127,35 +1162,35 @@ function createProjectPage( projectURL ) {
   document.querySelector('main').appendChild(closeBtn);
 }
 
-function destroyProjectPage(){
+function destroyProjectPage() {
   projectIframe.remove();
   document.querySelector('.close').remove();
 }
 
 
-function hide3DContainer(){
+function hide3DContainer() {
   renderer.setAnimationLoop(null);
   THREEJS_CONTAINER.style.visibility = 'hidden';
   OVERLAY_CONTAINER.style.visibility = 'hidden';
 }
 
-function setThreeObjectsVisibility(objects, isVisible){
-  objects.forEach( obj => {
+function setThreeObjectsVisibility(objects, isVisible) {
+  objects.forEach(obj => {
     if (obj.visible !== isVisible) obj.visible = isVisible;
   });
 }
 
-function setProjectCard(cardDiv, toState, relatedMarkers){
-  cardDiv.addEventListener( 'click', () => {
-    promiseService.send({type: toState});
+function setProjectCard(cardDiv, toState, relatedMarkers) {
+  cardDiv.addEventListener('click', () => {
+    promiseService.send({ type: toState });
   });
   if (relatedMarkers !== null) {
-    cardDiv.addEventListener( 'mouseenter', () => {
-      setThreeObjectsVisibility( relatedMarkers, true);
+    cardDiv.addEventListener('mouseenter', () => {
+      setThreeObjectsVisibility(relatedMarkers, true);
     });
-    cardDiv.addEventListener( 'mouseleave', () => {
-      if ( promiseService.state.value === 'autoPage' || promiseService.state.value === 'robotPage' ) 
-        setThreeObjectsVisibility( relatedMarkers, false);
+    cardDiv.addEventListener('mouseleave', () => {
+      if (promiseService.state.value === 'autoPage' || promiseService.state.value === 'robotPage')
+        setThreeObjectsVisibility(relatedMarkers, false);
     });
   }
 }

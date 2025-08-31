@@ -1,218 +1,257 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- <meta charset="utf-8"> -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Chao's world</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/main.css">
+<head>
+  <!-- <meta charset="utf-8"> -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <link rel="icon" type="image/png" href="./favicon-white-artistic.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chao's world</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./css/main.css">
 
-    <script src="./js/threeJs-r134/build/three.js"></script>
-    <script src="./js/threeJs-r134/js/controls/OrbitControls.js"></script>
+  <link rel="icon" type="image/png" href="./favicon-white-artistic.png">
 
-    <script src="./js/threeJs-r134/js/loaders/GLTFLoader.js"></script>
-    <script src="./js/threeJs-r134/js/loaders/DRACOLoader.js"></script>
-    <script src="./js/threeJs-r134/js/libs/meshopt_decoder.js"></script>
+  <script src="./js/threeJs-r134/build/three.js"></script>
+  <script src="./js/threeJs-r134/js/controls/OrbitControls.js"></script>
 
-    <script src="./js/threeJs-r134/js/libs/dat.gui.min.js"></script>
-    <script src="./js/threeJs-r134/js/effects/OutlineEffect.js"></script>
+  <script src="./js/threeJs-r134/js/loaders/GLTFLoader.js"></script>
+  <script src="./js/threeJs-r134/js/loaders/DRACOLoader.js"></script>
+  <script src="./js/threeJs-r134/js/libs/meshopt_decoder.js"></script>
 
-    <script src="./js/threeJs-r134/js/shaders/HorizontalBlurShader.js"></script>
-    <script src="./js/threeJs-r134/js/shaders/VerticalBlurShader.js"></script>
-    <script src="./js/tween.umd.js"></script>
+  <script src="./js/threeJs-r134/js/libs/dat.gui.min.js"></script>
+  <script src="./js/threeJs-r134/js/effects/OutlineEffect.js"></script>
 
-    <script src="./js/xstate.js"></script>
+  <script src="./js/threeJs-r134/js/shaders/HorizontalBlurShader.js"></script>
+  <script src="./js/threeJs-r134/js/shaders/VerticalBlurShader.js"></script>
+  <script src="./js/tween.umd.js"></script>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ8WNGYXYL"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script src="./js/xstate.js"></script>
 
-      gtag('config', 'G-QZ8WNGYXYL');
-    </script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ8WNGYXYL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ8WNGYXYL');
+  </script>
 
 
-  </head>
+</head>
 
-  <body>
-    <main>
-      <div id="highlight-overlay"></div>
-      <div id="threejs-container"></div>
-    
-      <div class="nav-bar"> 
-        <img id="logo" src="./img/chao-logo-m.png">
+<body>
+  <main>
+    <div id="highlight-overlay"></div>
+    <div id="threejs-container"></div>
 
-        <div class="link-div">
-          <a href="https://github.com/wallacewangchao"  target="_blank">
-            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v4/icons/github.svg">
-          </a>
-          <a href="https://www.instagram.com/wallacewangchao/" target="_blank" >
-            <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/instagram.svg" >
-          </a>
-          <a href="https://www.linkedin.com/in/chao-wang-259b052b/" target="_blank">
-            <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/linkedin.svg">
-          </a>
-          <a href="https://scholar.google.de/citations?user=TUEFo84AAAAJ&hl=en" target="_blank">
-            <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/googlescholar.svg">
-          </a>
-        </div>
+    <div class="nav-bar">
+      <img id="logo" src="./img/chao-logo-m.png">
 
-        <form>
-          <label>
-            <input type="radio" name="nav-radio-btns" id="radio-btn-Home" checked />
-            <span>Home</span>
-          </label>
-          <label>
-            <input type="radio" name="nav-radio-btns" id="radio-btn-Automotive"/>
-            <span>Automotive</span>
-          </label>
-          <label>
-            <input type="radio" name="nav-radio-btns" id="radio-btn-Robotics&AI"/>
-            <span>Robotics&XR</span>
-          </label>
-          <label>
-            <input type="radio" name="nav-radio-btns" id="radio-btn-AboutMe"/>
-            <span>About Me</span>
-          </label>
-        </form>
+      <div class="link-div">
+        <a href="https://github.com/wallacewangchao" target="_blank">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v4/icons/github.svg">
+        </a>
+        <a href="https://www.instagram.com/wallacewangchao/" target="_blank">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/instagram.svg">
+        </a>
+        <a href="https://www.linkedin.com/in/chao-wang-259b052b/" target="_blank">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/linkedin.svg">
+        </a>
+        <a href="https://scholar.google.de/citations?user=TUEFo84AAAAJ&hl=en" target="_blank">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@4.25.0/icons/googlescholar.svg">
+        </a>
       </div>
 
-      <div id="automotive-grid" class="sub-project-grid">
-        <div id="cooperative-driving" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/automotive/frame-15.jpg')">
-          <div class="card-content">
-            <div>Human-vehicle Cooperation <br> in Prediction Level</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="pedestrian-communication" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/automotive/eve-tb.jpg')">
-          <div class="card-content">
-            <div>Communication between Autonous vehicle and pedestrian</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="a-team" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/automotive/img_8355.jpg')">
-          <div class="card-content">
-            <div>HMI design exploration of autonomous driving vehilce</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="social-car" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/automotive/img_9920221.jpg')">
-          <div class="card-content">
-            <div>The Social Car: Enhancing Communication between Drivers</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="holoCar" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/holo-car.jpg')">
-          <div class="card-content">
-            <div>Enhancing Driver's risk awareness via Augmented Reality Glasses
-            </div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="hud-ar" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/automotive/snip20160414_2.jpg')">
-          <div class="card-content">
-            <div>The HUD-AR</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="like-dislike" class="grid-span-2 project-card" style="background-image: url('./img/project_thumbnail/automotive/like&Dislik-tb.jpg')">
-          <div class="card-content">
-            <div>Like&Dislike on Road</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="robot-grid" class="sub-project-grid">
-        <div id="arRobot" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/ar-robot.jpg')">
-          <div class="card-content">
-            <div>Explainable Human-Robot Training and Cooperation with Augmented Reality</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="lami" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/lami.jpg')">
-          <div class="card-content">
-            <div>LAMI: Large Language Models for Multi-Modal Human-Robot Interaction</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="mirror-eyes" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/mirror-eyes.jpeg')">
-          <div class="card-content">
-            <div>Mirror Eyes: Explainable Human-Robot Interaction at a Glance</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="icra24" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/icra-24.jpg')">
-          <div class="card-content">
-            <div>CoPAL: Corrective Planning of Robot Actions with Large Language Models</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-
-        <div id="ICPs" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/icps.jpg')">
-          <div class="card-content">
-            <div>ICPS</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="mobileCAM" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/cam.jpg')">
-          <div class="card-content">
-            <div>What is on CNN's mind?</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-        <div id="curious-bot" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/curious-bot.jpg')">
-          <div class="card-content">
-            <div>Investigating LLM-Driven Curiosity in Human-Robot Interaction</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-
-        <div id="kore" class="grid-span-4 project-card" style="background-image: url('./img/project_thumbnail/robotics/kore-scene.jpg')">
-          <div class="card-content">
-            <div>Sense-making of the Reasoning Process while Interacting with Robots via Visualization</div>
-            <div>Learn More</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="about-me-container">
-        <iframe src="./subpages/about-me.html"></iframe>
-      </div>
-
-      <div id="selfintro-container">
-        <div class="greeting_div">
-          <div class="greeting_text">
-            Hi! I am Chao.
-          </div>
-        </div>
-        <div class="intro_text">
-          My name is Chao Wang, a Principal Research Scientist at Honda Research Institute. <br><br>
-          I design, develop and research AI-driven interfaces for autonomous vehicles and robotics that enhance communication between humans and machines, via multimodal methods, e.g., augmented reality, speech and gaze.
-        </div>
-      </div>
-    </main>
-
-    <div class="page-loader">
-      <img src="./img/logo_low.gif">
-      <p>loading 3D models</p>
+      <form>
+        <label>
+          <input type="radio" name="nav-radio-btns" id="radio-btn-Home" checked />
+          <span>Home</span>
+        </label>
+        <label>
+          <input type="radio" name="nav-radio-btns" id="radio-btn-Automotive" />
+          <span>Automotive</span>
+        </label>
+        <label>
+          <input type="radio" name="nav-radio-btns" id="radio-btn-Robotics&AI" />
+          <span>Robotics&XR</span>
+        </label>
+        <label>
+          <input type="radio" name="nav-radio-btns" id="radio-btn-AboutMe" />
+          <span>About Me</span>
+        </label>
+      </form>
     </div>
 
-    <script src="./js/main.js" async defer></script>
+    <div id="automotive-grid" class="sub-project-grid">
+      <div id="cooperative-driving" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/frame-15.jpg')">
+        <div class="card-content">
+          <div>Human-vehicle Cooperation <br> in Prediction Level</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="pedestrian-communication" class="grid-span-2 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/eve-tb.jpg')">
+        <div class="card-content">
+          <div>Communication between Autonous vehicle and pedestrian</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="a-team" class="grid-span-2 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/img_8355.jpg')">
+        <div class="card-content">
+          <div>HMI design exploration of autonomous driving vehilce</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="social-car" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/img_9920221.jpg')">
+        <div class="card-content">
+          <div>The Social Car: Enhancing Communication between Drivers</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="holoCar" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/holo-car.jpg')">
+        <div class="card-content">
+          <div>Enhancing Driver's risk awareness via Augmented Reality Glasses
+          </div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="hud-ar" class="grid-span-2 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/snip20160414_2.jpg')">
+        <div class="card-content">
+          <div>The HUD-AR</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="like-dislike" class="grid-span-2 project-card"
+        style="background-image: url('./img/project_thumbnail/automotive/like&Dislik-tb.jpg')">
+        <div class="card-content">
+          <div>Like&Dislike on Road</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4R35C6"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-  </body>
+    <div id="robot-grid" class="sub-project-grid">
+      <div id="lami" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/lami.jpg')">
+        <div class="card-content">
+          <div>LAMI: Large Language Models for Multi-Modal Human-Robot Interaction</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="curious-bot" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/curious-bot.jpg')">
+        <div class="card-content">
+          <div>Investigating LLM-Driven Curiosity in Human-Robot Interaction</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+      <div id="mirror-eyes" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/mirror-eyes.jpg')">
+        <div class="card-content">
+          <div>Mirror Eyes: Explainable Human-Robot Interaction at a Glance</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+      <div id="aura" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/aura.jpg')">
+        <div class="card-content">
+          <div>AURA: Design Exploration of an Attentive Robot</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="fm-expression" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/fm-expression.jpg')">
+        <div class="card-content">
+          <div>Real-Time Robotic Emotional Expression from MR Demos via Flow Matching</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="arRobot" class="grid-span-4 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/ar-robot.jpg')">
+        <div class="card-content">
+          <div>Explainable Human-Robot Training and Cooperation with Augmented Reality</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+      <div id="icra24" class="grid-span-1 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/icra-24.jpg')">
+        <div class="card-content">
+          <div>CoPAL: Corrective Planning of Robot Actions with Large Language Models</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+      <div id="mobileCAM" class="grid-span-1 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/cam.jpg')">
+        <div class="card-content">
+          <div>What is on CNN's mind?</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+      <div id="kore" class="grid-span-1 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/kore-scene.jpg')">
+        <div class="card-content">
+          <div>Sense-making of the Reasoning Process while Interacting with Robots via Visualization</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+      <div id="ICPs" class="grid-span-1 project-card"
+        style="background-image: url('./img/project_thumbnail/robotics/icps.jpg')">
+        <div class="card-content">
+          <div>ICPS</div>
+          <div>Learn More</div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div id="about-me-container">
+      <iframe src="./subpages/about-me.html"></iframe>
+    </div>
+
+    <div id="selfintro-container">
+      <div class="greeting_div">
+        <div class="greeting_text">
+          Hi! I am Chao.
+        </div>
+      </div>
+      <div class="intro_text">
+        My name is Chao Wang, a Principal Research Scientist at Honda Research Institute. <br><br>
+        I design, develop and research AI-driven interfaces for autonomous vehicles and robotics that enhance
+        communication between humans and machines, via multimodal methods, e.g., augmented reality, speech and gaze.
+      </div>
+    </div>
+  </main>
+
+  <div class="page-loader">
+    <img src="./img/logo_low.gif">
+    <p>loading 3D models</p>
+  </div>
+
+  <script src="./js/main.js" async defer></script>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4R35C6" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+</body>
+
 </html>
