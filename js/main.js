@@ -159,6 +159,7 @@ const promiseMachine = createMachine(
           TO_PROJECT_CURIOUSBOT: { target: 'projectCuriousBot' },
           TO_PROJECT_AURA: { target: 'projectAura' },
           TO_PROJECT_FMEXPRESSION: { target: 'projectFMExpression' },
+          TO_PROJECT_ARGAME: { target: 'projectArGame' },
 
         }
       },
@@ -288,6 +289,13 @@ const promiseMachine = createMachine(
       },
       projectAura: {
         entry: ['showAura', 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectArGame: {
+        entry: ['showArGame', 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -452,6 +460,14 @@ const promiseMachine = createMachine(
         });
       },
 
+      showArGame: () => {
+        console.log("show ar game");
+        createProjectPage('https://wallacewangchao.github.io/ar-bot-game/');
+        document.querySelector('.close').addEventListener('click', () => {
+          promiseService.send({ type: "TO_ROBOT_PAGE" });
+        });
+      },
+
       hide3DContainer: () => {
         hide3DContainer();
       },
@@ -539,7 +555,7 @@ function init() {
   });
 
   /* sub project card event listener */
-  const pageIds = ["cooperative-driving", "pedestrian-communication", "social-car", "hud-ar", "a-team", "like-dislike", "ICPs", "mobileCAM", "arRobot", "kore"];
+  // const pageIds = ["cooperative-driving", "pedestrian-communication", "social-car", "hud-ar", "a-team", "like-dislike", "ICPs", "mobileCAM", "arRobot", "kore"];
 
   let cooperativeDrivingPage = document.getElementById('cooperative-driving');
   setProjectCard(cooperativeDrivingPage, "TO_PROJECT_PREAD", preAdMarkers);
@@ -577,6 +593,8 @@ function init() {
   setProjectCard(document.getElementById('mirror-eyes'), "TO_PROJECT_MIRROREYE", null);
   setProjectCard(document.getElementById('curious-bot'), "TO_PROJECT_CURIOUSBOT", null);
   setProjectCard(document.getElementById('fm-expression'), "TO_PROJECT_FMEXPRESSION", null);
+  setProjectCard(document.getElementById('ar-game'), "TO_PROJECT_ARGAME", null);
+
   // Aura site (Google Sites) blocks embedding in iframes. Open in new tab and do NOT change app state.
   const auraCard = document.getElementById('aura');
   if (auraCard) {
