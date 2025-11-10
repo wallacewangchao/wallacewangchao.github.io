@@ -93,6 +93,27 @@ const IFRAME_CONTAINER = document.getElementById('iframe-container');
 const NAV_BAR = document.querySelector('.nav-bar');
 const ABOUT_ME = document.getElementById('about-me-container');
 
+const PROJECT_PAGE_CONFIG = {
+  projectPreAD: { url: './subpages/project-preAD.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectPedestrian: { url: './subpages/project-pedestrian.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectSocialCar: { url: './subpages/project-social-car.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectHudAr: { url: './subpages/project-hudar.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectAteam: { url: './subpages/project-a-team.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectLikesAndDislikes: { url: './subpages/project-likes-dislikes.html', closeEvent: 'TO_AUTO_PAGE' },
+  projectHoloCar: { url: './subpages/project-holo-car.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectIcps: { url: './subpages/project-icps.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectXAI: { url: './subpages/project-xai.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectArRobot: { url: './subpages/project-ar-robot.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectKore: { url: './subpages/project-kore.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectIcra24: { url: 'https://hri-eu.github.io/Loom/index.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectLami: { url: 'https://hri-eu.github.io/Lami/index.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectMirrorEye: { url: 'https://hri-eu.github.io/MirrorEyes/', closeEvent: 'TO_ROBOT_PAGE' },
+  projectCuriousBot: { url: 'https://wallacewangchao.github.io/curious_robot/', closeEvent: 'TO_ROBOT_PAGE' },
+  projectFMExpression: { url: 'https://wallacewangchao.github.io/fm-expressions/', closeEvent: 'TO_ROBOT_PAGE' },
+  projectAura: { url: 'https://sites.google.com/view/aura-robot/home', closeEvent: 'TO_ROBOT_PAGE' },
+  projectArGame: { url: 'https://wallacewangchao.github.io/ar-bot-game/', closeEvent: 'TO_ROBOT_PAGE' }
+};
+
 /*************** set state machine *****************/
 const promiseMachine = createMachine(
   {
@@ -176,126 +197,126 @@ const promiseMachine = createMachine(
 
       /* sub project pages */
       projectPreAD: {
-        entry: ['showProjectPreAD', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectPreAD' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectPedestrian: {
-        entry: ['showProjectPedestrian', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectPedestrian' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectSocialCar: {
-        entry: ['showProjectSocialCar', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectSocialCar' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectHudAr: {
-        entry: ['showHudAr', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectHudAr' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectAteam: {
-        entry: ['showAteam', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectAteam' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectLikesAndDislikes: {
-        entry: ['showLikesAndDislikes', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectLikesAndDislikes' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' }
         }
       },
       projectIcps: {
-        entry: ['showIcps', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectIcps' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectXAI: {
-        entry: ['showXAI', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectXAI' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectArRobot: {
-        entry: ['showArRobot', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectArRobot' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectKore: {
-        entry: ['showKore', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectKore' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectHoloCar: {
-        entry: ['showHoloCar', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectHoloCar' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'autoPage' }
         }
       },
       projectIcra24: {
-        entry: ['showIcra24', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectIcra24' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectLami: {
-        entry: ['showLami', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectLami' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectMirrorEye: {
-        entry: ['showMirrorEye', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectMirrorEye' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectCuriousBot: {
-        entry: ['showCuriousBot', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectCuriousBot' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectFMExpression: {
-        entry: ['showFMExpression', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectFMExpression' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectAura: {
-        entry: ['showAura', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectAura' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
         }
       },
       projectArGame: {
-        entry: ['showArGame', 'hideNavBar'],
+        entry: [{ type: 'openProjectPage', projectId: 'projectArGame' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -350,122 +371,22 @@ const promiseMachine = createMachine(
         showContainer(ABOUT_ME);
       },
 
-      showProjectPreAD: () => {
-        createProjectPage('./subpages/project-preAD.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showProjectPedestrian: () => {
-        createProjectPage('./subpages/project-pedestrian.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showProjectSocialCar: () => {
-        createProjectPage('./subpages/project-social-car.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showHudAr: () => {
-        createProjectPage('./subpages/project-hudar.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showAteam: () => {
-        createProjectPage('./subpages/project-a-team.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showLikesAndDislikes: () => {
-        createProjectPage('./subpages/project-likes-dislikes.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_AUTO_PAGE" });
-        });
-      },
-      showIcps: () => {
-        createProjectPage('./subpages/project-icps.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-      showXAI: () => {
-        createProjectPage('./subpages/project-xai.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-      showArRobot: () => {
-        createProjectPage('./subpages/project-ar-robot.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-      showKore: () => {
-        createProjectPage('./subpages/project-kore.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showHoloCar: () => {
-        createProjectPage('./subpages/project-holo-car.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showIcra24: () => {
-        createProjectPage('https://hri-eu.github.io/Loom/index.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showLami: () => {
-        createProjectPage('https://hri-eu.github.io/Lami/index.html');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showMirrorEye: () => {
-        createProjectPage('https://hri-eu.github.io/MirrorEyes/');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showCuriousBot: () => {
-        createProjectPage('https://wallacewangchao.github.io/curious_robot/');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showFMExpression: () => {
-        createProjectPage('https://wallacewangchao.github.io/fm-expressions/');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showAura: () => {
-        createProjectPage('https://sites.google.com/view/aura-robot/home');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
-      },
-
-      showArGame: () => {
-        console.log("show ar game");
-        createProjectPage('https://wallacewangchao.github.io/ar-bot-game/');
-        document.querySelector('.close').addEventListener('click', () => {
-          promiseService.send({ type: "TO_ROBOT_PAGE" });
-        });
+      openProjectPage: (_, __, { action }) => {
+        const projectId = action.projectId;
+        const config = PROJECT_PAGE_CONFIG[projectId];
+        if (!config) {
+          console.warn(`Missing project config for ${projectId}`);
+          return;
+        }
+        createProjectPage(config.url);
+        const closeBtn = document.querySelector('.close');
+        if (!closeBtn) {
+          console.warn('Close button not found after creating project page');
+          return;
+        }
+        closeBtn.addEventListener('click', () => {
+          promiseService.send({ type: config.closeEvent });
+        }, { once: true });
       },
 
       hide3DContainer: () => {
