@@ -108,10 +108,10 @@ const PROJECT_PAGE_CONFIG = {
   projectIcra24: { url: 'https://hri-eu.github.io/Loom/index.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectLami: { url: 'https://hri-eu.github.io/Lami/index.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectMirrorEye: { url: 'https://hri-eu.github.io/MirrorEyes/', closeEvent: 'TO_ROBOT_PAGE' },
-  projectCuriousBot: { url: 'https://wallacewangchao.github.io/curious_robot/', closeEvent: 'TO_ROBOT_PAGE' },
-  projectFMExpression: { url: 'https://wallacewangchao.github.io/fm-expressions/', closeEvent: 'TO_ROBOT_PAGE' },
+  projectCuriousBot: { url: 'https://hri-eu.github.io/curious_robot/', closeEvent: 'TO_ROBOT_PAGE' },
+  projectFMExpression: { url: 'https://hri-eu.github.io/flow_expressions_page', closeEvent: 'TO_ROBOT_PAGE' },
   projectAura: { url: 'https://sites.google.com/view/aura-robot/home', closeEvent: 'TO_ROBOT_PAGE' },
-  projectArGame: { url: 'https://wallacewangchao.github.io/ar-bot-game/', closeEvent: 'TO_ROBOT_PAGE' }
+  projectArGame: { url: 'https://hri-eu.github.io/twenty_seven_robot', closeEvent: 'TO_ROBOT_PAGE' }
 };
 
 /*************** set state machine *****************/
