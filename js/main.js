@@ -92,6 +92,7 @@ const RADIO_BTNS_CONTAINER = document.querySelector('.nav-bar form');
 const IFRAME_CONTAINER = document.getElementById('iframe-container');
 const NAV_BAR = document.querySelector('.nav-bar');
 const ABOUT_ME = document.getElementById('about-me-container');
+const PUBLICATIONS = document.getElementById('publications-container');
 
 const PROJECT_PAGE_CONFIG = {
   projectPreAD: { url: './subpages/project-preAD.html', closeEvent: 'TO_AUTO_PAGE' },
@@ -134,12 +135,13 @@ const promiseMachine = createMachine(
       },
       homePage: {
         entry: ['transCamHome', 'showGreeting', 'hideAutoGrid', 'hideRobotGrid',
-          'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage'],
+          'showHomePageObjects', 'showHighLightOverLay', 'hideAboutMePage', 'hidePublicationsPage'],
         exit: ['hideGreeting', 'hideHighLightOverLay'],
         on: {
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
-          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+          TO_PUBLICATIONS_PAGE: { target: 'publicationsPage' }
         }
       },
       autoPage: {
@@ -150,6 +152,7 @@ const promiseMachine = createMachine(
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
           TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+          TO_PUBLICATIONS_PAGE: { target: 'publicationsPage' },
 
           TO_PROJECT_PREAD: { target: 'projectPreAD' },
           TO_PROJECT_PEDESTRIAN: { target: 'projectPedestrian' },
@@ -169,6 +172,7 @@ const promiseMachine = createMachine(
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
           TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+          TO_PUBLICATIONS_PAGE: { target: 'publicationsPage' },
 
           TO_PROJECT_ICPS: { target: 'projectIcps' },
           TO_PROJECT_XAI: { target: 'projectXAI' },
@@ -191,7 +195,19 @@ const promiseMachine = createMachine(
           TO_HOME_PAGE: { target: 'homePage' },
           TO_AUTO_PAGE: { target: 'autoPage' },
           TO_ROBOT_PAGE: { target: 'robotPage' },
-          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' }
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+          TO_PUBLICATIONS_PAGE: { target: 'publicationsPage' }
+        }
+      },
+      publicationsPage: {
+        entry: ['transCamPublications', 'showPublicationsPage', 'showPublicationsPageObjects'],
+        exit: ['hidePublicationsPage',],
+        on: {
+          TO_HOME_PAGE: { target: 'homePage' },
+          TO_AUTO_PAGE: { target: 'autoPage' },
+          TO_ROBOT_PAGE: { target: 'robotPage' },
+          TO_ABOUT_ME_PAGE: { target: 'aboutMePage' },
+          TO_PUBLICATIONS_PAGE: { target: 'publicationsPage' }
         }
       },
 
@@ -371,6 +387,16 @@ const promiseMachine = createMachine(
         showContainer(ABOUT_ME);
       },
 
+      transCamPublications: () => {
+        moveCamera(PUBLICATION_CAMERA_POS.position, PUBLICATION_CAMERA_POS.lookAt);
+      },
+      hidePublicationsPage: () => {
+        hideContainer(PUBLICATIONS);
+      },
+      showPublicationsPage: () => {
+        showContainer(PUBLICATIONS);
+      },
+
       openProjectPage: (_, __, { action }) => {
         const projectId = action.projectId;
         const config = PROJECT_PAGE_CONFIG[projectId];
@@ -439,6 +465,13 @@ const promiseMachine = createMachine(
         carObj.visible = false;
         droneObj.visible = true;
         setThreeObjectsVisibility(autoPageObjects, false);
+      },
+      showPublicationsPageObjects: () => {
+        robotObj.visible = false;
+        meObj.visible = true;
+        carObj.visible = false;
+        droneObj.visible = true;
+        setThreeObjectsVisibility(autoPageObjects, false);
       }
 
     }
@@ -470,6 +503,8 @@ function init() {
       promiseService.send({ type: "TO_ROBOT_PAGE" });
     } else if (id === "radio-btn-AboutMe") {
       promiseService.send({ type: "TO_ABOUT_ME_PAGE" });
+    } else if (id === "radio-btn-Publications") {
+      promiseService.send({ type: "TO_PUBLICATIONS_PAGE" });
     } else if (id === "radio-btn-Home") {
       promiseService.send({ type: "TO_HOME_PAGE" });
     }

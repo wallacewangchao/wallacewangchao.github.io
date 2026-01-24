@@ -88,6 +88,14 @@ div::-webkit-scrollbar-thumb {
 
 }
 
+#publications-container {
+  grid-column: 3/8;
+  grid-row: 1/5;
+  overflow-y: hidden;
+  transition: opacity 0.25s ease-in-out;
+  padding: 2% 2% 2% 2%;
+}
+
 .project-iframe-container {
   grid-column: 1/14;
   grid-row: 1/5;
@@ -416,6 +424,11 @@ iframe {
     grid-column: 1/17;
     grid-row: 4/5;
 
+  }
+
+  #publications-container {
+    grid-column: 1/17;
+    grid-row: 4/5;
   }
 
   .project-iframe-container {
