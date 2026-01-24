@@ -1,0 +1,31 @@
+{% assign pub_thumbnail = entry.thumbnail | default: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"
+    width="320" height="200" viewBox="0 0 320 200">
+    <rect width="320" height="200" fill="%23dcdcdc" />
+    <rect x="32" y="48" width="256" height="104" rx="10" fill="%23f8f8f8" /><text x="160" y="112"
+        font-family="Roboto, Arial" font-size="24" text-anchor="middle" fill="%23666">Thumbnail</text>
+</svg>' %}
+<img class="pub-thumb" alt="Publication thumbnail" src="{{ pub_thumbnail }}">
+<div class="pub-content">
+    <h3 class="pub-title">{{ entry.title }}</h3>
+    {% if entry.author %}
+    <p class="pub-authors">{{ entry.author }}</p>
+    {% endif %}
+    {% assign venue = entry.journal | default: entry.booktitle %}
+    {% if venue or entry.year %}
+    <p class="pub-venue"><em>{{ venue }}{% if venue and entry.year %}, {% endif %}{{ entry.year }}</em></p>
+    {% endif %}
+    <div class="pub-actions">
+        {% if entry.website %}
+        <a class="pub-btn" href="{{ entry.website }}" target="_blank" rel="noopener">Website</a>
+        {% endif %}
+        {% if entry.pdf %}
+        <a class="pub-btn" href="{{ entry.pdf }}" target="_blank" rel="noopener">PDF</a>
+        {% endif %}
+        {% if entry.publication %}
+        <a class="pub-btn" href="{{ entry.publication }}" target="_blank" rel="noopener">Publication</a>
+        {% endif %}
+        {% if entry.videos %}
+        <a class="pub-btn" href="{{ entry.videos }}" target="_blank" rel="noopener">Videos</a>
+        {% endif %}
+    </div>
+</div>

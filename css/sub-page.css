@@ -128,6 +128,39 @@ figcaption {
   gap: 1.5rem;
 }
 
+.publications .bibliography {
+  display: flex;
+  flex-flow: column;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.publications .bibliography li {
+  list-style: none;
+}
+
+.publications h2.bibliography,
+.publications h3.bibliography {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #9f9b90;
+  letter-spacing: 0.04em;
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.publications h2.bibliography::before,
+.publications h3.bibliography::before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #d8d3bf;
+}
+
 .pub-item {
   display: grid;
   grid-template-columns: 160px 1fr;
