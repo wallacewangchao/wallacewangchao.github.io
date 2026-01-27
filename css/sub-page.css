@@ -165,7 +165,8 @@ figcaption {
   display: grid;
   grid-template-columns: 160px 1fr;
   gap: 1.25rem;
-  align-items: center;
+  align-items: start;
+  justify-items: start;
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -180,6 +181,11 @@ figcaption {
   border-radius: 6px;
   border: 1px solid #d7d1bc;
   background: #dcdcdc;
+  justify-self: start;
+}
+
+.pub-content {
+  text-align: left;
 }
 
 .pub-title {
@@ -264,7 +270,7 @@ a {
   font-weight: 300;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 480px) {
   .pub-item {
     grid-template-columns: 1fr;
   }

@@ -5,7 +5,7 @@ plugins:
 scholar:
   style: apa
   locale: en
-  bibliography: assets/bib/publications.bib
+  bibliography: publications.bib
   bibliography_template: pub-item
   sort_by: year
   order: descending
