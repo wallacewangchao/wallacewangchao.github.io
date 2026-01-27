@@ -184,6 +184,11 @@ figcaption {
   justify-self: start;
 }
 
+.pub-thumb--empty {
+  background: transparent;
+  border: 0;
+}
+
 .pub-content {
   text-align: left;
 }

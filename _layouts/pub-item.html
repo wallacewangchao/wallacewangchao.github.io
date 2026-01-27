@@ -1,11 +1,15 @@
-{% assign pub_thumbnail = entry.thumbnail | default: '/img/pub-placeholder.svg' %}
-{% if pub_thumbnail contains 'http' or pub_thumbnail contains 'data:' %}
-    {% assign pub_thumb_src = pub_thumbnail %}
-{% else %}
-    {% assign pub_thumb_src = pub_thumbnail | relative_url %}
-{% endif %}
 <div class="pub-item">
-    <img class="pub-thumb" alt="Publication thumbnail" src="{{ pub_thumb_src }}">
+    {% if entry.thumbnail %}
+        {% assign pub_thumbnail = entry.thumbnail %}
+        {% if pub_thumbnail contains 'http' or pub_thumbnail contains 'data:' %}
+            {% assign pub_thumb_src = pub_thumbnail %}
+        {% else %}
+            {% assign pub_thumb_src = pub_thumbnail | relative_url %}
+        {% endif %}
+        <img class="pub-thumb" alt="Publication thumbnail" src="{{ pub_thumb_src }}">
+    {% else %}
+        <div class="pub-thumb pub-thumb--empty" aria-hidden="true"></div>
+    {% endif %}
     <div class="pub-content">
         <h3 class="pub-title">{{ entry.title }}</h3>
         {% if entry.author %}
