@@ -85,6 +85,7 @@ div::-webkit-scrollbar-thumb {
   overflow-y: hidden;
   transition: opacity 0.25s ease-in-out;
   padding: 2% 2% 2% 2%;
+  z-index: 10;
 
 }
 
@@ -94,6 +95,7 @@ div::-webkit-scrollbar-thumb {
   overflow-y: hidden;
   transition: opacity 0.25s ease-in-out;
   padding: 2% 2% 2% 2%;
+  z-index: 11;
 }
 
 .project-iframe-container {
