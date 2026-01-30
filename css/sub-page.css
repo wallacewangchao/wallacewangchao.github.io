@@ -5,6 +5,16 @@
   padding: 0;
 }
 
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Scroll 2 */
 body::-webkit-scrollbar {
   width: 5px;
