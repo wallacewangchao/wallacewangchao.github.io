@@ -106,6 +106,7 @@ const PROJECT_PAGE_CONFIG = {
   projectXAI: { url: './subpages/project-xai.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectArRobot: { url: './subpages/project-ar-robot.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectKore: { url: './subpages/project-kore.html', closeEvent: 'TO_ROBOT_PAGE' },
+  projectReachyVrQuest: { url: './subpages/project-reachy-vr-quest.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectIcra24: { url: 'https://hri-eu.github.io/Loom/index.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectLami: { url: 'https://hri-eu.github.io/Lami/index.html', closeEvent: 'TO_ROBOT_PAGE' },
   projectMirrorEye: { url: 'https://hri-eu.github.io/MirrorEyes/', closeEvent: 'TO_ROBOT_PAGE' },
@@ -178,6 +179,7 @@ const promiseMachine = createMachine(
           TO_PROJECT_XAI: { target: 'projectXAI' },
           TO_PROJECT_AR_ROBOT: { target: 'projectArRobot' },
           TO_PROJECT_KORE: { target: 'projectKore' },
+          TO_PROJECT_REACHYVRQUEST: { target: 'projectReachyVrQuest' },
           TO_PROJECT_ICRA24: { target: 'projectIcra24' },
           TO_PROJECT_LAMI: { target: 'projectLami' },
           TO_PROJECT_MIRROREYE: { target: 'projectMirrorEye' },
@@ -277,6 +279,13 @@ const promiseMachine = createMachine(
       },
       projectKore: {
         entry: [{ type: 'openProjectPage', projectId: 'projectKore' }, 'hideNavBar'],
+        exit: ['showNavBar', 'closeProjectPage'],
+        on: {
+          TO_ROBOT_PAGE: { target: 'robotPage' }
+        }
+      },
+      projectReachyVrQuest: {
+        entry: [{ type: 'openProjectPage', projectId: 'projectReachyVrQuest' }, 'hideNavBar'],
         exit: ['showNavBar', 'closeProjectPage'],
         on: {
           TO_ROBOT_PAGE: { target: 'robotPage' }
@@ -545,6 +554,7 @@ function init() {
 
   setProjectCard(document.getElementById('holoCar'), "TO_PROJECT_HOLOCAR", null);
   setProjectCard(document.getElementById('icra24'), "TO_PROJECT_ICRA24", null);
+  setProjectCard(document.getElementById('reachy-vr-quest'), "TO_PROJECT_REACHYVRQUEST", null);
   setProjectCard(document.getElementById('lami'), "TO_PROJECT_LAMI", null);
   setProjectCard(document.getElementById('mirror-eyes'), "TO_PROJECT_MIRROREYE", null);
   setProjectCard(document.getElementById('curious-bot'), "TO_PROJECT_CURIOUSBOT", null);
