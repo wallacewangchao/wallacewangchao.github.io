@@ -146,12 +146,32 @@
     }
 
     .teleop-media-card,
+    .teleop-camera-demo,
     .teleop-mechanism {
       overflow: hidden;
       border: 1px solid var(--teleop-line);
       border-radius: 18px;
       background: var(--teleop-card);
       box-shadow: 0 18px 50px rgba(38, 63, 76, 0.07);
+    }
+
+    .teleop-comfort-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .teleop-camera-demo video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      background: #091015;
+      object-fit: contain;
+    }
+
+    .teleop-camera-demo .teleop-card-copy {
+      padding: 24px;
     }
 
     .teleop-media-card video {
@@ -221,6 +241,7 @@
     @media (max-width: 900px) {
       .teleop-section-header,
       .teleop-media-grid,
+      .teleop-comfort-grid,
       .teleop-mechanism figcaption {
         grid-template-columns: 1fr;
       }
@@ -393,21 +414,41 @@
           </p>
         </div>
 
-        <figure class="teleop-mechanism">
-          <img src="../img/subpages/teleop-vla/teleop-cam.jpg"
-            alt="MR teleoperation setup and three compensated camera views showing the relationship between human head rotation, robot head rotation, and virtual screen orientation.">
-          <figcaption>
-            <p>
-              <strong>Top:</strong> The MR headset subscribes to the actual rotation of the robot head and computes the
-              rotation difference with respect to the human head's desired rotation.
-            </p>
-            <p>
-              <strong>Bottom:</strong> The teleoperation view locally compensates the virtual screen orientation using
-              this difference. Aligning the displayed video stream with the robot head pose reduces visual mismatch
-              and helps mitigate motion sickness.
-            </p>
-          </figcaption>
-        </figure>
+        <div class="teleop-comfort-grid">
+          <article class="teleop-camera-demo">
+            <video controls playsinline preload="metadata"
+              aria-label="First-person teleoperation view with local screen-orientation compensation"
+              aria-describedby="camera-view-description">
+              <source src="../img/subpages/teleop-vla/camera-view.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <div class="teleop-card-copy">
+              <p class="teleop-card-kicker">Compensated first-person view</p>
+              <h3>Stabilizing the Operator's Visual Experience</h3>
+              <p id="camera-view-description">
+                This first-person recording demonstrates the teleoperation view after local virtual-screen
+                compensation. As the robot head follows the operator, the displayed camera stream is reoriented to
+                reduce visual mismatch and help prevent motion sickness.
+              </p>
+            </div>
+          </article>
+
+          <figure class="teleop-mechanism">
+            <img src="../img/subpages/teleop-vla/teleop-cam.jpg"
+              alt="MR teleoperation setup and three compensated camera views showing the relationship between human head rotation, robot head rotation, and virtual screen orientation.">
+            <figcaption>
+              <p>
+                <strong>Top:</strong> The MR headset subscribes to the actual rotation of the robot head and computes the
+                rotation difference with respect to the human head's desired rotation.
+              </p>
+              <p>
+                <strong>Bottom:</strong> The teleoperation view locally compensates the virtual screen orientation using
+                this difference. Aligning the displayed video stream with the robot head pose reduces visual mismatch
+                and helps mitigate motion sickness.
+              </p>
+            </figcaption>
+          </figure>
+        </div>
       </section>
     </div>
   </main>
