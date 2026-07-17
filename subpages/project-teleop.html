@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="An immersive mixed-reality teleoperation system for VLA training, physical human-robot interaction, facial retargeting, and motion-sickness mitigation.">
+  <title>Immersive Teleoperation for Robot Learning and HRI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/sub-page.css">
+
+  <style>
+    :root {
+      --teleop-ink: #13212c;
+      --teleop-muted: #52626f;
+      --teleop-blue: #238fce;
+      --teleop-coral: #e96662;
+      --teleop-paper: #f2f6f8;
+      --teleop-card: #ffffff;
+      --teleop-line: #d8e2e8;
+    }
+
+    body.teleop-body {
+      background: var(--teleop-paper);
+      color: var(--teleop-ink);
+    }
+
+    main.teleop-page {
+      display: block;
+      min-height: 100%;
+      padding: 0;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(35, 143, 206, 0.12), transparent 28rem),
+        var(--teleop-paper);
+      color: var(--teleop-ink);
+      line-height: 1.65;
+    }
+
+    .teleop-shell {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 72px 0 80px;
+    }
+
+    .teleop-hero {
+      position: relative;
+      padding: 28px 0 64px;
+      border-bottom: 1px solid var(--teleop-line);
+    }
+
+    .teleop-hero::before {
+      content: "";
+      display: block;
+      width: 76px;
+      height: 4px;
+      margin-bottom: 28px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teleop-blue), var(--teleop-coral));
+    }
+
+    .teleop-eyebrow,
+    .teleop-section-label,
+    .teleop-card-kicker {
+      color: var(--teleop-blue);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .teleop-hero h1 {
+      max-width: 950px;
+      margin-top: 14px;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+    }
+
+    .teleop-lead {
+      max-width: 820px;
+      margin-top: 28px;
+      color: var(--teleop-muted);
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+      font-weight: 300;
+      text-align: left;
+    }
+
+    .teleop-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+      list-style: none;
+    }
+
+    .teleop-tags li {
+      padding: 7px 13px;
+      border: 1px solid rgba(35, 143, 206, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.68);
+      color: #315363;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .teleop-section {
+      padding-top: 72px;
+    }
+
+    .teleop-section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .teleop-section h2 {
+      margin-top: 8px;
+      font-size: clamp(2rem, 4vw, 3.15rem);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    .teleop-section-intro {
+      color: var(--teleop-muted);
+      font-weight: 300;
+      text-align: left;
+    }
+
+    .teleop-media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .teleop-media-card,
+    .teleop-mechanism {
+      overflow: hidden;
+      border: 1px solid var(--teleop-line);
+      border-radius: 18px;
+      background: var(--teleop-card);
+      box-shadow: 0 18px 50px rgba(38, 63, 76, 0.07);
+    }
+
+    .teleop-media-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      background: #091015;
+      object-fit: cover;
+    }
+
+    .teleop-card-copy {
+      padding: 24px 26px 28px;
+    }
+
+    .teleop-card-kicker {
+      color: var(--teleop-coral);
+    }
+
+    .teleop-card-copy h3 {
+      margin-top: 6px;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .teleop-card-copy p {
+      margin-top: 12px;
+      color: var(--teleop-muted);
+      font-weight: 300;
+      text-align: left;
+    }
+
+    .teleop-mechanism img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .teleop-mechanism figcaption {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      padding: 28px;
+      background: var(--teleop-card);
+      color: var(--teleop-muted);
+      font: inherit;
+      text-align: left;
+    }
+
+    .teleop-mechanism figcaption p {
+      padding-left: 18px;
+      border-left: 3px solid var(--teleop-blue);
+      font-weight: 300;
+      text-align: left;
+    }
+
+    .teleop-mechanism figcaption p:last-child {
+      border-left-color: var(--teleop-coral);
+    }
+
+    .teleop-mechanism strong {
+      color: var(--teleop-ink);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .teleop-section-header,
+      .teleop-media-grid,
+      .teleop-mechanism figcaption {
+        grid-template-columns: 1fr;
+      }
+
+      .teleop-section-header {
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .teleop-shell {
+        width: min(100% - 28px, 1180px);
+        padding: 72px 0 56px;
+      }
+
+      .teleop-hero {
+        padding: 16px 0 44px;
+      }
+
+      .teleop-hero h1 {
+        font-size: clamp(2.25rem, 12vw, 3.15rem);
+      }
+
+      .teleop-section {
+        padding-top: 52px;
+      }
+
+      .teleop-media-grid {
+        gap: 18px;
+      }
+
+      .teleop-card-copy,
+      .teleop-mechanism figcaption {
+        padding: 20px;
+      }
+    }
+  </style>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ8WNGYXYL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-QZ8WNGYXYL');
+  </script>
+</head>
+
+<body class="teleop-body">
+  <main class="teleop-page">
+    <div class="teleop-shell">
+      <header class="teleop-hero">
+        <p class="teleop-eyebrow">Mixed-Reality Robot Teleoperation</p>
+        <h1>Immersive Teleoperation for Robot Learning and HRI</h1>
+        <p class="teleop-lead">
+          A mixed-reality teleoperation platform that turns embodied human demonstrations into robot learning data
+          while supporting physical human-robot interaction, expressive facial control, and a more comfortable
+          operator experience.
+        </p>
+        <ul class="teleop-tags" aria-label="Project areas">
+          <li>MR Teleoperation</li>
+          <li>Vision-Language-Action</li>
+          <li>Physical HRI</li>
+        </ul>
+      </header>
+
+      <section class="teleop-section" aria-labelledby="vla-workflow-title">
+        <div class="teleop-section-header">
+          <div>
+            <p class="teleop-section-label">Robot learning workflow</p>
+            <h2 id="vla-workflow-title">From Demonstration to Autonomous Inference</h2>
+          </div>
+          <p class="teleop-section-intro">
+            The same interface closes the loop from embodied data collection to learned autonomy: an operator first
+            demonstrates the task through teleoperation, then the trained VLA policy executes it at inference time.
+          </p>
+        </div>
+
+        <div class="teleop-media-grid">
+          <article class="teleop-media-card">
+            <video controls playsinline preload="metadata" aria-label="Teleoperation demonstration for VLA training"
+              aria-describedby="teleoperation-description">
+              <source src="../img/subpages/teleop-vla/teleoperation-vla.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <div class="teleop-card-copy">
+              <p class="teleop-card-kicker">01 · Demonstration collection</p>
+              <h3>Teleoperation for VLA Training</h3>
+              <p id="teleoperation-description">
+                The operator teleoperates the robot to produce embodied trajectories and synchronized visual-action
+                demonstrations for training the vision-language-action policy.
+              </p>
+            </div>
+          </article>
+
+          <article class="teleop-media-card">
+            <video controls playsinline preload="metadata" aria-label="Autonomous VLA policy inference"
+              aria-describedby="inference-description">
+              <source src="../img/subpages/teleop-vla/vla-inference.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <div class="teleop-card-copy">
+              <p class="teleop-card-kicker">02 · Learned execution</p>
+              <h3>VLA Inference</h3>
+              <p id="inference-description">
+                After training on the teleoperation demonstrations, the learned policy executes the task at inference
+                time, translating visual observations and task intent into robot actions.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="teleop-section" aria-labelledby="hri-capabilities-title">
+        <div class="teleop-section-header">
+          <div>
+            <p class="teleop-section-label">A versatile interaction platform</p>
+            <h2 id="hri-capabilities-title">Beyond Robot Learning</h2>
+          </div>
+          <p class="teleop-section-intro">
+            The teleoperation stack also serves as a research tool for studying embodied interaction and transferring
+            expressive human behavior to a social robot.
+          </p>
+        </div>
+
+        <div class="teleop-media-grid">
+          <article class="teleop-media-card">
+            <video controls playsinline preload="metadata" aria-label="Physical human-robot interaction handover study"
+              aria-describedby="handover-description">
+              <source src="../img/subpages/teleop-vla/handover-small.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <div class="teleop-card-copy">
+              <p class="teleop-card-kicker">Physical HRI</p>
+              <h3>Studying Robot-to-Human Handover</h3>
+              <p id="handover-description">
+                The system enables controlled physical human-robot interaction studies, including close-proximity
+                object handover between a remotely embodied operator and a participant.
+              </p>
+            </div>
+          </article>
+
+          <article class="teleop-media-card">
+            <video controls playsinline preload="metadata" aria-label="Real-time robot facial retargeting"
+              aria-describedby="facial-retargeting-description">
+              <source src="../img/subpages/teleop-vla/face-retarget.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+            <div class="teleop-card-copy">
+              <p class="teleop-card-kicker">Expressive embodiment</p>
+              <h3>Facial Retargeting</h3>
+              <p id="facial-retargeting-description">
+                Facial motion from the operator is retargeted to the robot in real time, extending embodiment from
+                physical control to expressive social cues during interaction.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="teleop-section" aria-labelledby="comfort-title">
+        <div class="teleop-section-header">
+          <div>
+            <p class="teleop-section-label">Operator comfort</p>
+            <h2 id="comfort-title">Reducing Visual Mismatch and Motion Sickness</h2>
+          </div>
+          <p class="teleop-section-intro">
+            A local view-compensation mechanism accounts for the difference between the operator's desired head pose
+            and the robot head's actual response, making immersive teleoperation more visually stable.
+          </p>
+        </div>
+
+        <figure class="teleop-mechanism">
+          <img src="../img/subpages/teleop-vla/teleop-cam.jpg"
+            alt="MR teleoperation setup and three compensated camera views showing the relationship between human head rotation, robot head rotation, and virtual screen orientation.">
+          <figcaption>
+            <p>
+              <strong>Top:</strong> The MR headset subscribes to the actual rotation of the robot head and computes the
+              rotation difference with respect to the human head's desired rotation.
+            </p>
+            <p>
+              <strong>Bottom:</strong> The teleoperation view locally compensates the virtual screen orientation using
+              this difference. Aligning the displayed video stream with the robot head pose reduces visual mismatch
+              and helps mitigate motion sickness.
+            </p>
+          </figcaption>
+        </figure>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>
