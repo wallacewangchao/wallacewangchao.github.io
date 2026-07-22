@@ -32,6 +32,10 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+body.main-page-background {
+  background: #fef9e7;
+}
+
 body::-webkit-scrollbar {
   width: 5px;
   height: 5px;
