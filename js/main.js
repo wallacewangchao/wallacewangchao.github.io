@@ -675,7 +675,7 @@ function initScene() {
   loader.setDRACOLoader(dracoLoader);
   loader.setMeshoptDecoder(MeshoptDecoder);
 
-  loader.load('./models/whole_scene_toon.glb', function (gltf) {
+  loader.load('./models/new-scene-compressed.glb', function (gltf) {
     const root = gltf.scene;
     root.castShadow = true;
     gltf.scene.receiveShadow = true;
@@ -690,7 +690,7 @@ function initScene() {
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         carObj = node;
-      } else if (node.name === "robot") {
+      } else if (node.name === "new-robot") {
         let marker = makeMarker(node);
         homePageMarkers.push(marker);
         robotObj = node;
@@ -733,21 +733,25 @@ function initScene() {
     /* set auto page objects */
     const whiteMaterial = new THREE.MeshToonMaterial({ color: "rgb(99, 125, 138)" });
     const warningBoxMaterial = new THREE.MeshToonMaterial({ color: "rgb(254, 47, 47)" });
+    const softThreeBandGradientMap = createToonGradient([
+      { "pos": 0.25, "color": "rgb(120, 120, 120)" },
+      { "pos": 0.75, "color": "rgb(255, 255, 255)" }
+    ], 3);
+    const skinThreeBandGradientMap = createToonGradient([
+      { "pos": 0.25, "color": "rgb(150, 125, 115)" },
+      { "pos": 0.75, "color": "rgb(255, 195, 175)" }
+    ], 3);
 
     meObj.traverse((o) => {
       if (o.name === "OutfitBottom") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(118,181,197)",
-          gradientMap: createToonGradient(),
+          gradientMap: softThreeBandGradientMap,
         });
       } else if (o.name === "OutfitTop") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(235,235,235)",
-          gradientMap: createToonGradient([
-            { "pos": 0.1, "color": 'rgb(50, 50, 50)' },
-            { "pos": 0.5, "color": 'rgb(120, 120, 120)' },
-            { "pos": 1, "color": 'rgb(256, 256, 256)' }
-          ]),
+          gradientMap: softThreeBandGradientMap,
         });
       } else if (o.name === "Head") {
         let textureLoader = new THREE.TextureLoader();
@@ -757,27 +761,22 @@ function initScene() {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(255, 255, 255)",
           map: faceTexture,
-          gradientMap: createToonGradient([
-            { "pos": 0.35, "color": "rgb(125, 107, 101)" },
-            { "pos": 0.8, "color": "rgb(255, 187, 166)" }
-          ]),
+          gradientMap: skinThreeBandGradientMap,
         });
       } else if (o.name === "Hands") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(255, 255, 255)",
-          gradientMap: createToonGradient([
-            { "pos": 0.35, "color": "rgb(125, 107, 101)" },
-            { "pos": 0.8, "color": "rgb(255, 187, 166)" }
-          ]),
+          gradientMap: skinThreeBandGradientMap,
         });
       } else if (o.name === "Hair") {
         o.material = new THREE.MeshToonMaterial({
           color: "rgb(10, 10, 10)",
-          gradientMap: createToonGradient(),
+          gradientMap: softThreeBandGradientMap,
         });
       } else if (o.name === "Shoes") {
         o.material = new THREE.MeshToonMaterial({
           color: "#3E2723",
+          gradientMap: softThreeBandGradientMap,
         });
       }
     });
@@ -830,32 +829,64 @@ function initScene() {
       }
     });
 
-    robotObj.traverse((o) => {
-      if (o.name === "body" || o.name === "base" || o.name === "neck_base") {
-        o.material = new THREE.MeshToonMaterial({
-          color: "rgb(245,245,245)",
-          gradientMap: createToonGradient([
-            { "pos": 0, "color": 'rgb(0, 0, 0)' },
-            { "pos": 0.1, "color": 'rgb(120, 120, 120)' },
-            { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]),
-        });
-      } else if (o.name === "arms_model") {
-        o.material = new THREE.MeshToonMaterial({
-          color: "rgb(204, 239, 255)",
-          gradientMap: createToonGradient(),
-        });
-      } else if (o.name === "ears" || o.name === "eye") {
-        o.material = new THREE.MeshToonMaterial({
-          color: "rgb(10, 10, 10)",
-          gradientMap: createToonGradient(),
-        });
-      } else if (o.name === "head" || o.name === "neck") {
-        o.material = new THREE.MeshToonMaterial({
-          color: "rgb(235,235,235)",
-          gradientMap: createToonGradient(),
-        });
+    const robotGradientMap = softThreeBandGradientMap;
+    const robotFaceShieldOpacity = 0.1;
+    const robotToonMaterialCache = new WeakMap();
+
+    function isTransparentRobotMaterial(material) {
+      return material.transparent === true;
+    }
+
+    function getRobotToonMaterial(sourceMaterial) {
+      if (isTransparentRobotMaterial(sourceMaterial)) {
+        sourceMaterial.depthWrite = false;
+        return sourceMaterial;
       }
-    })
+
+      if (!robotToonMaterialCache.has(sourceMaterial)) {
+        const toonMaterial = new THREE.MeshToonMaterial({
+          map: sourceMaterial.map,
+          gradientMap: robotGradientMap,
+          side: sourceMaterial.side,
+          vertexColors: sourceMaterial.vertexColors,
+          alphaMap: sourceMaterial.alphaMap,
+          alphaTest: sourceMaterial.alphaTest,
+        });
+        if (sourceMaterial.color) toonMaterial.color.copy(sourceMaterial.color);
+        if (sourceMaterial.emissive) toonMaterial.emissive.copy(sourceMaterial.emissive);
+        toonMaterial.emissiveMap = sourceMaterial.emissiveMap;
+        toonMaterial.emissiveIntensity = sourceMaterial.emissiveIntensity;
+        toonMaterial.name = sourceMaterial.name ? sourceMaterial.name + "_toon" : "robot_toon";
+        robotToonMaterialCache.set(sourceMaterial, toonMaterial);
+      }
+
+      return robotToonMaterialCache.get(sourceMaterial);
+    }
+
+    robotObj.traverse((o) => {
+      if (!o.isMesh) return;
+
+      const sourceMaterials = Array.isArray(o.material) ? o.material : [o.material];
+      const hasTransparentMaterial = sourceMaterials.some(isTransparentRobotMaterial);
+
+      if (o.name === "head_screen_outshell" || hasTransparentMaterial) {
+        o.castShadow = false;
+      }
+
+      if (o.name === "head_screen_outshell") {
+        sourceMaterials.forEach((material) => {
+          material.transparent = true;
+          material.opacity = robotFaceShieldOpacity;
+          material.depthWrite = false;
+          material.depthTest = true;
+        });
+        return;
+      }
+
+      o.material = Array.isArray(o.material)
+        ? sourceMaterials.map(getRobotToonMaterial)
+        : getRobotToonMaterial(o.material);
+    });
 
     /* set other cars */
     let otherCar1 = carObj.clone();
@@ -980,24 +1011,25 @@ function initScene() {
 
   function createToonGradient(colorStops = [{ "pos": 0, "color": 'rgb(0, 0, 0)' },
   { "pos": 0.2, "color": 'rgb(120, 120, 120)' },
-  { "pos": 0.9, "color": 'rgb(256, 256, 256)' }]) {
+  { "pos": 0.9, "color": 'rgb(256, 256, 256)' }], bandCount = 4) {
     const canvas = document.createElement('canvas');
-    canvas.width = 4;
+    canvas.width = bandCount;
     canvas.height = 1;
 
     const context = canvas.getContext('2d');
-    const gradient = context.createLinearGradient(0, 0, 4, 0);
+    const gradient = context.createLinearGradient(0, 0, bandCount, 0);
 
     colorStops.forEach((e) => {
       gradient.addColorStop(e["pos"], e["color"]);
     });
 
     context.fillStyle = gradient;
-    context.fillRect(0, 0, 4, 1);
+    context.fillRect(0, 0, bandCount, 1);
 
     const gradientMap = new THREE.CanvasTexture(canvas);
     gradientMap.magFilter = THREE.NearestFilter;
     gradientMap.minFilter = THREE.NearestFilter;
+    gradientMap.generateMipmaps = false;
     gradientMap.needsUpdate = true;
 
     return gradientMap;
@@ -1127,7 +1159,7 @@ function onMarkerClicked() {
     document.getElementById("radio-btn-AboutMe").click();
   }
 
-  if (this.id === "robot") {
+  if (this.id === "new-robot") {
     document.getElementById("radio-btn-Robotics&AI").click();
   }
 }
