@@ -831,13 +831,17 @@ function initScene() {
     });
 
     const robotGradientMap = softThreeBandGradientMap;
-    const robotShellColor = new THREE.Color("#ffdede");
+    const robotShellColor = new THREE.Color("#ffdddd");
     const robotShellMaterialNames = new Set([
       "Material_13",
       "Plaster.001",
       "Plaster (1).001",
     ]);
-    const robotFaceShieldOpacity = 0.1;
+    const robotScreenMaterialName = "backplat.001";
+    const robotScreenColor = new THREE.Color("#181818");
+    const robotEyeMaterialName = "Custom (1).001";
+    const robotEyeEmissiveIntensity = 2.5;
+    const robotFaceShieldOpacity = 0.4;
     const robotToonMaterialCache = new WeakMap();
 
     function isTransparentRobotMaterial(material) {
@@ -865,12 +869,16 @@ function initScene() {
         });
         if (isRobotShellMaterial(sourceMaterial)) {
           toonMaterial.color.copy(robotShellColor);
+        } else if (sourceMaterial.name === robotScreenMaterialName) {
+          toonMaterial.color.copy(robotScreenColor);
         } else if (sourceMaterial.color) {
           toonMaterial.color.copy(sourceMaterial.color);
         }
         if (sourceMaterial.emissive) toonMaterial.emissive.copy(sourceMaterial.emissive);
         toonMaterial.emissiveMap = sourceMaterial.emissiveMap;
-        toonMaterial.emissiveIntensity = sourceMaterial.emissiveIntensity;
+        toonMaterial.emissiveIntensity = sourceMaterial.name === robotEyeMaterialName
+          ? robotEyeEmissiveIntensity
+          : sourceMaterial.emissiveIntensity;
         toonMaterial.name = sourceMaterial.name ? sourceMaterial.name + "_toon" : "robot_toon";
         robotToonMaterialCache.set(sourceMaterial, toonMaterial);
       }
@@ -892,8 +900,11 @@ function initScene() {
         sourceMaterials.forEach((material) => {
           material.transparent = true;
           material.opacity = robotFaceShieldOpacity;
+          material.roughness = 0.2;
+          material.metalness = 0;
           material.depthWrite = false;
           material.depthTest = true;
+          material.needsUpdate = true;
         });
         return;
       }
