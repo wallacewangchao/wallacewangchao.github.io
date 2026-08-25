@@ -45,14 +45,14 @@ const AUTO_CAMERA_POS = {
 
 const ROBOT_CAMERA_POS = {
   position: {
-    x: -0.31,
-    y: 3.89,
-    z: 4.80
+    x: -2.69,
+    y: 2.4,
+    z: 4.70
   },
   lookAt: {
-    x: -2.19,
-    y: 0.39,
-    z: 0.039
+    x: -2.0,
+    y: 1.0,
+    z: 0.0
   }
 }
 
