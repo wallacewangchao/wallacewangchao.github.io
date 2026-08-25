@@ -612,7 +612,8 @@ function initScene() {
 
   // direction light
   dirLight = new THREE.DirectionalLight("rgb(255, 255, 255)", 0.9);
-  dirLight.position.set(2, 1.3, -2);
+  // dirLight.position.set(2, 1.3, -2);
+  dirLight.position.set(8, 10, 14);
 
   // dirLight.position.multiplyScalar( 5 );
 
@@ -830,11 +831,21 @@ function initScene() {
     });
 
     const robotGradientMap = softThreeBandGradientMap;
+    const robotShellColor = new THREE.Color("#ffdede");
+    const robotShellMaterialNames = new Set([
+      "Material_13",
+      "Plaster.001",
+      "Plaster (1).001",
+    ]);
     const robotFaceShieldOpacity = 0.1;
     const robotToonMaterialCache = new WeakMap();
 
     function isTransparentRobotMaterial(material) {
       return material.transparent === true;
+    }
+
+    function isRobotShellMaterial(material) {
+      return robotShellMaterialNames.has(material.name);
     }
 
     function getRobotToonMaterial(sourceMaterial) {
@@ -852,7 +863,11 @@ function initScene() {
           alphaMap: sourceMaterial.alphaMap,
           alphaTest: sourceMaterial.alphaTest,
         });
-        if (sourceMaterial.color) toonMaterial.color.copy(sourceMaterial.color);
+        if (isRobotShellMaterial(sourceMaterial)) {
+          toonMaterial.color.copy(robotShellColor);
+        } else if (sourceMaterial.color) {
+          toonMaterial.color.copy(sourceMaterial.color);
+        }
         if (sourceMaterial.emissive) toonMaterial.emissive.copy(sourceMaterial.emissive);
         toonMaterial.emissiveMap = sourceMaterial.emissiveMap;
         toonMaterial.emissiveIntensity = sourceMaterial.emissiveIntensity;
