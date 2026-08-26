@@ -595,7 +595,7 @@ function initScene() {
 
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+  renderer.shadowMap.type = THREE.BasicShadowMap;
 
   THREEJS_CONTAINER.appendChild(renderer.domElement);
 
@@ -613,7 +613,7 @@ function initScene() {
   // direction light
   dirLight = new THREE.DirectionalLight("rgb(255, 255, 255)", 0.9);
   // dirLight.position.set(2, 1.3, -2);
-  dirLight.position.set(8, 10, 14);
+  dirLight.position.set(5, 18, 14);
 
   // dirLight.position.multiplyScalar( 5 );
 
@@ -624,8 +624,9 @@ function initScene() {
   // dirLight.shadow.camera.top = d;
   // dirLight.shadow.camera.bottom = - d;
 
-  // dirLight.shadow.mapSize.width = 2048;
-  // dirLight.shadow.mapSize.height = 2048;
+  dirLight.shadow.mapSize.width = 3000;
+  dirLight.shadow.mapSize.height = 3000;
+  // dirLight.shadow.radius = 100;
 
   // dirLight.shadow.camera.far = 45;
   // dirLight.shadow.camera.near = 0.1;
@@ -838,7 +839,7 @@ function initScene() {
       "Plaster (1).001",
     ]);
     const robotScreenMaterialName = "backplat.001";
-    const robotScreenColor = new THREE.Color("#080808");
+    const robotScreenColor = new THREE.Color("#050505");
     const robotEyeMaterialName = "Custom (1).001";
     const robotEyeEmissiveIntensity = 2.5;
     const robotFaceShieldOpacity = 0.4;
@@ -846,7 +847,7 @@ function initScene() {
     const robotFaceShieldGradientMap = createToonGradient([
       { "pos": 0.2, "color": "rgb(27, 27, 27)" },
       { "pos": 0.55, "color": "rgb(88, 88, 88)" },
-      { "pos": 0.85, "color": "rgb(179, 179, 179)" },
+      { "pos": 0.85, "color": "rgb(231, 231, 231)" },
     ], 3);
     const robotToonMaterialCache = new WeakMap();
 
@@ -1080,6 +1081,22 @@ function initScene() {
 
     return gradientMap;
   }
+
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(100, 100),
+    new THREE.ShadowMaterial({
+      color: 0x000000,
+      opacity: 0.09,
+      transparent: true,
+      depthWrite: false,
+    })
+  );
+
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -0.01;
+  ground.receiveShadow = true;
+  ground.castShadow = false;
+  scene.add(ground);
 
   // const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: "#D1F2EB", depthWrite: false } ) );
   // mesh.rotation.x = - Math.PI / 2;
