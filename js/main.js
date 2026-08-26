@@ -746,7 +746,7 @@ function initScene() {
     meObj.traverse((o) => {
       if (o.name === "OutfitBottom") {
         o.material = new THREE.MeshToonMaterial({
-          color: "rgb(118,181,197)",
+          color: "rgb(161, 196, 206)",
           gradientMap: softThreeBandGradientMap,
         });
       } else if (o.name === "OutfitTop") {
@@ -831,17 +831,23 @@ function initScene() {
     });
 
     const robotGradientMap = softThreeBandGradientMap;
-    const robotShellColor = new THREE.Color("#ffdddd");
+    const robotShellColor = new THREE.Color("#ffcaca");
     const robotShellMaterialNames = new Set([
       "Material_13",
       "Plaster.001",
       "Plaster (1).001",
     ]);
     const robotScreenMaterialName = "backplat.001";
-    const robotScreenColor = new THREE.Color("#181818");
+    const robotScreenColor = new THREE.Color("#080808");
     const robotEyeMaterialName = "Custom (1).001";
     const robotEyeEmissiveIntensity = 2.5;
     const robotFaceShieldOpacity = 0.4;
+    const robotFaceShieldColor = new THREE.Color("#6a7078");
+    const robotFaceShieldGradientMap = createToonGradient([
+      { "pos": 0.2, "color": "rgb(27, 27, 27)" },
+      { "pos": 0.55, "color": "rgb(88, 88, 88)" },
+      { "pos": 0.85, "color": "rgb(179, 179, 179)" },
+    ], 3);
     const robotToonMaterialCache = new WeakMap();
 
     function isTransparentRobotMaterial(material) {
@@ -850,6 +856,26 @@ function initScene() {
 
     function isRobotShellMaterial(material) {
       return robotShellMaterialNames.has(material.name);
+    }
+
+    function createRobotFaceShieldMaterial(sourceMaterial) {
+      const toonMaterial = new THREE.MeshToonMaterial({
+        map: sourceMaterial.map,
+        gradientMap: robotFaceShieldGradientMap,
+        side: sourceMaterial.side,
+        vertexColors: sourceMaterial.vertexColors,
+        alphaMap: sourceMaterial.alphaMap,
+        alphaTest: sourceMaterial.alphaTest,
+        transparent: true,
+        opacity: robotFaceShieldOpacity,
+        depthWrite: false,
+        depthTest: true,
+      });
+      toonMaterial.color.copy(robotFaceShieldColor);
+      toonMaterial.name = sourceMaterial.name
+        ? sourceMaterial.name + "_toon"
+        : "robot_face_shield_toon";
+      return toonMaterial;
     }
 
     function getRobotToonMaterial(sourceMaterial) {
@@ -897,15 +923,9 @@ function initScene() {
       }
 
       if (o.name === "head_screen_outshell") {
-        sourceMaterials.forEach((material) => {
-          material.transparent = true;
-          material.opacity = robotFaceShieldOpacity;
-          material.roughness = 0.2;
-          material.metalness = 0;
-          material.depthWrite = false;
-          material.depthTest = true;
-          material.needsUpdate = true;
-        });
+        o.material = Array.isArray(o.material)
+          ? sourceMaterials.map(createRobotFaceShieldMaterial)
+          : createRobotFaceShieldMaterial(o.material);
         return;
       }
 
