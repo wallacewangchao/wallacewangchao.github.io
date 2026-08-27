@@ -51,6 +51,56 @@ body::-webkit-scrollbar-thumb {
   background-color: rgba(17, 23, 26, 0.46);
 }
 
+.subpage-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  min-height: 60px;
+  padding: 8px 16px 8px 8px;
+  border: 1px solid rgba(35, 143, 206, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 8px 24px rgba(38, 63, 76, 0.06);
+  color: #315363;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.subpage-home-logo {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 7px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--sub-blue), #315363);
+  object-fit: contain;
+}
+
+.subpage-home-link:hover {
+  border-color: rgba(35, 143, 206, 0.5);
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(38, 63, 76, 0.1);
+  color: var(--sub-blue);
+  transform: translateY(-2px);
+}
+
+.subpage-home-link:focus-visible {
+  outline: 2px solid var(--sub-blue);
+  outline-offset: 4px;
+}
+
+.subpage-home-link:active {
+  transform: translateY(0);
+}
+
+.is-embedded .subpage-home-link {
+  display: none;
+}
+
 /* Project case-study pages */
 body > main:not(.teleop-page) {
   display: flex;
@@ -191,7 +241,7 @@ body > main:not(.teleop-page) figcaption {
   text-align: left;
 }
 
-body > main:not(.teleop-page) > a {
+body > main:not(.teleop-page) > a:not(.subpage-home-link) {
   display: block;
   padding: 20px 22px;
   border: 1px solid var(--sub-line);
@@ -203,8 +253,8 @@ body > main:not(.teleop-page) > a {
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-body > main:not(.teleop-page) > a:hover,
-body > main:not(.teleop-page) > a:focus-visible {
+body > main:not(.teleop-page) > a:not(.subpage-home-link):hover,
+body > main:not(.teleop-page) > a:not(.subpage-home-link):focus-visible {
   border-color: rgba(35, 143, 206, 0.5);
   box-shadow: 0 12px 30px rgba(38, 63, 76, 0.08);
   transform: translateY(-2px);
