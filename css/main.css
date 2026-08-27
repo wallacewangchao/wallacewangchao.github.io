@@ -1,14 +1,23 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   text-decoration: none;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 main {
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
+  grid-template-columns: repeat(16, minmax(0, 1fr));
   grid-template-rows: 10vh 50vh 5vh 35vh;
+  width: 100%;
+  min-width: 0;
   background: #FEF9E7;
 
 }
@@ -75,7 +84,7 @@ div::-webkit-scrollbar-thumb {
 #highlight-overlay {
   grid-column: 8/17;
   grid-row: 1/5;
-  overflow-x: hidden;
+  overflow: hidden;
 
 }
 
@@ -422,7 +431,7 @@ iframe {
   #highlight-overlay {
     grid-column: 1/17;
     grid-row: 1/4;
-    overflow-x: hidden;
+    overflow: hidden;
 
   }
 
@@ -453,6 +462,9 @@ iframe {
     flex-flow: column;
     gap: 1rem;
     justify-content: flex-end;
+    width: 100%;
+    min-width: 0;
+    padding-inline: 2vw;
   }
 
   .sub-project-grid {
@@ -466,6 +478,16 @@ iframe {
   .nav-bar>form {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    gap: clamp(0.25rem, 1.5vw, 0.6rem);
+  }
+
+  .nav-bar label {
+    min-width: 0;
+    white-space: nowrap;
+    font-size: clamp(0.7rem, 3.4vw, 1rem);
   }
 
 }

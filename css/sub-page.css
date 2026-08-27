@@ -311,7 +311,7 @@ a:focus-visible {
 
 .header-div {
   display: grid;
-  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
   gap: 48px;
   align-items: center;
   padding-bottom: 52px;
@@ -321,7 +321,7 @@ a:focus-visible {
 .header-div > img {
   display: block;
   width: 100%;
-  max-width: 380px;
+  max-width: 300px;
   border: 1px solid var(--sub-line);
   border-radius: 18px;
   box-shadow: var(--sub-shadow);
@@ -537,7 +537,7 @@ a:focus-visible {
   }
 
   .header-div > img {
-    max-width: 320px;
+    max-width: 260px;
   }
 }
 
