@@ -617,15 +617,17 @@ function initScene() {
 
   // dirLight.position.multiplyScalar( 5 );
 
-  // const d = 30;
+  // Cover the full automotive scene so the distant cars and pedestrian can
+  // project onto the shared shadow-catching ground plane.
+  const shadowCameraSize = 30;
+  dirLight.shadow.camera.left = -shadowCameraSize;
+  dirLight.shadow.camera.right = shadowCameraSize;
+  dirLight.shadow.camera.top = shadowCameraSize;
+  dirLight.shadow.camera.bottom = -shadowCameraSize;
+  dirLight.shadow.camera.updateProjectionMatrix();
 
-  // dirLight.shadow.camera.left = - d;
-  // dirLight.shadow.camera.right = d;
-  // dirLight.shadow.camera.top = d;
-  // dirLight.shadow.camera.bottom = - d;
-
-  dirLight.shadow.mapSize.width = 3000;
-  dirLight.shadow.mapSize.height = 3000;
+  dirLight.shadow.mapSize.width = 5000;
+  dirLight.shadow.mapSize.height = 5000;
   // dirLight.shadow.radius = 100;
 
   // dirLight.shadow.camera.far = 45;
@@ -941,7 +943,8 @@ function initScene() {
     otherCar1.position.set(-12, 0, -2);
     otherCar1.traverse((o) => {
       if (o.isMesh) {
-        o.receiveShadow = true;
+        o.castShadow = true;
+        o.receiveShadow = false;
         o.material = whiteMaterial;
       }
     });
@@ -1009,6 +1012,8 @@ function initScene() {
 
     pedestrianObj.traverse((o) => {
       if (o.isMesh) {
+        o.castShadow = true;
+        o.receiveShadow = false;
         o.material = whiteMaterial;
       }
     });
