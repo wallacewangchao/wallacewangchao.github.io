@@ -552,7 +552,8 @@ function init() {
   let kore = document.getElementById('kore');
   setProjectCard(kore, "TO_PROJECT_KORE", null);
 
-  setProjectCard(document.getElementById('teleop-vla'), "TO_PROJECT_TELEOP", null);
+  const teleopVla = document.getElementById('teleop-vla');
+  if (teleopVla) setProjectCard(teleopVla, "TO_PROJECT_TELEOP", null);
   setProjectCard(document.getElementById('holoCar'), "TO_PROJECT_HOLOCAR", null);
   setProjectCard(document.getElementById('icra24'), "TO_PROJECT_ICRA24", null);
   setProjectCard(document.getElementById('lami'), "TO_PROJECT_LAMI", null);
